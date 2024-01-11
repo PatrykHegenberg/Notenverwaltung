@@ -18,11 +18,17 @@ before:
 builds:
   - env:
       - CGO_ENABLED=1
+      # complex, templated envs (v1.14+):
+      - >-
+        {{- if eq .Os "windows" }}
+          {{- if eq .Arch "amd64" }}CC=x86_64-w64-mingw32-gcc{{- end }}
+        {{- end }}
     goos:
       - linux
       - windows
-      - darwin
 
+    goarch:
+      - amd64
 archives:
   - format: tar.gz
     # this name template makes the OS and Arch compatible with the results of `uname`.
