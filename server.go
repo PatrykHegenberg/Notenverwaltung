@@ -14,6 +14,8 @@ func main() {
 	e.Use(middleware.Recover())
 	e.GET("/", routes.GetIndexHandler)
 	e.GET("/register", routes.GetRegisterHandler)
+	e.GET("/login", routes.GetLoginHandler)
+
 	studentGroup := e.Group("/student")
 	configureStudentRoutes(studentGroup)
 

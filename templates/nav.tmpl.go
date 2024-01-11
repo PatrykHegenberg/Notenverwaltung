@@ -69,11 +69,19 @@ func GetNavbar() elem.Node {
 				elem.A(attrs.Props{
 					attrs.Class: "navbar-item",
 				},
-					elem.Text("Documentation")),
+					elem.Text("Dokumentation")),
 				elem.A(attrs.Props{
 					attrs.Class: "navbar-item",
 				},
 					elem.Text("Meine Klassen")),
+				elem.A(attrs.Props{
+					attrs.Class: "navbar-item",
+				},
+					elem.Text("Meine Schule")),
+				elem.A(attrs.Props{
+					attrs.Class: "navbar-item",
+				},
+					elem.Text("Profil")),
 			),
 			elem.Div(
 				attrs.Props{
@@ -92,13 +100,16 @@ func GetNavbar() elem.Node {
 								attrs.Class:   "button is-info",
 								htmx.HXGet:    "/register",
 								htmx.HXTarget: "#content-div",
-								htmx.HXSwap:   "outerHtml",
+								htmx.HXSwap:   "innerHtml",
 							},
 							elem.Strong(nil, elem.Text("Registrieren")),
 						),
 						elem.A(
 							attrs.Props{
-								attrs.Class: "button",
+								attrs.Class:   "button",
+								htmx.HXGet:    "/login",
+								htmx.HXTarget: "#content-div",
+								htmx.HXSwap:   "innerHTML",
 							},
 							elem.Text("Anmelden"),
 						),
