@@ -93,7 +93,7 @@ func GetRegister() elem.Node {
 							),
 							elem.Form(
 								attrs.Props{
-									htmx.HXPost:    "/registerUser",
+									htmx.HXPost:    "/users",
 									htmx.HXTrigger: "click",
 								},
 								elem.Div(

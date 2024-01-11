@@ -126,3 +126,19 @@ func GetDBInstance() *gorm.DB {
 	log.Println("Established database connection")
 	return db
 }
+
+func GetRoleIDByName(roleName string) (uint, error) {
+	var role model.Role
+	if err := GetDBInstance().Where("name = ?", roleName).First(&role).Error; err != nil {
+		return 0, err
+	}
+	return role.ID, nil
+}
+
+func GetSchoolIDByName(schoolName string) (uint, error) {
+	var school model.School
+	if err := GetDBInstance().Where("name = ?", schoolName).First(&school).Error; err != nil {
+		return 0, err
+	}
+	return school.ID, nil
+}

@@ -3,6 +3,8 @@ package main
 import (
 	DB "github.com/PatrykHegenberg/Notenverwaltung/database"
 	"github.com/PatrykHegenberg/Notenverwaltung/routes"
+	"github.com/gorilla/sessions"
+	"github.com/labstack/echo-contrib/session"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
@@ -10,11 +12,14 @@ import (
 func main() {
 	DB.AutoMigrate()
 	e := echo.New()
+
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
+	e.Use(session.Middleware(sessions.NewCookieStore([]byte("my-secret"))))
 	e.GET("/", routes.GetIndexHandler)
 	e.GET("/register", routes.GetRegisterHandler)
 	e.GET("/login", routes.GetLoginHandler)
+	e.POST("/authenticate", routes.AuthenticateHXUserHandler)
 
 	studentGroup := e.Group("/student")
 	configureStudentRoutes(studentGroup)
@@ -52,6 +57,8 @@ func configureUserRoutes(g *echo.Group) {
 	g.GET("", routes.GetUsersHandler)
 	g.GET("/:id", routes.GetUserHandler)
 	g.POST("", routes.CreateUserHandler)
+	g.POST("", routes.CreateHXUserHandler)
+	g.POST("/authenticate", routes.AuthenticateUserHandler)
 	g.PUT("/:id", routes.UpdateUserHandler)
 	g.DELETE("/:id", routes.DeleteUserHandler)
 }

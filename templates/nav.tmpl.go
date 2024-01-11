@@ -113,6 +113,15 @@ func GetNavbar() elem.Node {
 							},
 							elem.Text("Anmelden"),
 						),
+						elem.A(
+							attrs.Props{
+								attrs.Class:   "button",
+								htmx.HXGet:    "/logout",
+								htmx.HXTarget: "#content-div",
+								htmx.HXSwap:   "innerHTML",
+							},
+							elem.Text("Abmelden"),
+						),
 					),
 				),
 			),

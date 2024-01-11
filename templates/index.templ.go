@@ -13,13 +13,13 @@ func RenderIndex() string {
 		},
 		elem.Div(
 			attrs.Props{
-				attrs.Class: "hero-body",
+				attrs.Class: "hero-body has-text-centered",
 			},
 			elem.Div(attrs.Props{
 				attrs.Class: "container",
 			},
-				elem.H1(nil, elem.Text("Willkommen bei der Notenverwaltung")),
-				elem.H2(nil, elem.Text("Diese WebApp ermöglicht die interaktive Verwaltung von Klassen, Noten und Schülern.")),
+				elem.H1(attrs.Props{attrs.Class: "title"}, elem.Text("Willkommen bei der Notenverwaltung")),
+				elem.H2(attrs.Props{attrs.Class: "subtitle"}, elem.Text("Diese WebApp ermöglicht die interaktive Verwaltung von Klassen, Noten und Schülern.")),
 			),
 		),
 	)
@@ -42,13 +42,15 @@ func RenderIndex() string {
 			elem.Link(
 				attrs.Props{
 					attrs.Rel:  "stylesheet",
-					attrs.Href: "https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css",
+					attrs.Href: "https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css",
 				},
 			),
 			// htmx JS
 			elem.Script(
 				attrs.Props{
-					attrs.Src: "https://cdn.jsdelivr.net/npm/htmx.org@1.6.0/dist/htmx.js",
+					attrs.Src:         "https://unpkg.com/htmx.org@1.9.10",
+					attrs.Integrity:   "sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC",
+					attrs.Crossorigin: "anonymous",
 				},
 			),
 		),

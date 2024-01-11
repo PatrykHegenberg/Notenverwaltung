@@ -3,6 +3,7 @@ package templates
 import (
 	"github.com/chasefleming/elem-go"
 	"github.com/chasefleming/elem-go/attrs"
+	"github.com/chasefleming/elem-go/htmx"
 )
 
 func GetLogin() elem.Node {
@@ -38,7 +39,11 @@ func GetLogin() elem.Node {
 									attrs.Props{
 										attrs.Class: "tile is-child has-text-centered",
 									},
-									elem.Form(nil,
+									elem.Form(
+										attrs.Props{
+											htmx.HXPost:    "/authenticate",
+											htmx.HXTrigger: "onClick",
+										},
 										elem.Div(
 											attrs.Props{
 												attrs.Class: "field",

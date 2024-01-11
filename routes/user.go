@@ -6,6 +6,8 @@ import (
 
 	DB "github.com/PatrykHegenberg/Notenverwaltung/database"
 	"github.com/PatrykHegenberg/Notenverwaltung/model"
+	"github.com/gorilla/sessions"
+	"github.com/labstack/echo-contrib/session"
 	"github.com/labstack/echo/v4"
 )
 
@@ -54,6 +56,43 @@ func CreateUserHandler(c echo.Context) error {
 	return c.JSON(http.StatusCreated, user)
 }
 
+// CreateUserHandler erstellt einen neuen Users mit HX
+func CreateHXUserHandler(c echo.Context) error {
+	username := c.FormValue("username")
+	email := c.FormValue("email")
+	password := c.FormValue("password")
+	role := c.FormValue("role")
+	school := c.FormValue("school")
+	db := DB.GetDBInstance()
+	roleID, err := DB.GetRoleIDByName(role)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Role nicht gefunden"})
+	}
+
+	schoolID, err := DB.GetSchoolIDByName(school)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Schule nicht gefunden"})
+	}
+
+	var user = model.User{
+		Username: username,
+		Email:    email,
+		Password: password,
+		RoleID:   roleID,
+		SchoolID: schoolID,
+	}
+
+	if err := c.Bind(&user); err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Bad Request"})
+	}
+
+	if err := db.Create(&user).Error; err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Fehler beim Erstellen des Users"})
+	}
+
+	return c.Redirect(http.StatusCreated, "/")
+}
+
 // UpdateUserHandler aktualisiert einen vorhandenen User
 func UpdateUserHandler(c echo.Context) error {
 	db := DB.GetDBInstance()
@@ -93,4 +132,68 @@ func DeleteUserHandler(c echo.Context) error {
 	}
 
 	return c.NoContent(http.StatusNoContent)
+}
+
+func AuthenticateHXUserHandler(c echo.Context) error {
+	db := DB.GetDBInstance()
+	sess, _ := session.Get("session", c)
+
+	email := c.FormValue("email")
+	password := c.FormValue("password")
+
+	var user model.User
+	if err := db.Where("email = ?", email).First(&user).Error; err != nil {
+		return c.JSON(http.StatusUnauthorized, map[string]string{"error": "Ungültige Anmeldeinformationen"})
+	}
+
+	// Hier sollte die Überprüfung des Passworts stattfinden.
+	// Achtung: Diese Überprüfung ist für den Produktionsgebrauch nicht sicher.
+
+	if user.Password != password {
+		return c.JSON(http.StatusUnauthorized, map[string]string{"error": "Ungültige Anmeldeinformationen"})
+	}
+	sess.Options = &sessions.Options{
+		Path:   "/",
+		MaxAge: 86400 * 7,
+	}
+	sess.Values["logged_in"] = true
+	sess.Save(c.Request(), c.Response())
+	// Hier kannst du die Benutzersitzung oder ein Token für die Authentifizierung erstellen.
+
+	return c.Redirect(http.StatusSeeOther, "/dashboard") // Ändere "/dashboard" zu der gewünschten Zielseite
+}
+
+func AuthenticateUserHandler(c echo.Context) error {
+	db := DB.GetDBInstance()
+	sess, _ := session.Get("session", c)
+
+	type LoginRequest struct {
+		Email    string `json:"email"`
+		Password string `json:"password"`
+	}
+
+	var loginRequest LoginRequest
+	if err := c.Bind(&loginRequest); err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Ungültige Anfrage"})
+	}
+
+	var user model.User
+	if err := db.Where("email = ?", loginRequest.Email).First(&user).Error; err != nil {
+		return c.JSON(http.StatusUnauthorized, map[string]string{"error": "Ungültige Anmeldeinformationen"})
+	}
+
+	// Hier sollte die Überprüfung des Passworts stattfinden.
+	// Achtung: Diese Überprüfung ist für den Produktionsgebrauch nicht sicher.
+
+	if user.Password != loginRequest.Password {
+		return c.JSON(http.StatusUnauthorized, map[string]string{"error": "Ungültige Anmeldeinformationen"})
+	}
+	sess.Options = &sessions.Options{
+		Path:   "/",
+		MaxAge: 86400 * 7,
+	}
+	sess.Values["logged_in"] = true
+	sess.Save(c.Request(), c.Response())
+
+	return c.JSON(http.StatusOK, map[string]string{"message": "Erfolgreich angemeldet"})
 }
