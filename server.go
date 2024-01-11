@@ -13,6 +13,7 @@ func main() {
 	DB.AutoMigrate()
 	e := echo.New()
 
+	// HTMX Frontend Routes
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 	e.Use(session.Middleware(sessions.NewCookieStore([]byte("my-secret"))))
@@ -21,25 +22,30 @@ func main() {
 	e.GET("/login", routes.GetLoginHandler)
 	e.POST("/authenticate", routes.AuthenticateHXUserHandler)
 
-	studentGroup := e.Group("/student")
+	// API Routes
+	apiGroup := e.Group("/api/v1")
+	apiGroup.Use(middleware.BasicAuth(func(username, password string, c echo.Context) (bool, error) {
+		return checkCredentials(username, password), nil
+	}))
+	studentGroup := apiGroup.Group("/student")
 	configureStudentRoutes(studentGroup)
 
-	userGroup := e.Group("/users")
+	userGroup := apiGroup.Group("/users")
 	configureUserRoutes(userGroup)
 
-	roleGroup := e.Group("/roles")
+	roleGroup := apiGroup.Group("/roles")
 	configureRoleRoutes(roleGroup)
 
-	examGroup := e.Group("/exams")
+	examGroup := apiGroup.Group("/exams")
 	configureExamRoutes(examGroup)
 
-	classGroup := e.Group("/class")
+	classGroup := apiGroup.Group("/class")
 	configureClassRoutes(classGroup)
 
-	teacherGroup := e.Group("/teachers")
+	teacherGroup := apiGroup.Group("/teachers")
 	configureTeacherRoutes(teacherGroup)
 
-	scoreGroup := e.Group("/scores")
+	scoreGroup := apiGroup.Group("/scores")
 	configureScoreRoutes(scoreGroup)
 
 	e.Logger.Fatal(e.Start(":1323"))
@@ -57,7 +63,6 @@ func configureUserRoutes(g *echo.Group) {
 	g.GET("", routes.GetUsersHandler)
 	g.GET("/:id", routes.GetUserHandler)
 	g.POST("", routes.CreateUserHandler)
-	g.POST("", routes.CreateHXUserHandler)
 	g.POST("/authenticate", routes.AuthenticateUserHandler)
 	g.PUT("/:id", routes.UpdateUserHandler)
 	g.DELETE("/:id", routes.DeleteUserHandler)
@@ -101,4 +106,15 @@ func configureScoreRoutes(g *echo.Group) {
 	g.POST("", routes.CreateScoreHandler)
 	g.PUT("/:id", routes.UpdateScoreHandler)
 	g.DELETE("/:id", routes.DeleteScoreHandler)
+}
+
+func checkCredentials(username, password string) bool {
+	user, err := DB.GetUserByName(username)
+	if err != nil {
+		return false
+	}
+	if user != nil && user.Password == password {
+		return true
+	}
+	return false
 }

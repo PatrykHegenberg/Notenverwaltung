@@ -142,3 +142,11 @@ func GetSchoolIDByName(schoolName string) (uint, error) {
 	}
 	return school.ID, nil
 }
+
+func GetUserByName(username string) (*model.User, error) {
+	var user model.User
+	if err := GetDBInstance().Where("username = ?", username).First(&user).Error; err != nil {
+		return nil, err
+	}
+	return &user, nil
+}
