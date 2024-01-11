@@ -20,6 +20,7 @@ func main() {
 	e.GET("/", routes.GetIndexHandler)
 	e.GET("/register", routes.GetRegisterHandler)
 	e.GET("/login", routes.GetLoginHandler)
+	e.GET("/logout", routes.LogoutHXUserHandler)
 	e.POST("/authenticate", routes.AuthenticateHXUserHandler)
 
 	// API Routes
@@ -64,6 +65,7 @@ func configureUserRoutes(g *echo.Group) {
 	g.GET("/:id", routes.GetUserHandler)
 	g.POST("", routes.CreateUserHandler)
 	g.POST("/authenticate", routes.AuthenticateUserHandler)
+	g.GET("/logout", routes.LogoutUserHandler)
 	g.PUT("/:id", routes.UpdateUserHandler)
 	g.DELETE("/:id", routes.DeleteUserHandler)
 }
