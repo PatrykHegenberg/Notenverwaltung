@@ -64,8 +64,6 @@ func configureUserRoutes(g *echo.Group) {
 	g.GET("", routes.GetUsersHandler)
 	g.GET("/:id", routes.GetUserHandler)
 	g.POST("", routes.CreateUserHandler)
-	g.POST("/authenticate", routes.AuthenticateUserHandler)
-	g.GET("/logout", routes.LogoutUserHandler)
 	g.PUT("/:id", routes.UpdateUserHandler)
 	g.DELETE("/:id", routes.DeleteUserHandler)
 }

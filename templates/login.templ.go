@@ -56,6 +56,8 @@ func GetLogin() elem.Node {
 													attrs.Props{
 														attrs.Class:       "input",
 														attrs.Type:        "email",
+														attrs.Name:        "email",
+														attrs.ID:          "email",
 														attrs.Placeholder: "Email",
 													},
 												),
@@ -74,6 +76,8 @@ func GetLogin() elem.Node {
 														attrs.Class:       "input",
 														attrs.Type:        "password",
 														attrs.Placeholder: "Password",
+														attrs.Name:        "password",
+														attrs.ID:          "password",
 													},
 												),
 											),

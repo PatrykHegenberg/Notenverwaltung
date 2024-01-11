@@ -9,4 +9,3 @@ import (
 func GetLoginHandler(c echo.Context) error {
 	return c.HTML(http.StatusOK, templates.RenderLogin(templates.GetLogin()))
 }
-

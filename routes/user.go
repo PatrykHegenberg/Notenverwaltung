@@ -42,23 +42,18 @@ func GetUserHandler(c echo.Context) error {
 
 // CreateUserHandler erstellt einen neuen Users
 func CreateUserHandler(c echo.Context) error {
-	sess, _ := session.Get("authenticate-session", c)
-	if auth, ok := sess.Values["authenticated"].(bool); !ok || !auth {
+	db := DB.GetDBInstance()
+
+	var user model.User
+	if err := c.Bind(&user); err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Ungültige Anfrage"})
-	} else {
-		db := DB.GetDBInstance()
-
-		var user model.User
-		if err := c.Bind(&user); err != nil {
-			return c.JSON(http.StatusBadRequest, map[string]string{"error": "Ungültige Anfrage"})
-		}
-
-		if err := db.Create(&user).Error; err != nil {
-			return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Fehler beim Erstellen des Users"})
-		}
-
-		return c.JSON(http.StatusCreated, user)
 	}
+
+	if err := db.Create(&user).Error; err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Fehler beim Erstellen des Users"})
+	}
+
+	return c.JSON(http.StatusCreated, user)
 }
 
 // CreateUserHandler erstellt einen neuen Users mit HX
@@ -173,48 +168,4 @@ func LogoutHXUserHandler(c echo.Context) error {
 	sess.Values["authenticated"] = false
 	sess.Save(c.Request(), c.Response())
 	return c.Redirect(http.StatusSeeOther, "/") // Ändere "/dashboard" zu der gewünschten Zielseite
-}
-
-func AuthenticateUserHandler(c echo.Context) error {
-	db := DB.GetDBInstance()
-
-	type LoginRequest struct {
-		Email    string `json:"email"`
-		Password string `json:"password"`
-	}
-
-	var loginRequest LoginRequest
-	if err := c.Bind(&loginRequest); err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Ungültige Anfrage"})
-	}
-
-	var user model.User
-	if err := db.Where("email = ?", loginRequest.Email).First(&user).Error; err != nil {
-		return c.JSON(http.StatusUnauthorized, map[string]string{"error": "Ungültige Anmeldeinformationen"})
-	}
-
-	if user.Password != loginRequest.Password {
-		return c.JSON(http.StatusUnauthorized, map[string]string{"error": "Ungültige Anmeldeinformationen"})
-	} else {
-		sess, _ := session.Get("authenticate-session", c)
-		sess.Options = &sessions.Options{
-			Path:   "/",
-			MaxAge: 86400 * 7,
-		}
-		sess.Values["authenticated"] = true
-		c.Set("user", user)
-		sess.Save(c.Request(), c.Response())
-	}
-	return c.JSON(http.StatusOK, map[string]string{"message": "Erfolgreich angemeldet"})
-}
-
-func LogoutUserHandler(c echo.Context) error {
-	sess, _ := session.Get("authenticate-session", c)
-	sess.Options = &sessions.Options{
-		Path:   "/",
-		MaxAge: 86400 * -1,
-	}
-	sess.Values["authenticated"] = false
-	sess.Save(c.Request(), c.Response())
-	return c.JSON(http.StatusOK, map[string]string{"message": "Erfolgreich abgemeldet"})
 }

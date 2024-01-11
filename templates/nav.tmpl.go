@@ -41,8 +41,8 @@ func GetNavbar(loggedIn bool) elem.Node {
 			attrs.Props{
 				attrs.Class:   "button",
 				htmx.HXGet:    "/logout",
-				htmx.HXTarget: "#content-div",
-				htmx.HXSwap:   "innerHTML",
+				htmx.HXTarget: "#outer",
+				htmx.HXSwap:   "outerHTML",
 			},
 			elem.Text("Abmelden"),
 		),

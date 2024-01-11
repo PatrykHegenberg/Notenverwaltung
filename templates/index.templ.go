@@ -36,19 +36,21 @@ func RenderIndex(loggedIn bool) string {
 			),
 		),
 		elem.Body(nil,
-			GetNavbar(loggedIn),
-			elem.Main(
-				attrs.Props{
-					attrs.Class: "main",
-				},
-				elem.Div(
+			elem.Div(attrs.Props{attrs.ID: "outer"},
+				GetNavbar(loggedIn),
+				elem.Main(
 					attrs.Props{
-						attrs.ID: "content-div",
+						attrs.Class: "main",
 					},
-					HeroIndex(),
+					elem.Div(
+						attrs.Props{
+							attrs.ID: "content-div",
+						},
+						HeroIndex(),
+					),
 				),
+				GetFooter(),
 			),
-			GetFooter(),
 		),
 	)
 
