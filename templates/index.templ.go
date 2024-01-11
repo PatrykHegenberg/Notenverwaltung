@@ -5,26 +5,7 @@ import (
 	"github.com/chasefleming/elem-go/attrs"
 )
 
-func RenderIndex() string {
-	// Hero Section
-	heroSection := elem.Section(
-		attrs.Props{
-			attrs.Class: "hero is-info is-fullheight",
-		},
-		elem.Div(
-			attrs.Props{
-				attrs.Class: "hero-body has-text-centered",
-			},
-			elem.Div(attrs.Props{
-				attrs.Class: "container",
-			},
-				elem.H1(attrs.Props{attrs.Class: "title"}, elem.Text("Willkommen bei der Notenverwaltung")),
-				elem.H2(attrs.Props{attrs.Class: "subtitle"}, elem.Text("Diese WebApp ermöglicht die interaktive Verwaltung von Klassen, Noten und Schülern.")),
-			),
-		),
-	)
-
-	// HTML Dokument
+func RenderIndex(loggedIn bool) string {
 	doc := elem.Html(nil,
 		elem.Head(nil,
 			elem.Meta(attrs.Props{
@@ -55,7 +36,7 @@ func RenderIndex() string {
 			),
 		),
 		elem.Body(nil,
-			GetNavbar(),
+			GetNavbar(loggedIn),
 			elem.Main(
 				attrs.Props{
 					attrs.Class: "main",
@@ -64,7 +45,7 @@ func RenderIndex() string {
 					attrs.Props{
 						attrs.ID: "content-div",
 					},
-					heroSection,
+					HeroIndex(),
 				),
 			),
 			GetFooter(),

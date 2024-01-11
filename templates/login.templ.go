@@ -41,8 +41,8 @@ func GetLogin() elem.Node {
 									},
 									elem.Form(
 										attrs.Props{
-											htmx.HXPost:    "/authenticate",
-											htmx.HXTrigger: "onClick",
+											attrs.Method: "post",
+											attrs.Action: "/authenticate",
 										},
 										elem.Div(
 											attrs.Props{
@@ -80,9 +80,13 @@ func GetLogin() elem.Node {
 										),
 										elem.Button(
 											attrs.Props{
-												attrs.Class: "button is-block is-info is-fullwidth is-medium",
+												attrs.Type:     "submit",
+												attrs.Class:    "button is-block is-info is-fullwidth is-medium",
+												attrs.Value:    "Anmelden",
+												htmx.HXPost:    "/authenticate",
+												htmx.HXTrigger: "onClick",
 											},
-											elem.Text("anmelden"),
+											elem.Text("Anmelden"),
 										),
 									),
 								),

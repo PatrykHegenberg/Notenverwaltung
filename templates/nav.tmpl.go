@@ -1,12 +1,90 @@
 package templates
 
 import (
+	"fmt"
+
 	"github.com/chasefleming/elem-go"
 	"github.com/chasefleming/elem-go/attrs"
 	"github.com/chasefleming/elem-go/htmx"
 )
 
-func GetNavbar() elem.Node {
+func GetNavbar(loggedIn bool) elem.Node {
+	fmt.Println(loggedIn)
+	notLogged := elem.Div(
+		attrs.Props{
+			attrs.Class: "buttons",
+		},
+		elem.A(
+			attrs.Props{
+				attrs.Class:   "button is-info",
+				htmx.HXGet:    "/register",
+				htmx.HXTarget: "#content-div",
+				htmx.HXSwap:   "innerHtml",
+			},
+			elem.Strong(nil, elem.Text("Registrieren")),
+		),
+		elem.A(
+			attrs.Props{
+				attrs.Class:   "button",
+				htmx.HXGet:    "/login",
+				htmx.HXTarget: "#content-div",
+				htmx.HXSwap:   "innerHTML",
+			},
+			elem.Text("Anmelden"),
+		),
+	)
+	logged := elem.Div(
+		attrs.Props{
+			attrs.Class: "buttons",
+		},
+		elem.A(
+			attrs.Props{
+				attrs.Class:   "button",
+				htmx.HXGet:    "/logout",
+				htmx.HXTarget: "#content-div",
+				htmx.HXSwap:   "innerHTML",
+			},
+			elem.Text("Abmelden"),
+		),
+	)
+	itemsNotLogged := elem.Div(
+		attrs.Props{
+			attrs.Class: "navbar-start",
+		},
+		elem.A(attrs.Props{
+			attrs.Class: "navbar-item",
+		},
+			elem.Text("Home")),
+		elem.A(attrs.Props{
+			attrs.Class: "navbar-item",
+		},
+			elem.Text("Dokumentation")),
+	)
+	itemsLogged := elem.Div(
+		attrs.Props{
+			attrs.Class: "navbar-start",
+		},
+		elem.A(attrs.Props{
+			attrs.Class: "navbar-item",
+		},
+			elem.Text("Home")),
+		elem.A(attrs.Props{
+			attrs.Class: "navbar-item",
+		},
+			elem.Text("Dokumentation")),
+		elem.A(attrs.Props{
+			attrs.Class: "navbar-item",
+		},
+			elem.Text("Meine Klassen")),
+		elem.A(attrs.Props{
+			attrs.Class: "navbar-item",
+		},
+			elem.Text("Meine Schule")),
+		elem.A(attrs.Props{
+			attrs.Class: "navbar-item",
+		},
+			elem.Text("Profil")),
+	)
 	navBar := elem.Nav(
 		attrs.Props{
 			attrs.Class:     "navbar",
@@ -58,31 +136,7 @@ func GetNavbar() elem.Node {
 				attrs.ID:    "navbarBasicExample",
 				attrs.Class: "navbar-menu",
 			},
-			elem.Div(
-				attrs.Props{
-					attrs.Class: "navbar-start",
-				},
-				elem.A(attrs.Props{
-					attrs.Class: "navbar-item",
-				},
-					elem.Text("Home")),
-				elem.A(attrs.Props{
-					attrs.Class: "navbar-item",
-				},
-					elem.Text("Dokumentation")),
-				elem.A(attrs.Props{
-					attrs.Class: "navbar-item",
-				},
-					elem.Text("Meine Klassen")),
-				elem.A(attrs.Props{
-					attrs.Class: "navbar-item",
-				},
-					elem.Text("Meine Schule")),
-				elem.A(attrs.Props{
-					attrs.Class: "navbar-item",
-				},
-					elem.Text("Profil")),
-			),
+			elem.If(loggedIn, itemsLogged, itemsNotLogged),
 			elem.Div(
 				attrs.Props{
 					attrs.Class: "navbar-end",
@@ -91,38 +145,7 @@ func GetNavbar() elem.Node {
 					attrs.Props{
 						attrs.Class: "navbar-item",
 					},
-					elem.Div(
-						attrs.Props{
-							attrs.Class: "buttons",
-						},
-						elem.A(
-							attrs.Props{
-								attrs.Class:   "button is-info",
-								htmx.HXGet:    "/register",
-								htmx.HXTarget: "#content-div",
-								htmx.HXSwap:   "innerHtml",
-							},
-							elem.Strong(nil, elem.Text("Registrieren")),
-						),
-						elem.A(
-							attrs.Props{
-								attrs.Class:   "button",
-								htmx.HXGet:    "/login",
-								htmx.HXTarget: "#content-div",
-								htmx.HXSwap:   "innerHTML",
-							},
-							elem.Text("Anmelden"),
-						),
-						elem.A(
-							attrs.Props{
-								attrs.Class:   "button",
-								htmx.HXGet:    "/logout",
-								htmx.HXTarget: "#content-div",
-								htmx.HXSwap:   "innerHTML",
-							},
-							elem.Text("Abmelden"),
-						),
-					),
+					elem.If(loggedIn, logged, notLogged),
 				),
 			),
 		),
