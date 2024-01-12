@@ -20,6 +20,7 @@ func main() {
 	e.GET("/", routes.GetIndexHandler)
 	e.GET("/register", routes.GetRegisterHandler)
 	e.GET("/login", routes.GetLoginHandler)
+	e.GET("/dashboard", routes.GetDashboardHandler)
 	e.GET("/logout", routes.LogoutHXUserHandler)
 	e.POST("/authenticate", routes.AuthenticateHXUserHandler)
 

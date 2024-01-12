@@ -150,3 +150,26 @@ func GetUserByName(username string) (*model.User, error) {
 	}
 	return &user, nil
 }
+
+func GetRoleById(id uint) (*model.Role, error) {
+	var role model.Role
+	if err := GetDBInstance().Where("id = ?", id).First(&role).Error; err != nil {
+		return nil, err
+	}
+	return &role, nil
+}
+
+func GetSchoolById(id uint) (*model.School, error) {
+	var role model.School
+	if err := GetDBInstance().Where("id = ?", id).First(&role).Error; err != nil {
+		return nil, err
+	}
+	return &role, nil
+}
+func GetAllUsers() ([]model.User, error) {
+	var users []model.User
+	if err := GetDBInstance().Preload("Role").Preload("School").Find(&users).Error; err != nil {
+		return nil, err
+	}
+	return users, nil
+}

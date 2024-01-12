@@ -53,6 +53,29 @@ func CreateUserHandler(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Fehler beim Erstellen des Users"})
 	}
 
+	switch user.RoleID {
+	case 2:
+		var teacher = model.Teacher{
+			Nachname: user.Username,
+			Vorname:  "",
+			UserID:   user.ID,
+			User:     user,
+		}
+		if err := db.Create(&teacher).Error; err != nil {
+			return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Fehler beim Erstellen des Teachers"})
+		}
+	case 3:
+		var student = model.Student{
+			Nachname: user.Username,
+			Vorname:  "",
+			UserID:   user.ID,
+			User:     user,
+		}
+		if err := db.Create(&student).Error; err != nil {
+			return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Fehler beim Erstellen des Student"})
+		}
+
+	}
 	return c.JSON(http.StatusCreated, user)
 }
 
@@ -90,6 +113,29 @@ func CreateHXUserHandler(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Fehler beim Erstellen des Users"})
 	}
 
+	switch user.RoleID {
+	case 2:
+		var teacher = model.Teacher{
+			Nachname: user.Username,
+			Vorname:  "",
+			UserID:   user.ID,
+			User:     user,
+		}
+		if err := db.Create(&teacher).Error; err != nil {
+			return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Fehler beim Erstellen des Teachers"})
+		}
+	case 3:
+		var student = model.Student{
+			Nachname: user.Username,
+			Vorname:  "",
+			UserID:   user.ID,
+			User:     user,
+		}
+		if err := db.Create(&student).Error; err != nil {
+			return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Fehler beim Erstellen des Student"})
+		}
+
+	}
 	return c.Redirect(http.StatusCreated, "/")
 }
 
@@ -154,6 +200,7 @@ func AuthenticateHXUserHandler(c echo.Context) error {
 			MaxAge: 86400 * 7,
 		}
 		sess.Values["authenticated"] = true
+		sess.Values["username"] = user.Username
 		sess.Save(c.Request(), c.Response())
 	}
 	return c.Redirect(http.StatusSeeOther, "/") // Ändere "/dashboard" zu der gewünschten Zielseite
@@ -166,6 +213,7 @@ func LogoutHXUserHandler(c echo.Context) error {
 		MaxAge: 86400 * -1,
 	}
 	sess.Values["authenticated"] = false
+	sess.Values["username"] = ""
 	sess.Save(c.Request(), c.Response())
 	return c.Redirect(http.StatusSeeOther, "/") // Ändere "/dashboard" zu der gewünschten Zielseite
 }

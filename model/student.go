@@ -12,7 +12,7 @@ type Student struct {
 	GebDatum  string `gorm:"not null" json:"geb_datum"`
 	CreatedAt string `gorm:"not null" json:"created_at"`
 	ClassID   int    `gorm:"index" json:"class_id"`
-	UserID    int    `gorm:"index" json:"user_id"`
+	UserID    uint   `gorm:"index" json:"user_id"`
 	Class     Class  `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" json:"class"`
 	User      User   `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" json:"user"`
 }
