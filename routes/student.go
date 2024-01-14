@@ -1,7 +1,6 @@
 package routes
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -15,7 +14,7 @@ func GetStudentsHandler(c echo.Context) error {
 	db := DB.GetDBInstance() // Funktion zum Abrufen der Datenbankinstanz
 
 	var students []model.Student
-	if err := db.Find(&students).Error; err != nil {
+	if err := db.Preload("Address").Find(&students).Error; err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Fehler beim Abrufen der Studenten"})
 	}
 
@@ -32,11 +31,10 @@ func GetStudentHandler(c echo.Context) error {
 	}
 
 	var student model.Student
-	if err := db.Find(&student, id).Error; err != nil {
+	if err := db.Preload("Address").Find(&student, id).Error; err != nil {
 		return c.JSON(http.StatusNotFound, map[string]string{"error": "Student nicht gefunden"})
 	}
 
-	fmt.Println(student)
 	return c.JSON(http.StatusOK, student)
 }
 

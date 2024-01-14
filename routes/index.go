@@ -11,8 +11,8 @@ import (
 func GetIndexHandler(c echo.Context) error {
 	sess, _ := session.Get("authenticate-session", c)
 	if auth, ok := sess.Values["authenticated"].(bool); !ok || !auth {
-		return c.HTML(http.StatusOK, templates.RenderIndex(false))
+		return c.HTML(http.StatusOK, templates.RenderIndex(false, c))
 	} else {
-		return c.HTML(http.StatusOK, templates.RenderIndex(true))
+		return c.HTML(http.StatusOK, templates.RenderIndex(true, c))
 	}
 }

@@ -20,10 +20,6 @@ func GetDashboardHandler(c echo.Context) error {
 		if err != nil {
 			log.Error("Fehler")
 		}
-		role, err := DB.GetRoleById(user.RoleID)
-		if err != nil {
-			log.Error("Fehler")
-		}
 		school, err := DB.GetSchoolById(user.SchoolID)
 		if err != nil {
 			log.Error("Fehler")
@@ -32,6 +28,8 @@ func GetDashboardHandler(c echo.Context) error {
 		if err != nil {
 			log.Error(err)
 		}
-		return c.HTML(http.StatusOK, templates.GetDashboard(*user, *role, *school, users).Render())
+		dashboardHTML := templates.GetDashboard(*user, *school, users).Render()
+		log.Print(dashboardHTML)
+		return c.HTML(http.StatusOK, dashboardHTML)
 	}
 }

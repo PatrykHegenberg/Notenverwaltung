@@ -29,26 +29,38 @@ func main() {
 	apiGroup.Use(middleware.BasicAuth(func(username, password string, c echo.Context) (bool, error) {
 		return checkCredentials(username, password), nil
 	}))
-	studentGroup := apiGroup.Group("/student")
+	studentGroup := apiGroup.Group("/students")
 	configureStudentRoutes(studentGroup)
 
 	userGroup := apiGroup.Group("/users")
 	configureUserRoutes(userGroup)
 
-	roleGroup := apiGroup.Group("/roles")
-	configureRoleRoutes(roleGroup)
-
 	examGroup := apiGroup.Group("/exams")
 	configureExamRoutes(examGroup)
 
-	classGroup := apiGroup.Group("/class")
+	classGroup := apiGroup.Group("/classes")
 	configureClassRoutes(classGroup)
-
-	teacherGroup := apiGroup.Group("/teachers")
-	configureTeacherRoutes(teacherGroup)
 
 	scoreGroup := apiGroup.Group("/scores")
 	configureScoreRoutes(scoreGroup)
+
+	addressesGroup := apiGroup.Group("/addresses")
+	configureAddressRoutes(addressesGroup)
+
+	gradesGroup := apiGroup.Group("/grades")
+	configureGradeRoutes(gradesGroup)
+
+	examTypeGroup := apiGroup.Group("/examTypes")
+	configureExamTypeRoutes(examTypeGroup)
+
+	schoolGroup := apiGroup.Group("/schools")
+	configureSchoolRoutes(schoolGroup)
+
+	subjectGroup := apiGroup.Group("/subjects")
+	configureSubjectRoutes(subjectGroup)
+
+	subjectUserClassExamGroup := apiGroup.Group("/suce")
+	configureSubjectUserClassEexamRoutes(subjectUserClassExamGroup)
 
 	e.Logger.Fatal(e.Start(":1323"))
 }
@@ -69,14 +81,6 @@ func configureUserRoutes(g *echo.Group) {
 	g.DELETE("/:id", routes.DeleteUserHandler)
 }
 
-func configureRoleRoutes(g *echo.Group) {
-	g.GET("", routes.GetRolesHandler)
-	g.GET("/:id", routes.GetRoleHandler)
-	g.POST("", routes.CreateRoleHandler)
-	g.PUT("/:id", routes.UpdateRoleHandler)
-	g.DELETE("/:id", routes.DeleteRoleHandler)
-}
-
 func configureExamRoutes(g *echo.Group) {
 	g.GET("", routes.GetExamsHandler)
 	g.GET("/:id", routes.GetExamHandler)
@@ -93,20 +97,60 @@ func configureClassRoutes(g *echo.Group) {
 	g.DELETE("/:id", routes.DeleteClassHandler)
 }
 
-func configureTeacherRoutes(g *echo.Group) {
-	g.GET("", routes.GetTeachersHandler)
-	g.GET("/:id", routes.GetTeacherHandler)
-	g.POST("", routes.CreateTeacherHandler)
-	g.PUT("/:id", routes.UpdateTeacherHandler)
-	g.DELETE("/:id", routes.DeleteTeacherHandler)
-}
-
 func configureScoreRoutes(g *echo.Group) {
 	g.GET("", routes.GetScoresHandler)
 	g.GET("/:id", routes.GetScoreHandler)
 	g.POST("", routes.CreateScoreHandler)
 	g.PUT("/:id", routes.UpdateScoreHandler)
 	g.DELETE("/:id", routes.DeleteScoreHandler)
+}
+
+func configureAddressRoutes(g *echo.Group) {
+	g.GET("", routes.GetAddressesHandler)
+	g.GET("/:id", routes.GetAddressHandler)
+	g.POST("", routes.CreateAddressHandler)
+	g.PUT("/:id", routes.UpdateAddressHandler)
+	g.DELETE("/:id", routes.DeleteAddressHandler)
+}
+
+func configureGradeRoutes(g *echo.Group) {
+	g.GET("", routes.GetGradesHandler)
+	g.GET("/:id", routes.GetGradeHandler)
+	g.POST("", routes.CreateGradeHandler)
+	g.PUT("/:id", routes.UpdateGradeHandler)
+	g.DELETE("/:id", routes.DeleteGradeHandler)
+}
+
+func configureExamTypeRoutes(g *echo.Group) {
+	g.GET("", routes.GetExamTypesHandler)
+	g.GET("/:id", routes.GetExamTypeHandler)
+	g.POST("", routes.CreateExamTypeHandler)
+	g.PUT("/:id", routes.UpdateExamTypeHandler)
+	g.DELETE("/:id", routes.DeleteExamTypeHandler)
+}
+
+func configureSchoolRoutes(g *echo.Group) {
+	g.GET("", routes.GetSchoolsHandler)
+	g.GET("/:id", routes.GetSchoolHandler)
+	g.POST("", routes.CreateSchoolHandler)
+	g.PUT("/:id", routes.UpdateSchoolHandler)
+	g.DELETE("/:id", routes.DeleteSchoolHandler)
+}
+
+func configureSubjectRoutes(g *echo.Group) {
+	g.GET("", routes.GetSubjectsHandler)
+	g.GET("/:id", routes.GetSubjectHandler)
+	g.POST("", routes.CreateSubjectHandler)
+	g.PUT("/:id", routes.UpdateSubjectHandler)
+	g.DELETE("/:id", routes.DeleteSubjectHandler)
+}
+
+func configureSubjectUserClassEexamRoutes(g *echo.Group) {
+	g.GET("", routes.GetSubjectUserClassExamsHandler)
+	g.GET("/:id", routes.GetSubjectUserClassExamHandler)
+	g.POST("", routes.CreateSubjectUserClassExamHandler)
+	g.PUT("/:id", routes.UpdateSubjectUserClassExamHandler)
+	g.DELETE("/:id", routes.DeleteSubjectUserClassExamHandler)
 }
 
 func checkCredentials(username, password string) bool {

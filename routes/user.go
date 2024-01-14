@@ -16,7 +16,7 @@ func GetUsersHandler(c echo.Context) error {
 	db := DB.GetDBInstance() // Funktion zum Abrufen der Datenbankinstanz
 
 	var users []model.User
-	if err := db.Preload("Role").Preload("School").Find(&users).Error; err != nil {
+	if err := db.Preload("Address").Find(&users).Error; err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Fehler beim Abrufen der Users"})
 	}
 
@@ -33,7 +33,7 @@ func GetUserHandler(c echo.Context) error {
 	}
 
 	var user model.User
-	if err := db.Preload("Role").Preload("School").First(&user, id).Error; err != nil {
+	if err := db.Preload("Address").First(&user, id).Error; err != nil {
 		return c.JSON(http.StatusNotFound, map[string]string{"error": "User nicht gefunden"})
 	}
 
@@ -53,29 +53,6 @@ func CreateUserHandler(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Fehler beim Erstellen des Users"})
 	}
 
-	switch user.RoleID {
-	case 2:
-		var teacher = model.Teacher{
-			Nachname: user.Username,
-			Vorname:  "",
-			UserID:   user.ID,
-			User:     user,
-		}
-		if err := db.Create(&teacher).Error; err != nil {
-			return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Fehler beim Erstellen des Teachers"})
-		}
-	case 3:
-		var student = model.Student{
-			Nachname: user.Username,
-			Vorname:  "",
-			UserID:   user.ID,
-			User:     user,
-		}
-		if err := db.Create(&student).Error; err != nil {
-			return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Fehler beim Erstellen des Student"})
-		}
-
-	}
 	return c.JSON(http.StatusCreated, user)
 }
 
@@ -84,13 +61,8 @@ func CreateHXUserHandler(c echo.Context) error {
 	username := c.FormValue("username")
 	email := c.FormValue("email")
 	password := c.FormValue("password")
-	role := c.FormValue("role")
 	school := c.FormValue("school")
 	db := DB.GetDBInstance()
-	roleID, err := DB.GetRoleIDByName(role)
-	if err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Role nicht gefunden"})
-	}
 
 	schoolID, err := DB.GetSchoolIDByName(school)
 	if err != nil {
@@ -101,7 +73,6 @@ func CreateHXUserHandler(c echo.Context) error {
 		Username: username,
 		Email:    email,
 		Password: password,
-		RoleID:   roleID,
 		SchoolID: schoolID,
 	}
 
@@ -113,29 +84,6 @@ func CreateHXUserHandler(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Fehler beim Erstellen des Users"})
 	}
 
-	switch user.RoleID {
-	case 2:
-		var teacher = model.Teacher{
-			Nachname: user.Username,
-			Vorname:  "",
-			UserID:   user.ID,
-			User:     user,
-		}
-		if err := db.Create(&teacher).Error; err != nil {
-			return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Fehler beim Erstellen des Teachers"})
-		}
-	case 3:
-		var student = model.Student{
-			Nachname: user.Username,
-			Vorname:  "",
-			UserID:   user.ID,
-			User:     user,
-		}
-		if err := db.Create(&student).Error; err != nil {
-			return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Fehler beim Erstellen des Student"})
-		}
-
-	}
 	return c.Redirect(http.StatusCreated, "/")
 }
 
@@ -203,7 +151,7 @@ func AuthenticateHXUserHandler(c echo.Context) error {
 		sess.Values["username"] = user.Username
 		sess.Save(c.Request(), c.Response())
 	}
-	return c.Redirect(http.StatusSeeOther, "/") // Ändere "/dashboard" zu der gewünschten Zielseite
+	return c.Redirect(http.StatusSeeOther, "/")
 }
 
 func LogoutHXUserHandler(c echo.Context) error {
@@ -215,5 +163,5 @@ func LogoutHXUserHandler(c echo.Context) error {
 	sess.Values["authenticated"] = false
 	sess.Values["username"] = ""
 	sess.Save(c.Request(), c.Response())
-	return c.Redirect(http.StatusSeeOther, "/") // Ändere "/dashboard" zu der gewünschten Zielseite
+	return c.Redirect(http.StatusSeeOther, "/")
 }

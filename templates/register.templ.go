@@ -11,31 +11,15 @@ import (
 
 func GetRegister() elem.Node {
 	var (
-		roles   []model.Role
 		schools []model.School
 	)
 
 	db := DB.GetDBInstance()
 
-	if err := db.Find(&roles).Error; err != nil {
-		log.Errorf("error getting roles from db")
-	}
-
 	if err := db.Find(&schools).Error; err != nil {
 		log.Errorf("error getting schools from db")
 	}
 
-	roleOptions := elem.TransformEach(roles, func(role model.Role) elem.Node {
-		return elem.Option(nil, elem.Text(role.Name))
-	})
-
-	roleSelect := elem.Select(
-		attrs.Props{
-			attrs.Class:       "is-1",
-			attrs.Name:        "role",
-			attrs.ID:          "role",
-			attrs.Placeholder: "Wählen Sie ihre Rolle.",
-		}, roleOptions...)
 	schoolOptions := elem.TransformEach(schools, func(school model.School) elem.Node {
 		return elem.Option(nil, elem.Text(school.Name))
 	})
@@ -114,11 +98,6 @@ func GetRegister() elem.Node {
 								),
 								elem.Div(attrs.Props{attrs.Class: "field"},
 									elem.Div(attrs.Props{attrs.Class: "control"},
-										elem.Div(attrs.Props{attrs.Class: "select"}, roleSelect),
-									),
-								),
-								elem.Div(attrs.Props{attrs.Class: "field"},
-									elem.Div(attrs.Props{attrs.Class: "control"},
 										elem.Div(attrs.Props{attrs.Class: "select"}, schoolSelect),
 									),
 								),
@@ -132,6 +111,7 @@ func GetRegister() elem.Node {
 			),
 		),
 	)
+	log.Print(register)
 	return register
 }
 

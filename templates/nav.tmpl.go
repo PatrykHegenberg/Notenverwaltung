@@ -33,8 +33,7 @@ func GetNavbar(loggedIn bool) elem.Node {
 		}, elem.Text("Abmelden")))
 
 	itemsNotLogged := elem.Div(attrs.Props{attrs.Class: "navbar-start"},
-		elem.A(attrs.Props{attrs.Class: "navbar-item"}, elem.Text("Home")),
-		elem.A(attrs.Props{attrs.Class: "navbar-item", attrs.Href: "/"}, elem.Text("Dokumentation")))
+		elem.A(attrs.Props{attrs.Class: "navbar-item"}, elem.Text("Home")))
 	itemsLogged := elem.Div(attrs.Props{attrs.Class: "navbar-start"},
 		elem.A(attrs.Props{attrs.Class: "navbar-item", attrs.Href: "/"}, elem.Text("Home")),
 		elem.A(attrs.Props{attrs.Class: "navbar-item"}, elem.Text("Dokumentation")),

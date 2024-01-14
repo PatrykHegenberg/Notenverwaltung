@@ -14,7 +14,7 @@ func GetClasssHandler(c echo.Context) error {
 	db := DB.GetDBInstance() // Funktion zum Abrufen der Datenbankinstanz
 
 	var class []model.Class
-	if err := db.Find(&class).Error; err != nil {
+	if err := db.Model(&model.Class{}).Preload("Students").Find(&class).Error; err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Fehler beim Abrufen der Classs"})
 	}
 
@@ -31,7 +31,7 @@ func GetClassHandler(c echo.Context) error {
 	}
 
 	var class model.Class
-	if err := db.First(&class, id).Error; err != nil {
+	if err := db.Model(&model.Class{}).Preload("Students").First(&class, id).Error; err != nil {
 		return c.JSON(http.StatusNotFound, map[string]string{"error": "Class nicht gefunden"})
 	}
 

@@ -2,7 +2,6 @@ package database
 
 import (
 	"log"
-	"time"
 
 	"github.com/PatrykHegenberg/Notenverwaltung/model"
 	"gorm.io/driver/sqlite"
@@ -15,44 +14,56 @@ func AutoMigrate() {
 		panic("failed to connect database")
 	}
 	db.AutoMigrate(
+		&model.Address{},
 		&model.Class{},
 		&model.ExamType{},
 		&model.Exam{},
-		&model.ExamScoreStudent{},
 		&model.Grade{},
-		&model.Role{},
+		&model.SchoolForm{},
 		&model.School{},
 		&model.Score{},
 		&model.User{},
 		&model.Student{},
 		&model.Subject{},
-		&model.SubjectExam{},
-		&model.SubjectTeacherClass{},
-		&model.Teacher{},
+		&model.SubjectUserClassExam{},
 	)
-	var adminRole model.Role
-	var roles []*model.Role
-	if err := db.Where("name = ?", "Admin").First(&adminRole).Error; err != nil {
-		roles = []*model.Role{
+	var testAddress model.Address
+	if err := db.Where("street = ?", "Musterstrasse").First(&testAddress).Error; err != nil {
+		testAddress = model.Address{
+			Street: "Musterstrasse",
+			Postal: "12345",
+			City:   "Musterhausen",
+			Number: "1a",
+		}
+		db.Create(&testAddress)
+	}
+	var testForm model.SchoolForm
+	if err := db.Where("name = ?", "Grundschule").First(&testForm).Error; err != nil {
+		schoolForms := []*model.SchoolForm{
 			{
-				Name: "Admin",
+				Name: "Grundschule",
 			},
 			{
-				Name: "Lehrer",
+				Name: "Hauptschule",
 			},
 			{
-				Name: "Schueler",
+				Name: "Realschule",
+			},
+			{
+				Name: "Gymnasion",
+			},
+			{
+				Name: "Gesatmschule",
 			},
 		}
-		db.Create(&roles)
-		log.Println("Admin Rolle wurde angelegt.")
-	} else {
-		log.Println("Admin Rolle bereits vorhande.")
+		db.Create(schoolForms)
 	}
 	var testSchool model.School
 	if err := db.Where("name = ?", "TestSchule").First(&testSchool).Error; err != nil {
 		testSchool = model.School{
-			Name: "TestSchule",
+			Name:         "TestSchule",
+			SchoolFormID: 1,
+			Address:      model.Address{},
 		}
 		db.Create(&testSchool)
 		log.Println("Schule 'TestSchule' wurde erstellt.")
@@ -63,12 +74,14 @@ func AutoMigrate() {
 	if err := db.Where("username = ?", "test_admin").First(&adminUser).Error; err != nil {
 		// Fehler bedeutet, dass der Benutzer nicht gefunden wurde, also erstellen wir ihn
 		adminUser = model.User{
-			Email:     "test_admin@example.com",
-			Username:  "test_admin",
-			Password:  "Password",
-			CreatedAt: time.Now().String(),
-			RoleID:    1,
-			SchoolID:  1,
+			Email:    "test_admin@example.com",
+			Username: "test_admin",
+			Password: "Password",
+			Vorname:  "Max",
+			Nachname: "Mustermann",
+			IsAdmin:  true,
+			Address:  model.Address{},
+			SchoolID: 1,
 		}
 		db.Create(&adminUser)
 		log.Println("Benutzer 'test_admin' wurde erstellt.")
@@ -94,27 +107,30 @@ func AutoMigrate() {
 	} else {
 		log.Println("ExamTypes existieren bereits")
 	}
-	var grades = []*model.Grade{
-		{
-			Name: 1,
-		},
-		{
-			Name: 2,
-		},
-		{
-			Name: 3,
-		},
-		{
-			Name: 4,
-		},
-		{
-			Name: 5,
-		},
-		{
-			Name: 6,
-		},
+	var grade model.Grade
+	if err := db.Where("name = ?", "1").First(&grade).Error; err != nil {
+		var grades = []*model.Grade{
+			{
+				Name: 1,
+			},
+			{
+				Name: 2,
+			},
+			{
+				Name: 3,
+			},
+			{
+				Name: 4,
+			},
+			{
+				Name: 5,
+			},
+			{
+				Name: 6,
+			},
+		}
+		db.Create(grades)
 	}
-	db.Create(grades)
 }
 
 // Funktion zum Abrufen der Datenbankinstanz
@@ -125,14 +141,6 @@ func GetDBInstance() *gorm.DB {
 	}
 	log.Println("Established database connection")
 	return db
-}
-
-func GetRoleIDByName(roleName string) (uint, error) {
-	var role model.Role
-	if err := GetDBInstance().Where("name = ?", roleName).First(&role).Error; err != nil {
-		return 0, err
-	}
-	return role.ID, nil
 }
 
 func GetSchoolIDByName(schoolName string) (uint, error) {
@@ -151,14 +159,6 @@ func GetUserByName(username string) (*model.User, error) {
 	return &user, nil
 }
 
-func GetRoleById(id uint) (*model.Role, error) {
-	var role model.Role
-	if err := GetDBInstance().Where("id = ?", id).First(&role).Error; err != nil {
-		return nil, err
-	}
-	return &role, nil
-}
-
 func GetSchoolById(id uint) (*model.School, error) {
 	var role model.School
 	if err := GetDBInstance().Where("id = ?", id).First(&role).Error; err != nil {
@@ -168,7 +168,7 @@ func GetSchoolById(id uint) (*model.School, error) {
 }
 func GetAllUsers() ([]model.User, error) {
 	var users []model.User
-	if err := GetDBInstance().Preload("Role").Preload("School").Find(&users).Error; err != nil {
+	if err := GetDBInstance().Preload("Address").Find(&users).Error; err != nil {
 		return nil, err
 	}
 	return users, nil
