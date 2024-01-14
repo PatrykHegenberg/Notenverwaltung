@@ -9,7 +9,10 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-// GetExamsHandler gibt alle Exam zurück
+// GetExamsHandler is a Go function that handles the retrieval of exams.
+//
+// It takes a parameter of type `echo.Context`.
+// It returns an error.
 func GetExamsHandler(c echo.Context) error {
 	db := DB.GetDBInstance() // Funktion zum Abrufen der Datenbankinstanz
 
@@ -21,7 +24,10 @@ func GetExamsHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, exam)
 }
 
-// GetExamHandler gibt einen bestimmten Exam anhand der ID zurück
+// GetExamHandler is a function that handles the GET request for retrieving an exam.
+//
+// It takes a parameter of type echo.Context, which represents the HTTP request and response context.
+// The function returns an error.
 func GetExamHandler(c echo.Context) error {
 	db := DB.GetDBInstance()
 
@@ -38,7 +44,9 @@ func GetExamHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, exam)
 }
 
-// CreateExamHandler erstellt einen neuen Exams
+// CreateExamHandler handles the creation of an exam.
+//
+// It takes a context object as a parameter and returns an error.
 func CreateExamHandler(c echo.Context) error {
 	db := DB.GetDBInstance()
 
@@ -54,7 +62,10 @@ func CreateExamHandler(c echo.Context) error {
 	return c.JSON(http.StatusCreated, exam)
 }
 
-// UpdateExamHandler aktualisiert einen vorhandenen Exam
+// UpdateExamHandler handles the update of an exam.
+//
+// The function takes a `c` parameter of type `echo.Context` which represents the HTTP request and response context.
+// The function returns an error.
 func UpdateExamHandler(c echo.Context) error {
 	db := DB.GetDBInstance()
 
@@ -79,7 +90,10 @@ func UpdateExamHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, existingExam)
 }
 
-// DeleteExamHandler löscht einen Exam anhand der ID
+// DeleteExamHandler is a function that handles the deletion of an exam.
+//
+// It takes in a parameter of type echo.Context, which represents the context of the HTTP request.
+// The function returns an error.
 func DeleteExamHandler(c echo.Context) error {
 	db := DB.GetDBInstance()
 

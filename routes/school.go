@@ -10,7 +10,10 @@ import (
 	"gorm.io/gorm/clause"
 )
 
-// GetSchoolsHandler gibt alle Schoolen zurück
+// GetSchoolsHandler handles the request to get the schools.
+//
+// c: the echo context object.
+// Returns an error if there was a problem with the request.
 func GetSchoolsHandler(c echo.Context) error {
 	db := DB.GetDBInstance() // Funktion zum Abrufen der Datenbankinstanz
 
@@ -23,7 +26,10 @@ func GetSchoolsHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, schools)
 }
 
-// GetSchoolHandler gibt einen bestimmten Schoolen anhand der ID zurück
+// GetSchoolHandler is a function that handles the request to get a school.
+//
+// It takes a `c` parameter of type `echo.Context`, which represents the HTTP request context.
+// It returns an error.
 func GetSchoolHandler(c echo.Context) error {
 	db := DB.GetDBInstance()
 
@@ -40,7 +46,10 @@ func GetSchoolHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, school)
 }
 
-// CreateSchoolHandler erstellt einen neuen Schoolen
+// CreateSchoolHandler handles the creation of a school.
+//
+// It takes a `c` parameter of type `echo.Context` which represents the HTTP request context.
+// It returns an error.
 func CreateSchoolHandler(c echo.Context) error {
 	db := DB.GetDBInstance()
 
@@ -56,7 +65,10 @@ func CreateSchoolHandler(c echo.Context) error {
 	return c.JSON(http.StatusCreated, school)
 }
 
-// UpdateSchoolHandler aktualisiert einen vorhandenen Schoolen
+// UpdateSchoolHandler is a function that handles the update of a school in the API.
+//
+// It takes a context object as a parameter.
+// It returns an error.
 func UpdateSchoolHandler(c echo.Context) error {
 	db := DB.GetDBInstance()
 
@@ -81,7 +93,10 @@ func UpdateSchoolHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, existingSchool)
 }
 
-// DeleteSchoolHandler löscht einen Schoolen anhand der ID
+// DeleteSchoolHandler is a function that handles the deletion of a school.
+//
+// It takes a parameter of type echo.Context, which represents the HTTP request and response context.
+// It returns an error type.
 func DeleteSchoolHandler(c echo.Context) error {
 	db := DB.GetDBInstance()
 

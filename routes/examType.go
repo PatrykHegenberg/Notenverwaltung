@@ -9,7 +9,10 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-// GetExamTypesHandler gibt alle ExamTypeen zurück
+// GetExamTypesHandler is a function that handles the request to retrieve exam types.
+//
+// It takes in a parameter of type echo.Context.
+// It returns an error.
 func GetExamTypesHandler(c echo.Context) error {
 	db := DB.GetDBInstance() // Funktion zum Abrufen der Datenbankinstanz
 
@@ -21,7 +24,10 @@ func GetExamTypesHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, examTypes)
 }
 
-// GetExamTypeHandler gibt einen bestimmten ExamTypeen anhand der ID zurück
+// GetExamTypeHandler is a function that handles the API endpoint for retrieving an ExamType.
+//
+// It takes a parameter `c` of type `echo.Context`.
+// It returns an error.
 func GetExamTypeHandler(c echo.Context) error {
 	db := DB.GetDBInstance()
 
@@ -38,7 +44,13 @@ func GetExamTypeHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, examType)
 }
 
-// CreateExamTypeHandler erstellt einen neuen ExamTypeen
+// CreateExamTypeHandler is responsible for handling the creation of an ExamType.
+//
+// Parameters:
+// - c: echo.Context - the context object for the HTTP request.
+//
+// Returns:
+// - error: the error that occurred during the execution of the function.
 func CreateExamTypeHandler(c echo.Context) error {
 	db := DB.GetDBInstance()
 
@@ -54,7 +66,10 @@ func CreateExamTypeHandler(c echo.Context) error {
 	return c.JSON(http.StatusCreated, examType)
 }
 
-// UpdateExamTypeHandler aktualisiert einen vorhandenen ExamTypeen
+// UpdateExamTypeHandler is a function that handles the update of an ExamType in the database.
+//
+// It takes in a parameter `c` of type `echo.Context` which represents the current HTTP context.
+// It returns an error.
 func UpdateExamTypeHandler(c echo.Context) error {
 	db := DB.GetDBInstance()
 
@@ -79,7 +94,10 @@ func UpdateExamTypeHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, existingExamType)
 }
 
-// DeleteExamTypeHandler löscht einen ExamTypeen anhand der ID
+// DeleteExamTypeHandler is a function that handles the deletion of an ExamType.
+//
+// It takes a parameter of type `echo.Context` which represents the HTTP request context.
+// It returns an error.
 func DeleteExamTypeHandler(c echo.Context) error {
 	db := DB.GetDBInstance()
 

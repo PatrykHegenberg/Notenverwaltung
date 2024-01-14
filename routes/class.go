@@ -9,7 +9,10 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-// GetClasssHandler gibt alle Class zurück
+// GetClasssHandler is a function that handles the retrieval of class data.
+//
+// It takes an echo.Context as a parameter.
+// It returns an error.
 func GetClasssHandler(c echo.Context) error {
 	db := DB.GetDBInstance() // Funktion zum Abrufen der Datenbankinstanz
 
@@ -21,7 +24,11 @@ func GetClasssHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, class)
 }
 
-// GetClassHandler gibt einen bestimmten Class anhand der ID zurück
+// GetClassHandler is a function that handles the retrieval of a class.
+//
+// It takes a parameter `c` of type `echo.Context` which represents the context
+// of the HTTP request.
+// It returns an error.
 func GetClassHandler(c echo.Context) error {
 	db := DB.GetDBInstance()
 
@@ -38,7 +45,10 @@ func GetClassHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, class)
 }
 
-// CreateClassHandler erstellt einen neuen Classs
+// CreateClassHandler handles the creation of a class.
+//
+// It takes a `c` parameter of type `echo.Context` which represents the Echo context.
+// It returns an error.
 func CreateClassHandler(c echo.Context) error {
 	db := DB.GetDBInstance()
 
@@ -54,7 +64,10 @@ func CreateClassHandler(c echo.Context) error {
 	return c.JSON(http.StatusCreated, class)
 }
 
-// UpdateClassHandler aktualisiert einen vorhandenen Class
+// UpdateClassHandler updates a class in the database.
+//
+// c: The echo context.
+// Returns an error if any.
 func UpdateClassHandler(c echo.Context) error {
 	db := DB.GetDBInstance()
 
@@ -79,7 +92,10 @@ func UpdateClassHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, existingClass)
 }
 
-// DeleteClassHandler löscht einen Class anhand der ID
+// DeleteClassHandler is a function that handles the deletion of a class.
+//
+// It takes a `c` parameter of type `echo.Context` that represents the current HTTP request context.
+// The function returns an error type.
 func DeleteClassHandler(c echo.Context) error {
 	db := DB.GetDBInstance()
 

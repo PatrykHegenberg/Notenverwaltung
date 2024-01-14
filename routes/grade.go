@@ -9,7 +9,10 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-// GetGradesHandler gibt alle Gradeen zurück
+// GetGradesHandler is a function that handles the request to get grades.
+//
+// It takes an echo.Context parameter.
+// It returns an error.
 func GetGradesHandler(c echo.Context) error {
 	db := DB.GetDBInstance() // Funktion zum Abrufen der Datenbankinstanz
 
@@ -21,7 +24,10 @@ func GetGradesHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, grades)
 }
 
-// GetGradeHandler gibt einen bestimmten Gradeen anhand der ID zurück
+// GetGradeHandler is a function that handles the request to get a grade.
+//
+// It takes in a `c` parameter of type `echo.Context` which represents the request context.
+// It returns an error.
 func GetGradeHandler(c echo.Context) error {
 	db := DB.GetDBInstance()
 
@@ -38,7 +44,9 @@ func GetGradeHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, grade)
 }
 
-// CreateGradeHandler erstellt einen neuen Gradeen
+// CreateGradeHandler handles the creation of a grade.
+//
+// It takes a parameter of type `echo.Context` and returns an error.
 func CreateGradeHandler(c echo.Context) error {
 	db := DB.GetDBInstance()
 
@@ -54,7 +62,10 @@ func CreateGradeHandler(c echo.Context) error {
 	return c.JSON(http.StatusCreated, grade)
 }
 
-// UpdateGradeHandler aktualisiert einen vorhandenen Gradeen
+// UpdateGradeHandler updates a grade in the database.
+//
+// It takes a `c` parameter of type `echo.Context`.
+// It returns an error.
 func UpdateGradeHandler(c echo.Context) error {
 	db := DB.GetDBInstance()
 
@@ -79,7 +90,9 @@ func UpdateGradeHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, existingGrade)
 }
 
-// DeleteGradeHandler löscht einen Gradeen anhand der ID
+// DeleteGradeHandler is a function that handles the deletion of a grade.
+//
+// It takes a parameter of type echo.Context and returns an error.
 func DeleteGradeHandler(c echo.Context) error {
 	db := DB.GetDBInstance()
 

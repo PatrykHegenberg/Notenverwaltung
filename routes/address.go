@@ -9,6 +9,10 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+// GetAddressesHandler is a function that handles the request to get addresses.
+//
+// It takes a parameter of type `echo.Context`.
+// It returns an error.
 func GetAddressesHandler(c echo.Context) error {
 	db := DB.GetDBInstance()
 
@@ -19,6 +23,10 @@ func GetAddressesHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, addresses)
 }
 
+// GetAddressHandler handles the request to get an address.
+//
+// It takes a `c` object of type `echo.Context` as a parameter.
+// It returns an error.
 func GetAddressHandler(c echo.Context) error {
 	db := DB.GetDBInstance()
 
@@ -35,7 +43,10 @@ func GetAddressHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, address)
 }
 
-// CreateAddressHandler erstellt einen neuen Addressen
+// CreateAddressHandler handles the creation of an address in the application.
+//
+// It takes a `c` parameter of type `echo.Context` which represents the current HTTP request context.
+// The function returns an error.
 func CreateAddressHandler(c echo.Context) error {
 	db := DB.GetDBInstance()
 
@@ -51,7 +62,10 @@ func CreateAddressHandler(c echo.Context) error {
 	return c.JSON(http.StatusCreated, address)
 }
 
-// UpdateAddressHandler aktualisiert einen vorhandenen Addressen
+// UpdateAddressHandler updates an address in the database.
+//
+// The function takes a parameter of type echo.Context, which represents the
+// context of the HTTP request. The function returns an error.
 func UpdateAddressHandler(c echo.Context) error {
 	db := DB.GetDBInstance()
 
@@ -76,7 +90,6 @@ func UpdateAddressHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, existingAddress)
 }
 
-// DeleteAddressHandler löscht einen Addressen anhand der ID
 func DeleteAddressHandler(c echo.Context) error {
 	db := DB.GetDBInstance()
 
