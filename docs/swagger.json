@@ -1,0 +1,2965 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Notenverwaltung API",
+        "termsOfService": "http://swagger.io/terms",
+        "contact": {
+            "name": "API support",
+            "url": "http://swagger.io/support",
+            "email": "patrykhegenberg@gmail.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://apache.com/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0"
+    },
+    "host": "localhost",
+    "basePath": "/api/v1",
+    "paths": {
+        "/addresses": {
+            "get": {
+                "description": "get all addresses from db.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "address"
+                ],
+                "summary": "get all addresses",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.Address"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Fehler beim Abrufen der Adressen",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "create a new address",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "address"
+                ],
+                "summary": "create address",
+                "parameters": [
+                    {
+                        "description": "Address object that needs to be added",
+                        "name": "address",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.Address"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/model.Address"
+                        }
+                    },
+                    "400": {
+                        "description": "Ungültige Anfrage",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Fehler beim Erstellen des Addressen",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/addresses/:id": {
+            "get": {
+                "description": "get one address from db by ID.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "address"
+                ],
+                "summary": "get one address by id",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Address ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.Address"
+                        }
+                    },
+                    "400": {
+                        "description": "Ungültige Adressen-ID",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Adresse nicht gefunden",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "update an existing address",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "address"
+                ],
+                "summary": "update address",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Address ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Updated address object",
+                        "name": "address",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.Address"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.Address"
+                        }
+                    },
+                    "400": {
+                        "description": "Ungültige Anfrage",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Address nicht gefunden",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "delete an existing address",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "address"
+                ],
+                "summary": "delete address",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Address ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Ungültige Addressen-ID",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Fehler beim Löschen des Addressen",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/classes": {
+            "get": {
+                "description": "get all classes from db.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "class"
+                ],
+                "summary": "get all classes",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.Class"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Fehler beim Abrufen der Classes",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "create a new class",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "class"
+                ],
+                "summary": "create class",
+                "parameters": [
+                    {
+                        "description": "Class object that needs to be added",
+                        "name": "class",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.Class"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/model.Class"
+                        }
+                    },
+                    "400": {
+                        "description": "Ungültige Anfrage",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Fehler beim Erstellen des Classes",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/classes/:id": {
+            "get": {
+                "description": "get one class from db by ID.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "class"
+                ],
+                "summary": "get one class by id",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Class ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.Class"
+                        }
+                    },
+                    "400": {
+                        "description": "Ungültige Class-ID",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Class nicht gefunden",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "update an existing class",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "class"
+                ],
+                "summary": "update class",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Class ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Updated class object",
+                        "name": "class",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.Class"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.Class"
+                        }
+                    },
+                    "400": {
+                        "description": "Ungültige Anfrage",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Class nicht gefunden",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "delete an existing class",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "class"
+                ],
+                "summary": "delete class",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Class ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Ungültige Class-ID",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Fehler beim Löschen des Class",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/exams": {
+            "get": {
+                "description": "get all exams from db.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "exam"
+                ],
+                "summary": "get all exams",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.Exam"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Fehler beim Abraufen der Exams",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "create a new exam",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "exam"
+                ],
+                "summary": "create exam",
+                "responses": {
+                    "203": {
+                        "description": "Non-Authoritative Information",
+                        "schema": {
+                            "$ref": "#/definitions/model.Exam"
+                        }
+                    },
+                    "400": {
+                        "description": "ungueltige anfrage",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Fehler beim Erstellen des Exams",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/exams/:id": {
+            "get": {
+                "description": "get all exams from db.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "exam"
+                ],
+                "summary": "get one exams by id",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.Exam"
+                        }
+                    },
+                    "404": {
+                        "description": "Exam nicht gefunden",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "ungueltige Exam-ID",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "update an existing exam",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "exam"
+                ],
+                "summary": "update exam",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.Exam"
+                        }
+                    },
+                    "400": {
+                        "description": "ungueltige exam-id",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Exam nicht gefunden",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Fehler beim aktualisieren des Exams",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "delete an existing exam",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "exam"
+                ],
+                "summary": "delete exam",
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "ungueltige exam-id",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Fehler beim loeschen des Exams",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/examtypes": {
+            "get": {
+                "description": "get all exam types from db.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "examtype"
+                ],
+                "summary": "get all exam types",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.ExamType"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Fehler beim Abrufen der ExamTypeen",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "create a new exam type",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "examtype"
+                ],
+                "summary": "create exam type",
+                "parameters": [
+                    {
+                        "description": "ExamType object that needs to be added",
+                        "name": "examType",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.ExamType"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/model.ExamType"
+                        }
+                    },
+                    "400": {
+                        "description": "Ungültige Anfrage",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Fehler beim Erstellen des ExamTypeen",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/examtypes/:id": {
+            "get": {
+                "description": "get one exam type from db by ID.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "examtype"
+                ],
+                "summary": "get one exam type by id",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ExamType ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.ExamType"
+                        }
+                    },
+                    "400": {
+                        "description": "Ungültige ExamTypeen-ID",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "ExamType nicht gefunden",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "update an existing exam type",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "examtype"
+                ],
+                "summary": "update exam type",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ExamType ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Updated exam type object",
+                        "name": "examType",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.ExamType"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.ExamType"
+                        }
+                    },
+                    "400": {
+                        "description": "Ungültige Anfrage",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "ExamType nicht gefunden",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "delete an existing exam type",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "examtype"
+                ],
+                "summary": "delete exam type",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ExamType ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Ungültige ExamTypeen-ID",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Fehler beim Löschen des ExamTypeen",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/grades": {
+            "get": {
+                "description": "get all grades from db.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "grade"
+                ],
+                "summary": "get all grades",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.Grade"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Fehler beim Abrufen der Gradeen",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "create a new grade",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "grade"
+                ],
+                "summary": "create grade",
+                "parameters": [
+                    {
+                        "description": "Grade object that needs to be added",
+                        "name": "grade",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.Grade"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/model.Grade"
+                        }
+                    },
+                    "400": {
+                        "description": "Ungültige Anfrage",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Fehler beim Erstellen des Gradeen",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/grades/:id": {
+            "get": {
+                "description": "get one grade from db by ID.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "grade"
+                ],
+                "summary": "get one grade by id",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Grade ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.Grade"
+                        }
+                    },
+                    "400": {
+                        "description": "Ungültige Gradeen-ID",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Grade nicht gefunden",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "update an existing grade",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "grade"
+                ],
+                "summary": "update grade",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Grade ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Updated grade object",
+                        "name": "grade",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.Grade"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.Grade"
+                        }
+                    },
+                    "400": {
+                        "description": "Ungültige Anfrage",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Grade nicht gefunden",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "delete an existing grade",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "grade"
+                ],
+                "summary": "delete grade",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Grade ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Ungültige Gradeen-ID",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Fehler beim Löschen des Gradeen",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/schools": {
+            "get": {
+                "description": "get all schools from db.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "school"
+                ],
+                "summary": "get all schools",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.School"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Fehler beim Abrufen der Schools",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "create a new school",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "school"
+                ],
+                "summary": "create school",
+                "parameters": [
+                    {
+                        "description": "School object that needs to be added",
+                        "name": "school",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.School"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/model.School"
+                        }
+                    },
+                    "400": {
+                        "description": "Ungültige Anfrage",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Fehler beim Erstellen des Schools",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/schools/:id": {
+            "get": {
+                "description": "get one school from db by ID.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "school"
+                ],
+                "summary": "get one school by id",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "School ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.School"
+                        }
+                    },
+                    "400": {
+                        "description": "Ungültige School-ID",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "School nicht gefunden",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "update an existing school",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "school"
+                ],
+                "summary": "update school",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "School ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Updated school object",
+                        "name": "school",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.School"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.School"
+                        }
+                    },
+                    "400": {
+                        "description": "Ungültige Anfrage",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "School nicht gefunden",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "delete an existing school",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "school"
+                ],
+                "summary": "delete school",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "School ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Ungültige School-ID",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Fehler beim Löschen des Schools",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/scores": {
+            "get": {
+                "description": "get all scores from db.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "score"
+                ],
+                "summary": "get all scores",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.Score"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Fehler beim Abrufen der Scores",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "create a new score",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "score"
+                ],
+                "summary": "create score",
+                "parameters": [
+                    {
+                        "description": "Score object that needs to be added",
+                        "name": "score",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.Score"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/model.Score"
+                        }
+                    },
+                    "400": {
+                        "description": "Ungültige Anfrage",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Fehler beim Erstellen des Scores",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/scores/:id": {
+            "get": {
+                "description": "get one score from db by ID.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "score"
+                ],
+                "summary": "get one score by id",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Score ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.Score"
+                        }
+                    },
+                    "400": {
+                        "description": "Ungültige Score-ID",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Score nicht gefunden",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "update an existing score",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "score"
+                ],
+                "summary": "update score",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Score ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Updated score object",
+                        "name": "score",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.Score"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.Score"
+                        }
+                    },
+                    "400": {
+                        "description": "Ungültige Anfrage",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Score nicht gefunden",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "delete an existing score",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "score"
+                ],
+                "summary": "delete score",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Score ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Ungültige Score-ID",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Fehler beim Löschen des Scores",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/students": {
+            "get": {
+                "description": "get all students from db.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "student"
+                ],
+                "summary": "get all students",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.Student"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Fehler beim Abrufen der Studenten",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "create a new student",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "student"
+                ],
+                "summary": "create student",
+                "parameters": [
+                    {
+                        "description": "Student object that needs to be added",
+                        "name": "student",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.Student"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/model.Student"
+                        }
+                    },
+                    "400": {
+                        "description": "Ungültige Anfrage",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Fehler beim Erstellen des Studenten",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/students/:id": {
+            "get": {
+                "description": "get one student from db by ID.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "student"
+                ],
+                "summary": "get one student by id",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Student ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.Student"
+                        }
+                    },
+                    "400": {
+                        "description": "Ungültige Studenten-ID",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Student nicht gefunden",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "update an existing student",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "student"
+                ],
+                "summary": "update student",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Student ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Updated student object",
+                        "name": "student",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.Student"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.Student"
+                        }
+                    },
+                    "400": {
+                        "description": "Ungültige Anfrage",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Student nicht gefunden",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "delete an existing student",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "student"
+                ],
+                "summary": "delete student",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Student ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Ungültige Studenten-ID",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Fehler beim Löschen des Studenten",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/subjects": {
+            "get": {
+                "description": "get all subjects from db.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "subject"
+                ],
+                "summary": "get all subjects",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.Subject"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Fehler beim Abrufen der Subjecten",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "create a new subject",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "subject"
+                ],
+                "summary": "create subject",
+                "parameters": [
+                    {
+                        "description": "Subject object that needs to be added",
+                        "name": "subject",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.Subject"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/model.Subject"
+                        }
+                    },
+                    "400": {
+                        "description": "Ungültige Anfrage",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Fehler beim Erstellen des Subjecten",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/subjects/:id": {
+            "get": {
+                "description": "get one subject from db by ID.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "subject"
+                ],
+                "summary": "get one subject by id",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Subject ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.Subject"
+                        }
+                    },
+                    "400": {
+                        "description": "Ungültige Subjecten-ID",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Subject nicht gefunden",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "update an existing subject",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "subject"
+                ],
+                "summary": "update subject",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Subject ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Updated subject object",
+                        "name": "subject",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.Subject"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.Subject"
+                        }
+                    },
+                    "400": {
+                        "description": "Ungültige Anfrage",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Subject nicht gefunden",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "delete an existing subject",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "subject"
+                ],
+                "summary": "delete subject",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Subject ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Ungültige Subjecten-ID",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Fehler beim Löschen des Subjecten",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/sucs": {
+            "get": {
+                "description": "get all subject user class exams from db.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "subjectuserclassexam"
+                ],
+                "summary": "get all subject user class exams",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.SubjectUserClassExam"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Fehler beim Abrufen der SubjectUserClassExamen",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "create a new subject user class exam",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "subjectuserclassexam"
+                ],
+                "summary": "create subject user class exam",
+                "parameters": [
+                    {
+                        "description": "SubjectUserClassExam object that needs to be added",
+                        "name": "subjectUserClassExam",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.SubjectUserClassExam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/model.SubjectUserClassExam"
+                        }
+                    },
+                    "400": {
+                        "description": "Ungültige Anfrage",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Fehler beim Erstellen des SubjectUserClassExamen",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/sucs/:id": {
+            "get": {
+                "description": "get one subject user class exam from db by ID.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "subjectuserclassexam"
+                ],
+                "summary": "get one subject user class exam by id",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "SubjectUserClassExam ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.SubjectUserClassExam"
+                        }
+                    },
+                    "400": {
+                        "description": "Ungültige SubjectUserClassExamen-ID",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "SubjectUserClassExam nicht gefunden",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "update an existing subject user class exam",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "subjectuserclassexam"
+                ],
+                "summary": "update subject user class exam",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "SubjectUserClassExam ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Updated subject user class exam object",
+                        "name": "subjectUserClassExam",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.SubjectUserClassExam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.SubjectUserClassExam"
+                        }
+                    },
+                    "400": {
+                        "description": "Ungültige Anfrage",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "SubjectUserClassExam nicht gefunden",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "delete an existing subject user class exam",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "subjectuserclassexam"
+                ],
+                "summary": "delete subject user class exam",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "SubjectUserClassExam ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Ungültige SubjectUserClassExamen-ID",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Fehler beim Löschen des SubjectUserClassExamen",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/users": {
+            "get": {
+                "description": "get all users from db.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "get all users",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.User"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Fehler beim Abrufen der Users",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "create a new user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "create user",
+                "parameters": [
+                    {
+                        "description": "User object that needs to be added",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/model.User"
+                        }
+                    },
+                    "400": {
+                        "description": "Ungültige Anfrage",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Fehler beim Erstellen des Users",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/:id": {
+            "get": {
+                "description": "get one user from db by ID.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "get one user by id",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "User ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.User"
+                        }
+                    },
+                    "400": {
+                        "description": "Ungültige User-ID",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "User nicht gefunden",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "update an existing user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "update user",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "User ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Updated user object",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.User"
+                        }
+                    },
+                    "400": {
+                        "description": "Ungültige Anfrage",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "User nicht gefunden",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "delete an existing user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "delete user",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "User ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Ungültige User-ID",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Fehler beim Löschen des Users",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/authenticate": {
+            "get": {
+                "description": "authenticate a user with basic authentication",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "text/plain"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "authenticate user",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Basic Authentication",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Erfolgreich authentifiziert",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Ungültige Anmeldeinformationen",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Ungültiges Authentifizierungsschema",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/authenticate/hx": {
+            "post": {
+                "description": "authenticate a user with HX credentials",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "authenticate HX user",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Email",
+                        "name": "email",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Password",
+                        "name": "password",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "303": {
+                        "description": "See Other"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Ungültige Anmeldeinformationen",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/hx": {
+            "post": {
+                "description": "create a new user with HX",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "create user with HX",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Username",
+                        "name": "username",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Email",
+                        "name": "email",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Password",
+                        "name": "password",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "School",
+                        "name": "school",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "302": {
+                        "description": "Found"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Fehler beim Erstellen des Users",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/logout/hx": {
+            "get": {
+                "description": "logout an HX authenticated user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "logout HX user",
+                "responses": {
+                    "303": {
+                        "description": "See Other"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "gorm.DeletedAt": {
+            "type": "object",
+            "properties": {
+                "time": {
+                    "type": "string"
+                },
+                "valid": {
+                    "description": "Valid is true if Time is not NULL",
+                    "type": "boolean"
+                }
+            }
+        },
+        "model.Address": {
+            "type": "object",
+            "properties": {
+                "city": {
+                    "description": "City name",
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "deletedAt": {
+                    "$ref": "#/definitions/gorm.DeletedAt"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "number": {
+                    "description": "Building number",
+                    "type": "string"
+                },
+                "owner_id": {
+                    "description": "Owner's ID",
+                    "type": "integer"
+                },
+                "owner_type": {
+                    "description": "Owner's type",
+                    "type": "string"
+                },
+                "postal": {
+                    "description": "Postal code",
+                    "type": "string"
+                },
+                "street": {
+                    "description": "Street name",
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.Class": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
+                "deletedAt": {
+                    "$ref": "#/definitions/gorm.DeletedAt"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "is_active": {
+                    "description": "Whether the class is active",
+                    "type": "boolean"
+                },
+                "name": {
+                    "description": "Name of the class",
+                    "type": "string"
+                },
+                "school_id": {
+                    "description": "ID of the school the class belongs to",
+                    "type": "integer"
+                },
+                "students": {
+                    "description": "List of students in the class",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.Student"
+                    }
+                },
+                "teacher_id": {
+                    "description": "ID of the teacher for the class",
+                    "type": "integer"
+                },
+                "updatedAt": {
+                    "type": "string"
+                },
+                "year": {
+                    "description": "Year of the class",
+                    "type": "string"
+                }
+            }
+        },
+        "model.Exam": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
+                "date": {
+                    "description": "Date of the exam",
+                    "type": "string"
+                },
+                "deletedAt": {
+                    "$ref": "#/definitions/gorm.DeletedAt"
+                },
+                "description": {
+                    "description": "Description of the exam",
+                    "type": "string"
+                },
+                "exam_type": {
+                    "description": "Exam type",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/model.ExamType"
+                        }
+                    ]
+                },
+                "exam_type_id": {
+                    "description": "ID of the exam type",
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "max_points": {
+                    "description": "Maximum points for the exam",
+                    "type": "integer"
+                },
+                "name": {
+                    "description": "Name of the exam",
+                    "type": "string"
+                },
+                "scores": {
+                    "description": "Scores for the exam",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/model.Score"
+                        }
+                    ]
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.ExamType": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
+                "deletedAt": {
+                    "$ref": "#/definitions/gorm.DeletedAt"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "description": "Name is the name of the exam type.",
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.Grade": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
+                "deletedAt": {
+                    "$ref": "#/definitions/gorm.DeletedAt"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "description": "Name is the name of the grade.",
+                    "type": "integer"
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.School": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "description": "Address is the address of the school",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/model.Address"
+                        }
+                    ]
+                },
+                "classes": {
+                    "description": "Classes is a list of classes offered by the school",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.Class"
+                    }
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "deletedAt": {
+                    "$ref": "#/definitions/gorm.DeletedAt"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "description": "Name is the name of the school",
+                    "type": "string"
+                },
+                "school_form": {
+                    "description": "SchoolForm is the school form associated with the school",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/model.SchoolForm"
+                        }
+                    ]
+                },
+                "school_form_id": {
+                    "description": "SchoolFormID is the ID of the school form associated with the school",
+                    "type": "integer"
+                },
+                "updatedAt": {
+                    "type": "string"
+                },
+                "users": {
+                    "description": "Users is a list of users associated with the school",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.User"
+                    }
+                }
+            }
+        },
+        "model.SchoolForm": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
+                "deletedAt": {
+                    "$ref": "#/definitions/gorm.DeletedAt"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "school_form": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.Score": {
+            "type": "object",
+            "properties": {
+                "comment": {
+                    "description": "Comment represents any additional comments about the score.",
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "deletedAt": {
+                    "$ref": "#/definitions/gorm.DeletedAt"
+                },
+                "exam_id": {
+                    "description": "ExamID represents the ID of the associated exam.",
+                    "type": "integer"
+                },
+                "grade": {
+                    "description": "Grade represents the associated grade.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/model.Grade"
+                        }
+                    ]
+                },
+                "grade_id": {
+                    "description": "GradeID represents the ID of the associated grade.",
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "points": {
+                    "description": "Points represents the number of points scored by the student.",
+                    "type": "integer"
+                },
+                "student_id": {
+                    "description": "StudentID represents the ID of the student.",
+                    "type": "integer"
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.Student": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "description": "Address represents the address of the student",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/model.Address"
+                        }
+                    ]
+                },
+                "class_id": {
+                    "description": "ClassID represents the ID of the class the student belongs to",
+                    "type": "integer"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "date_of_birth": {
+                    "description": "DateOfBirth represents the date of birth of the student",
+                    "type": "string"
+                },
+                "deletedAt": {
+                    "$ref": "#/definitions/gorm.DeletedAt"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "nachname": {
+                    "description": "Nachname represents the last name of the student",
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                },
+                "vorname": {
+                    "description": "Vorname represents the first name of the student",
+                    "type": "string"
+                }
+            }
+        },
+        "model.Subject": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
+                "deletedAt": {
+                    "$ref": "#/definitions/gorm.DeletedAt"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.SubjectUserClassExam": {
+            "type": "object",
+            "properties": {
+                "class": {
+                    "description": "Class is the class associated with this record.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/model.Class"
+                        }
+                    ]
+                },
+                "class_id": {
+                    "description": "ClassID is the ID of the class.",
+                    "type": "integer"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "deletedAt": {
+                    "$ref": "#/definitions/gorm.DeletedAt"
+                },
+                "exam": {
+                    "description": "Exam is the exam associated with this record.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/model.Exam"
+                        }
+                    ]
+                },
+                "exam_id": {
+                    "description": "ExamID is the ID of the exam.",
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "subject": {
+                    "description": "Subject is the subject associated with this record.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/model.Subject"
+                        }
+                    ]
+                },
+                "subject_id": {
+                    "description": "SubjectID is the ID of the subject.",
+                    "type": "integer"
+                },
+                "updatedAt": {
+                    "type": "string"
+                },
+                "user": {
+                    "description": "User is the user associated with this record.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/model.User"
+                        }
+                    ]
+                },
+                "user_id": {
+                    "description": "UserID is the ID of the user.",
+                    "type": "integer"
+                }
+            }
+        },
+        "model.User": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "description": "Address is the user's address.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/model.Address"
+                        }
+                    ]
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "deletedAt": {
+                    "$ref": "#/definitions/gorm.DeletedAt"
+                },
+                "email": {
+                    "description": "Email is the user's email address.",
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "is_admin": {
+                    "description": "IsAdmin indicates whether the user is an administrator.",
+                    "type": "boolean"
+                },
+                "nachname": {
+                    "description": "Nachname is the user's last name.",
+                    "type": "string"
+                },
+                "password": {
+                    "description": "Password is the user's password.",
+                    "type": "string"
+                },
+                "school_id": {
+                    "description": "SchoolID is the ID of the user's school.",
+                    "type": "integer"
+                },
+                "updatedAt": {
+                    "type": "string"
+                },
+                "username": {
+                    "description": "Username is the user's username.",
+                    "type": "string"
+                },
+                "vorname": {
+                    "description": "Vorname is the user's first name.",
+                    "type": "string"
+                }
+            }
+        },
+        "routes.ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

@@ -9,10 +9,15 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-// GetExamTypesHandler is a function that handles the request to retrieve exam types.
-//
-// It takes in a parameter of type echo.Context.
-// It returns an error.
+// GetExamTypesHandler godoc
+// @Summary get all exam types
+// @Description get all exam types from db.
+// @Tags examtype
+// @Accept application/json
+// @Produce json
+// @Success 200 {object} []model.ExamType
+// @Failure 500 {object} ErrorResponse "Fehler beim Abrufen der ExamTypeen"
+// @Router /examtypes [get]
 func GetExamTypesHandler(c echo.Context) error {
 	db := DB.GetDBInstance() // Funktion zum Abrufen der Datenbankinstanz
 
@@ -24,10 +29,17 @@ func GetExamTypesHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, examTypes)
 }
 
-// GetExamTypeHandler is a function that handles the API endpoint for retrieving an ExamType.
-//
-// It takes a parameter `c` of type `echo.Context`.
-// It returns an error.
+// GetExamTypeHandler godoc
+// @Summary get one exam type by id
+// @Description get one exam type from db by ID.
+// @Tags examtype
+// @Accept application/json
+// @Produce json
+// @Param id path int true "ExamType ID"
+// @Success 200 {object} model.ExamType
+// @Failure 400 {object} ErrorResponse "Ungültige ExamTypeen-ID"
+// @Failure 404 {object} ErrorResponse "ExamType nicht gefunden"
+// @Router /examtypes/:id [get]
 func GetExamTypeHandler(c echo.Context) error {
 	db := DB.GetDBInstance()
 
@@ -44,13 +56,17 @@ func GetExamTypeHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, examType)
 }
 
-// CreateExamTypeHandler is responsible for handling the creation of an ExamType.
-//
-// Parameters:
-// - c: echo.Context - the context object for the HTTP request.
-//
-// Returns:
-// - error: the error that occurred during the execution of the function.
+// CreateExamTypeHandler godoc
+// @Summary create exam type
+// @Description create a new exam type
+// @Tags examtype
+// @Accept application/json
+// @Produce json
+// @Param examType body model.ExamType true "ExamType object that needs to be added"
+// @Success 201 {object} model.ExamType
+// @Failure 500 {object} ErrorResponse "Fehler beim Erstellen des ExamTypeen"
+// @Failure 400 {object} ErrorResponse "Ungültige Anfrage"
+// @Router /examtypes [post]
 func CreateExamTypeHandler(c echo.Context) error {
 	db := DB.GetDBInstance()
 
@@ -66,10 +82,18 @@ func CreateExamTypeHandler(c echo.Context) error {
 	return c.JSON(http.StatusCreated, examType)
 }
 
-// UpdateExamTypeHandler is a function that handles the update of an ExamType in the database.
-//
-// It takes in a parameter `c` of type `echo.Context` which represents the current HTTP context.
-// It returns an error.
+// UpdateExamTypeHandler godoc
+// @Summary update exam type
+// @Description update an existing exam type
+// @Tags examtype
+// @Accept application/json
+// @Produce json
+// @Param id path int true "ExamType ID"
+// @Param examType body model.ExamType true "Updated exam type object"
+// @Success 200 {object} model.ExamType
+// @Failure 400 {object} ErrorResponse "Ungültige Anfrage"
+// @Failure 404 {object} ErrorResponse "ExamType nicht gefunden"
+// @Router /examtypes/:id [put]
 func UpdateExamTypeHandler(c echo.Context) error {
 	db := DB.GetDBInstance()
 
@@ -94,10 +118,17 @@ func UpdateExamTypeHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, existingExamType)
 }
 
-// DeleteExamTypeHandler is a function that handles the deletion of an ExamType.
-//
-// It takes a parameter of type `echo.Context` which represents the HTTP request context.
-// It returns an error.
+// DeleteExamTypeHandler godoc
+// @Summary delete exam type
+// @Description delete an existing exam type
+// @Tags examtype
+// @Accept application/json
+// @Produce json
+// @Param id path int true "ExamType ID"
+// @Success 204
+// @Failure 400 {object} ErrorResponse "Ungültige ExamTypeen-ID"
+// @Failure 500 {object} ErrorResponse "Fehler beim Löschen des ExamTypeen"
+// @Router /examtypes/:id [delete]
 func DeleteExamTypeHandler(c echo.Context) error {
 	db := DB.GetDBInstance()
 

@@ -9,7 +9,15 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-// GetStudentsHandler gibt alle Studenten zurück
+// GetStudentsHandler godoc
+// @Summary get all students
+// @Description get all students from db.
+// @Tags student
+// @Accept application/json
+// @Produce json
+// @Success 200 {object} []model.Student
+// @Failure 500 {object} ErrorResponse "Fehler beim Abrufen der Studenten"
+// @Router /students [get]
 func GetStudentsHandler(c echo.Context) error {
 	db := DB.GetDBInstance() // Funktion zum Abrufen der Datenbankinstanz
 
@@ -21,7 +29,17 @@ func GetStudentsHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, students)
 }
 
-// GetStudentHandler gibt einen bestimmten Studenten anhand der ID zurück
+// GetStudentHandler godoc
+// @Summary get one student by id
+// @Description get one student from db by ID.
+// @Tags student
+// @Accept application/json
+// @Produce json
+// @Param id path int true "Student ID"
+// @Success 200 {object} model.Student
+// @Failure 400 {object} ErrorResponse "Ungültige Studenten-ID"
+// @Failure 404 {object} ErrorResponse "Student nicht gefunden"
+// @Router /students/:id [get]
 func GetStudentHandler(c echo.Context) error {
 	db := DB.GetDBInstance()
 
@@ -38,7 +56,17 @@ func GetStudentHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, student)
 }
 
-// CreateStudentHandler erstellt einen neuen Studenten
+// CreateStudentHandler godoc
+// @Summary create student
+// @Description create a new student
+// @Tags student
+// @Accept application/json
+// @Produce json
+// @Param student body model.Student true "Student object that needs to be added"
+// @Success 201 {object} model.Student
+// @Failure 500 {object} ErrorResponse "Fehler beim Erstellen des Studenten"
+// @Failure 400 {object} ErrorResponse "Ungültige Anfrage"
+// @Router /students [post]
 func CreateStudentHandler(c echo.Context) error {
 	db := DB.GetDBInstance()
 
@@ -54,7 +82,18 @@ func CreateStudentHandler(c echo.Context) error {
 	return c.JSON(http.StatusCreated, student)
 }
 
-// UpdateStudentHandler aktualisiert einen vorhandenen Studenten
+// UpdateStudentHandler godoc
+// @Summary update student
+// @Description update an existing student
+// @Tags student
+// @Accept application/json
+// @Produce json
+// @Param id path int true "Student ID"
+// @Param student body model.Student true "Updated student object"
+// @Success 200 {object} model.Student
+// @Failure 400 {object} ErrorResponse "Ungültige Anfrage"
+// @Failure 404 {object} ErrorResponse "Student nicht gefunden"
+// @Router /students/:id [put]
 func UpdateStudentHandler(c echo.Context) error {
 	db := DB.GetDBInstance()
 
@@ -79,7 +118,17 @@ func UpdateStudentHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, existingStudent)
 }
 
-// DeleteStudentHandler löscht einen Studenten anhand der ID
+// DeleteStudentHandler godoc
+// @Summary delete student
+// @Description delete an existing student
+// @Tags student
+// @Accept application/json
+// @Produce json
+// @Param id path int true "Student ID"
+// @Success 204
+// @Failure 400 {object} ErrorResponse "Ungültige Studenten-ID"
+// @Failure 500 {object} ErrorResponse "Fehler beim Löschen des Studenten"
+// @Router /students/:id [delete]
 func DeleteStudentHandler(c echo.Context) error {
 	db := DB.GetDBInstance()
 

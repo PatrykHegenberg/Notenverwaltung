@@ -1,0 +1,1963 @@
+basePath: /api/v1
+definitions:
+  gorm.DeletedAt:
+    properties:
+      time:
+        type: string
+      valid:
+        description: Valid is true if Time is not NULL
+        type: boolean
+    type: object
+  model.Address:
+    properties:
+      city:
+        description: City name
+        type: string
+      createdAt:
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      id:
+        type: integer
+      number:
+        description: Building number
+        type: string
+      owner_id:
+        description: Owner's ID
+        type: integer
+      owner_type:
+        description: Owner's type
+        type: string
+      postal:
+        description: Postal code
+        type: string
+      street:
+        description: Street name
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  model.Class:
+    properties:
+      createdAt:
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      id:
+        type: integer
+      is_active:
+        description: Whether the class is active
+        type: boolean
+      name:
+        description: Name of the class
+        type: string
+      school_id:
+        description: ID of the school the class belongs to
+        type: integer
+      students:
+        description: List of students in the class
+        items:
+          $ref: '#/definitions/model.Student'
+        type: array
+      teacher_id:
+        description: ID of the teacher for the class
+        type: integer
+      updatedAt:
+        type: string
+      year:
+        description: Year of the class
+        type: string
+    type: object
+  model.Exam:
+    properties:
+      createdAt:
+        type: string
+      date:
+        description: Date of the exam
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      description:
+        description: Description of the exam
+        type: string
+      exam_type:
+        allOf:
+        - $ref: '#/definitions/model.ExamType'
+        description: Exam type
+      exam_type_id:
+        description: ID of the exam type
+        type: integer
+      id:
+        type: integer
+      max_points:
+        description: Maximum points for the exam
+        type: integer
+      name:
+        description: Name of the exam
+        type: string
+      scores:
+        allOf:
+        - $ref: '#/definitions/model.Score'
+        description: Scores for the exam
+      updatedAt:
+        type: string
+    type: object
+  model.ExamType:
+    properties:
+      createdAt:
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      id:
+        type: integer
+      name:
+        description: Name is the name of the exam type.
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  model.Grade:
+    properties:
+      createdAt:
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      id:
+        type: integer
+      name:
+        description: Name is the name of the grade.
+        type: integer
+      updatedAt:
+        type: string
+    type: object
+  model.School:
+    properties:
+      address:
+        allOf:
+        - $ref: '#/definitions/model.Address'
+        description: Address is the address of the school
+      classes:
+        description: Classes is a list of classes offered by the school
+        items:
+          $ref: '#/definitions/model.Class'
+        type: array
+      createdAt:
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      id:
+        type: integer
+      name:
+        description: Name is the name of the school
+        type: string
+      school_form:
+        allOf:
+        - $ref: '#/definitions/model.SchoolForm'
+        description: SchoolForm is the school form associated with the school
+      school_form_id:
+        description: SchoolFormID is the ID of the school form associated with the
+          school
+        type: integer
+      updatedAt:
+        type: string
+      users:
+        description: Users is a list of users associated with the school
+        items:
+          $ref: '#/definitions/model.User'
+        type: array
+    type: object
+  model.SchoolForm:
+    properties:
+      createdAt:
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      id:
+        type: integer
+      school_form:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  model.Score:
+    properties:
+      comment:
+        description: Comment represents any additional comments about the score.
+        type: string
+      createdAt:
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      exam_id:
+        description: ExamID represents the ID of the associated exam.
+        type: integer
+      grade:
+        allOf:
+        - $ref: '#/definitions/model.Grade'
+        description: Grade represents the associated grade.
+      grade_id:
+        description: GradeID represents the ID of the associated grade.
+        type: integer
+      id:
+        type: integer
+      points:
+        description: Points represents the number of points scored by the student.
+        type: integer
+      student_id:
+        description: StudentID represents the ID of the student.
+        type: integer
+      updatedAt:
+        type: string
+    type: object
+  model.Student:
+    properties:
+      address:
+        allOf:
+        - $ref: '#/definitions/model.Address'
+        description: Address represents the address of the student
+      class_id:
+        description: ClassID represents the ID of the class the student belongs to
+        type: integer
+      createdAt:
+        type: string
+      date_of_birth:
+        description: DateOfBirth represents the date of birth of the student
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      id:
+        type: integer
+      nachname:
+        description: Nachname represents the last name of the student
+        type: string
+      updatedAt:
+        type: string
+      vorname:
+        description: Vorname represents the first name of the student
+        type: string
+    type: object
+  model.Subject:
+    properties:
+      createdAt:
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      id:
+        type: integer
+      name:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  model.SubjectUserClassExam:
+    properties:
+      class:
+        allOf:
+        - $ref: '#/definitions/model.Class'
+        description: Class is the class associated with this record.
+      class_id:
+        description: ClassID is the ID of the class.
+        type: integer
+      createdAt:
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      exam:
+        allOf:
+        - $ref: '#/definitions/model.Exam'
+        description: Exam is the exam associated with this record.
+      exam_id:
+        description: ExamID is the ID of the exam.
+        type: integer
+      id:
+        type: integer
+      subject:
+        allOf:
+        - $ref: '#/definitions/model.Subject'
+        description: Subject is the subject associated with this record.
+      subject_id:
+        description: SubjectID is the ID of the subject.
+        type: integer
+      updatedAt:
+        type: string
+      user:
+        allOf:
+        - $ref: '#/definitions/model.User'
+        description: User is the user associated with this record.
+      user_id:
+        description: UserID is the ID of the user.
+        type: integer
+    type: object
+  model.User:
+    properties:
+      address:
+        allOf:
+        - $ref: '#/definitions/model.Address'
+        description: Address is the user's address.
+      createdAt:
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      email:
+        description: Email is the user's email address.
+        type: string
+      id:
+        type: integer
+      is_admin:
+        description: IsAdmin indicates whether the user is an administrator.
+        type: boolean
+      nachname:
+        description: Nachname is the user's last name.
+        type: string
+      password:
+        description: Password is the user's password.
+        type: string
+      school_id:
+        description: SchoolID is the ID of the user's school.
+        type: integer
+      updatedAt:
+        type: string
+      username:
+        description: Username is the user's username.
+        type: string
+      vorname:
+        description: Vorname is the user's first name.
+        type: string
+    type: object
+  routes.ErrorResponse:
+    properties:
+      error:
+        type: string
+    type: object
+host: localhost
+info:
+  contact:
+    email: patrykhegenberg@gmail.com
+    name: API support
+    url: http://swagger.io/support
+  license:
+    name: Apache 2.0
+    url: http://apache.com/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms
+  title: Notenverwaltung API
+  version: "1.0"
+paths:
+  /addresses:
+    get:
+      consumes:
+      - application/json
+      description: get all addresses from db.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.Address'
+            type: array
+        "500":
+          description: Fehler beim Abrufen der Adressen
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+      summary: get all addresses
+      tags:
+      - address
+    post:
+      consumes:
+      - application/json
+      description: create a new address
+      parameters:
+      - description: Address object that needs to be added
+        in: body
+        name: address
+        required: true
+        schema:
+          $ref: '#/definitions/model.Address'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/model.Address'
+        "400":
+          description: Ungültige Anfrage
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+        "500":
+          description: Fehler beim Erstellen des Addressen
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+      summary: create address
+      tags:
+      - address
+  /addresses/:id:
+    delete:
+      consumes:
+      - application/json
+      description: delete an existing address
+      parameters:
+      - description: Address ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Ungültige Addressen-ID
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+        "500":
+          description: Fehler beim Löschen des Addressen
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+      summary: delete address
+      tags:
+      - address
+    get:
+      consumes:
+      - application/json
+      description: get one address from db by ID.
+      parameters:
+      - description: Address ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Address'
+        "400":
+          description: Ungültige Adressen-ID
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+        "404":
+          description: Adresse nicht gefunden
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+      summary: get one address by id
+      tags:
+      - address
+    put:
+      consumes:
+      - application/json
+      description: update an existing address
+      parameters:
+      - description: Address ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated address object
+        in: body
+        name: address
+        required: true
+        schema:
+          $ref: '#/definitions/model.Address'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Address'
+        "400":
+          description: Ungültige Anfrage
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+        "404":
+          description: Address nicht gefunden
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+      summary: update address
+      tags:
+      - address
+  /classes:
+    get:
+      consumes:
+      - application/json
+      description: get all classes from db.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.Class'
+            type: array
+        "500":
+          description: Fehler beim Abrufen der Classes
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+      summary: get all classes
+      tags:
+      - class
+    post:
+      consumes:
+      - application/json
+      description: create a new class
+      parameters:
+      - description: Class object that needs to be added
+        in: body
+        name: class
+        required: true
+        schema:
+          $ref: '#/definitions/model.Class'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/model.Class'
+        "400":
+          description: Ungültige Anfrage
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+        "500":
+          description: Fehler beim Erstellen des Classes
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+      summary: create class
+      tags:
+      - class
+  /classes/:id:
+    delete:
+      consumes:
+      - application/json
+      description: delete an existing class
+      parameters:
+      - description: Class ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Ungültige Class-ID
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+        "500":
+          description: Fehler beim Löschen des Class
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+      summary: delete class
+      tags:
+      - class
+    get:
+      consumes:
+      - application/json
+      description: get one class from db by ID.
+      parameters:
+      - description: Class ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Class'
+        "400":
+          description: Ungültige Class-ID
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+        "404":
+          description: Class nicht gefunden
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+      summary: get one class by id
+      tags:
+      - class
+    put:
+      consumes:
+      - application/json
+      description: update an existing class
+      parameters:
+      - description: Class ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated class object
+        in: body
+        name: class
+        required: true
+        schema:
+          $ref: '#/definitions/model.Class'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Class'
+        "400":
+          description: Ungültige Anfrage
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+        "404":
+          description: Class nicht gefunden
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+      summary: update class
+      tags:
+      - class
+  /exams:
+    get:
+      consumes:
+      - application/json
+      description: get all exams from db.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.Exam'
+            type: array
+        "500":
+          description: Fehler beim Abraufen der Exams
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+      summary: get all exams
+      tags:
+      - exam
+    post:
+      consumes:
+      - application/json
+      description: create a new exam
+      produces:
+      - application/json
+      responses:
+        "203":
+          description: Non-Authoritative Information
+          schema:
+            $ref: '#/definitions/model.Exam'
+        "400":
+          description: ungueltige anfrage
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+        "500":
+          description: Fehler beim Erstellen des Exams
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+      summary: create exam
+      tags:
+      - exam
+  /exams/:id:
+    delete:
+      consumes:
+      - application/json
+      description: delete an existing exam
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: ungueltige exam-id
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+        "500":
+          description: Fehler beim loeschen des Exams
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+      summary: delete exam
+      tags:
+      - exam
+    get:
+      consumes:
+      - application/json
+      description: get all exams from db.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Exam'
+        "404":
+          description: Exam nicht gefunden
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+        "500":
+          description: ungueltige Exam-ID
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+      summary: get one exams by id
+      tags:
+      - exam
+    put:
+      consumes:
+      - application/json
+      description: update an existing exam
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Exam'
+        "400":
+          description: ungueltige exam-id
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+        "404":
+          description: Exam nicht gefunden
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+        "500":
+          description: Fehler beim aktualisieren des Exams
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+      summary: update exam
+      tags:
+      - exam
+  /examtypes:
+    get:
+      consumes:
+      - application/json
+      description: get all exam types from db.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.ExamType'
+            type: array
+        "500":
+          description: Fehler beim Abrufen der ExamTypeen
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+      summary: get all exam types
+      tags:
+      - examtype
+    post:
+      consumes:
+      - application/json
+      description: create a new exam type
+      parameters:
+      - description: ExamType object that needs to be added
+        in: body
+        name: examType
+        required: true
+        schema:
+          $ref: '#/definitions/model.ExamType'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/model.ExamType'
+        "400":
+          description: Ungültige Anfrage
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+        "500":
+          description: Fehler beim Erstellen des ExamTypeen
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+      summary: create exam type
+      tags:
+      - examtype
+  /examtypes/:id:
+    delete:
+      consumes:
+      - application/json
+      description: delete an existing exam type
+      parameters:
+      - description: ExamType ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Ungültige ExamTypeen-ID
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+        "500":
+          description: Fehler beim Löschen des ExamTypeen
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+      summary: delete exam type
+      tags:
+      - examtype
+    get:
+      consumes:
+      - application/json
+      description: get one exam type from db by ID.
+      parameters:
+      - description: ExamType ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.ExamType'
+        "400":
+          description: Ungültige ExamTypeen-ID
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+        "404":
+          description: ExamType nicht gefunden
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+      summary: get one exam type by id
+      tags:
+      - examtype
+    put:
+      consumes:
+      - application/json
+      description: update an existing exam type
+      parameters:
+      - description: ExamType ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated exam type object
+        in: body
+        name: examType
+        required: true
+        schema:
+          $ref: '#/definitions/model.ExamType'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.ExamType'
+        "400":
+          description: Ungültige Anfrage
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+        "404":
+          description: ExamType nicht gefunden
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+      summary: update exam type
+      tags:
+      - examtype
+  /grades:
+    get:
+      consumes:
+      - application/json
+      description: get all grades from db.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.Grade'
+            type: array
+        "500":
+          description: Fehler beim Abrufen der Gradeen
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+      summary: get all grades
+      tags:
+      - grade
+    post:
+      consumes:
+      - application/json
+      description: create a new grade
+      parameters:
+      - description: Grade object that needs to be added
+        in: body
+        name: grade
+        required: true
+        schema:
+          $ref: '#/definitions/model.Grade'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/model.Grade'
+        "400":
+          description: Ungültige Anfrage
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+        "500":
+          description: Fehler beim Erstellen des Gradeen
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+      summary: create grade
+      tags:
+      - grade
+  /grades/:id:
+    delete:
+      consumes:
+      - application/json
+      description: delete an existing grade
+      parameters:
+      - description: Grade ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Ungültige Gradeen-ID
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+        "500":
+          description: Fehler beim Löschen des Gradeen
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+      summary: delete grade
+      tags:
+      - grade
+    get:
+      consumes:
+      - application/json
+      description: get one grade from db by ID.
+      parameters:
+      - description: Grade ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Grade'
+        "400":
+          description: Ungültige Gradeen-ID
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+        "404":
+          description: Grade nicht gefunden
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+      summary: get one grade by id
+      tags:
+      - grade
+    put:
+      consumes:
+      - application/json
+      description: update an existing grade
+      parameters:
+      - description: Grade ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated grade object
+        in: body
+        name: grade
+        required: true
+        schema:
+          $ref: '#/definitions/model.Grade'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Grade'
+        "400":
+          description: Ungültige Anfrage
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+        "404":
+          description: Grade nicht gefunden
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+      summary: update grade
+      tags:
+      - grade
+  /schools:
+    get:
+      consumes:
+      - application/json
+      description: get all schools from db.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.School'
+            type: array
+        "500":
+          description: Fehler beim Abrufen der Schools
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+      summary: get all schools
+      tags:
+      - school
+    post:
+      consumes:
+      - application/json
+      description: create a new school
+      parameters:
+      - description: School object that needs to be added
+        in: body
+        name: school
+        required: true
+        schema:
+          $ref: '#/definitions/model.School'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/model.School'
+        "400":
+          description: Ungültige Anfrage
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+        "500":
+          description: Fehler beim Erstellen des Schools
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+      summary: create school
+      tags:
+      - school
+  /schools/:id:
+    delete:
+      consumes:
+      - application/json
+      description: delete an existing school
+      parameters:
+      - description: School ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Ungültige School-ID
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+        "500":
+          description: Fehler beim Löschen des Schools
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+      summary: delete school
+      tags:
+      - school
+    get:
+      consumes:
+      - application/json
+      description: get one school from db by ID.
+      parameters:
+      - description: School ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.School'
+        "400":
+          description: Ungültige School-ID
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+        "404":
+          description: School nicht gefunden
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+      summary: get one school by id
+      tags:
+      - school
+    put:
+      consumes:
+      - application/json
+      description: update an existing school
+      parameters:
+      - description: School ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated school object
+        in: body
+        name: school
+        required: true
+        schema:
+          $ref: '#/definitions/model.School'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.School'
+        "400":
+          description: Ungültige Anfrage
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+        "404":
+          description: School nicht gefunden
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+      summary: update school
+      tags:
+      - school
+  /scores:
+    get:
+      consumes:
+      - application/json
+      description: get all scores from db.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.Score'
+            type: array
+        "500":
+          description: Fehler beim Abrufen der Scores
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+      summary: get all scores
+      tags:
+      - score
+    post:
+      consumes:
+      - application/json
+      description: create a new score
+      parameters:
+      - description: Score object that needs to be added
+        in: body
+        name: score
+        required: true
+        schema:
+          $ref: '#/definitions/model.Score'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/model.Score'
+        "400":
+          description: Ungültige Anfrage
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+        "500":
+          description: Fehler beim Erstellen des Scores
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+      summary: create score
+      tags:
+      - score
+  /scores/:id:
+    delete:
+      consumes:
+      - application/json
+      description: delete an existing score
+      parameters:
+      - description: Score ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Ungültige Score-ID
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+        "500":
+          description: Fehler beim Löschen des Scores
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+      summary: delete score
+      tags:
+      - score
+    get:
+      consumes:
+      - application/json
+      description: get one score from db by ID.
+      parameters:
+      - description: Score ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Score'
+        "400":
+          description: Ungültige Score-ID
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+        "404":
+          description: Score nicht gefunden
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+      summary: get one score by id
+      tags:
+      - score
+    put:
+      consumes:
+      - application/json
+      description: update an existing score
+      parameters:
+      - description: Score ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated score object
+        in: body
+        name: score
+        required: true
+        schema:
+          $ref: '#/definitions/model.Score'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Score'
+        "400":
+          description: Ungültige Anfrage
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+        "404":
+          description: Score nicht gefunden
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+      summary: update score
+      tags:
+      - score
+  /students:
+    get:
+      consumes:
+      - application/json
+      description: get all students from db.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.Student'
+            type: array
+        "500":
+          description: Fehler beim Abrufen der Studenten
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+      summary: get all students
+      tags:
+      - student
+    post:
+      consumes:
+      - application/json
+      description: create a new student
+      parameters:
+      - description: Student object that needs to be added
+        in: body
+        name: student
+        required: true
+        schema:
+          $ref: '#/definitions/model.Student'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/model.Student'
+        "400":
+          description: Ungültige Anfrage
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+        "500":
+          description: Fehler beim Erstellen des Studenten
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+      summary: create student
+      tags:
+      - student
+  /students/:id:
+    delete:
+      consumes:
+      - application/json
+      description: delete an existing student
+      parameters:
+      - description: Student ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Ungültige Studenten-ID
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+        "500":
+          description: Fehler beim Löschen des Studenten
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+      summary: delete student
+      tags:
+      - student
+    get:
+      consumes:
+      - application/json
+      description: get one student from db by ID.
+      parameters:
+      - description: Student ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Student'
+        "400":
+          description: Ungültige Studenten-ID
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+        "404":
+          description: Student nicht gefunden
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+      summary: get one student by id
+      tags:
+      - student
+    put:
+      consumes:
+      - application/json
+      description: update an existing student
+      parameters:
+      - description: Student ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated student object
+        in: body
+        name: student
+        required: true
+        schema:
+          $ref: '#/definitions/model.Student'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Student'
+        "400":
+          description: Ungültige Anfrage
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+        "404":
+          description: Student nicht gefunden
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+      summary: update student
+      tags:
+      - student
+  /subjects:
+    get:
+      consumes:
+      - application/json
+      description: get all subjects from db.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.Subject'
+            type: array
+        "500":
+          description: Fehler beim Abrufen der Subjecten
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+      summary: get all subjects
+      tags:
+      - subject
+    post:
+      consumes:
+      - application/json
+      description: create a new subject
+      parameters:
+      - description: Subject object that needs to be added
+        in: body
+        name: subject
+        required: true
+        schema:
+          $ref: '#/definitions/model.Subject'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/model.Subject'
+        "400":
+          description: Ungültige Anfrage
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+        "500":
+          description: Fehler beim Erstellen des Subjecten
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+      summary: create subject
+      tags:
+      - subject
+  /subjects/:id:
+    delete:
+      consumes:
+      - application/json
+      description: delete an existing subject
+      parameters:
+      - description: Subject ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Ungültige Subjecten-ID
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+        "500":
+          description: Fehler beim Löschen des Subjecten
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+      summary: delete subject
+      tags:
+      - subject
+    get:
+      consumes:
+      - application/json
+      description: get one subject from db by ID.
+      parameters:
+      - description: Subject ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Subject'
+        "400":
+          description: Ungültige Subjecten-ID
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+        "404":
+          description: Subject nicht gefunden
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+      summary: get one subject by id
+      tags:
+      - subject
+    put:
+      consumes:
+      - application/json
+      description: update an existing subject
+      parameters:
+      - description: Subject ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated subject object
+        in: body
+        name: subject
+        required: true
+        schema:
+          $ref: '#/definitions/model.Subject'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Subject'
+        "400":
+          description: Ungültige Anfrage
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+        "404":
+          description: Subject nicht gefunden
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+      summary: update subject
+      tags:
+      - subject
+  /sucs:
+    get:
+      consumes:
+      - application/json
+      description: get all subject user class exams from db.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.SubjectUserClassExam'
+            type: array
+        "500":
+          description: Fehler beim Abrufen der SubjectUserClassExamen
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+      summary: get all subject user class exams
+      tags:
+      - subjectuserclassexam
+    post:
+      consumes:
+      - application/json
+      description: create a new subject user class exam
+      parameters:
+      - description: SubjectUserClassExam object that needs to be added
+        in: body
+        name: subjectUserClassExam
+        required: true
+        schema:
+          $ref: '#/definitions/model.SubjectUserClassExam'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/model.SubjectUserClassExam'
+        "400":
+          description: Ungültige Anfrage
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+        "500":
+          description: Fehler beim Erstellen des SubjectUserClassExamen
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+      summary: create subject user class exam
+      tags:
+      - subjectuserclassexam
+  /sucs/:id:
+    delete:
+      consumes:
+      - application/json
+      description: delete an existing subject user class exam
+      parameters:
+      - description: SubjectUserClassExam ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Ungültige SubjectUserClassExamen-ID
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+        "500":
+          description: Fehler beim Löschen des SubjectUserClassExamen
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+      summary: delete subject user class exam
+      tags:
+      - subjectuserclassexam
+    get:
+      consumes:
+      - application/json
+      description: get one subject user class exam from db by ID.
+      parameters:
+      - description: SubjectUserClassExam ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.SubjectUserClassExam'
+        "400":
+          description: Ungültige SubjectUserClassExamen-ID
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+        "404":
+          description: SubjectUserClassExam nicht gefunden
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+      summary: get one subject user class exam by id
+      tags:
+      - subjectuserclassexam
+    put:
+      consumes:
+      - application/json
+      description: update an existing subject user class exam
+      parameters:
+      - description: SubjectUserClassExam ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated subject user class exam object
+        in: body
+        name: subjectUserClassExam
+        required: true
+        schema:
+          $ref: '#/definitions/model.SubjectUserClassExam'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.SubjectUserClassExam'
+        "400":
+          description: Ungültige Anfrage
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+        "404":
+          description: SubjectUserClassExam nicht gefunden
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+      summary: update subject user class exam
+      tags:
+      - subjectuserclassexam
+  /users:
+    get:
+      consumes:
+      - application/json
+      description: get all users from db.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.User'
+            type: array
+        "500":
+          description: Fehler beim Abrufen der Users
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+      summary: get all users
+      tags:
+      - user
+    post:
+      consumes:
+      - application/json
+      description: create a new user
+      parameters:
+      - description: User object that needs to be added
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/model.User'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/model.User'
+        "400":
+          description: Ungültige Anfrage
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+        "500":
+          description: Fehler beim Erstellen des Users
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+      summary: create user
+      tags:
+      - user
+  /users/:id:
+    delete:
+      consumes:
+      - application/json
+      description: delete an existing user
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Ungültige User-ID
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+        "500":
+          description: Fehler beim Löschen des Users
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+      summary: delete user
+      tags:
+      - user
+    get:
+      consumes:
+      - application/json
+      description: get one user from db by ID.
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.User'
+        "400":
+          description: Ungültige User-ID
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+        "404":
+          description: User nicht gefunden
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+      summary: get one user by id
+      tags:
+      - user
+    put:
+      consumes:
+      - application/json
+      description: update an existing user
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated user object
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/model.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.User'
+        "400":
+          description: Ungültige Anfrage
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+        "404":
+          description: User nicht gefunden
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+      summary: update user
+      tags:
+      - user
+  /users/authenticate:
+    get:
+      consumes:
+      - application/json
+      description: authenticate a user with basic authentication
+      parameters:
+      - description: Basic Authentication
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - text/plain
+      responses:
+        "200":
+          description: Erfolgreich authentifiziert
+          schema:
+            type: string
+        "400":
+          description: Ungültige Anmeldeinformationen
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+        "401":
+          description: Ungültiges Authentifizierungsschema
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+      summary: authenticate user
+      tags:
+      - user
+  /users/authenticate/hx:
+    post:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: authenticate a user with HX credentials
+      parameters:
+      - description: Email
+        in: formData
+        name: email
+        required: true
+        type: string
+      - description: Password
+        in: formData
+        name: password
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "303":
+          description: See Other
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+        "401":
+          description: Ungültige Anmeldeinformationen
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+      summary: authenticate HX user
+      tags:
+      - user
+  /users/hx:
+    post:
+      consumes:
+      - application/json
+      description: create a new user with HX
+      parameters:
+      - description: Username
+        in: formData
+        name: username
+        required: true
+        type: string
+      - description: Email
+        in: formData
+        name: email
+        required: true
+        type: string
+      - description: Password
+        in: formData
+        name: password
+        required: true
+        type: string
+      - description: School
+        in: formData
+        name: school
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "302":
+          description: Found
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+        "500":
+          description: Fehler beim Erstellen des Users
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+      summary: create user with HX
+      tags:
+      - user
+  /users/logout/hx:
+    get:
+      consumes:
+      - application/json
+      description: logout an HX authenticated user
+      produces:
+      - application/json
+      responses:
+        "303":
+          description: See Other
+      summary: logout HX user
+      tags:
+      - user
+swagger: "2.0"

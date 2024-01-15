@@ -10,10 +10,15 @@ import (
 	"gorm.io/gorm/clause"
 )
 
-// GetSchoolsHandler handles the request to get the schools.
-//
-// c: the echo context object.
-// Returns an error if there was a problem with the request.
+// GetSchoolsHandler godoc
+// @Summary get all schools
+// @Description get all schools from db.
+// @Tags school
+// @Accept application/json
+// @Produce json
+// @Success 200 {object} []model.School
+// @Failure 500 {object} ErrorResponse "Fehler beim Abrufen der Schools"
+// @Router /schools [get]
 func GetSchoolsHandler(c echo.Context) error {
 	db := DB.GetDBInstance() // Funktion zum Abrufen der Datenbankinstanz
 
@@ -26,10 +31,17 @@ func GetSchoolsHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, schools)
 }
 
-// GetSchoolHandler is a function that handles the request to get a school.
-//
-// It takes a `c` parameter of type `echo.Context`, which represents the HTTP request context.
-// It returns an error.
+// GetSchoolHandler godoc
+// @Summary get one school by id
+// @Description get one school from db by ID.
+// @Tags school
+// @Accept application/json
+// @Produce json
+// @Param id path int true "School ID"
+// @Success 200 {object} model.School
+// @Failure 400 {object} ErrorResponse "Ungültige School-ID"
+// @Failure 404 {object} ErrorResponse "School nicht gefunden"
+// @Router /schools/:id [get]
 func GetSchoolHandler(c echo.Context) error {
 	db := DB.GetDBInstance()
 
@@ -46,10 +58,17 @@ func GetSchoolHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, school)
 }
 
-// CreateSchoolHandler handles the creation of a school.
-//
-// It takes a `c` parameter of type `echo.Context` which represents the HTTP request context.
-// It returns an error.
+// CreateSchoolHandler godoc
+// @Summary create school
+// @Description create a new school
+// @Tags school
+// @Accept application/json
+// @Produce json
+// @Param school body model.School true "School object that needs to be added"
+// @Success 201 {object} model.School
+// @Failure 500 {object} ErrorResponse "Fehler beim Erstellen des Schools"
+// @Failure 400 {object} ErrorResponse "Ungültige Anfrage"
+// @Router /schools [post]
 func CreateSchoolHandler(c echo.Context) error {
 	db := DB.GetDBInstance()
 
@@ -65,10 +84,18 @@ func CreateSchoolHandler(c echo.Context) error {
 	return c.JSON(http.StatusCreated, school)
 }
 
-// UpdateSchoolHandler is a function that handles the update of a school in the API.
-//
-// It takes a context object as a parameter.
-// It returns an error.
+// UpdateSchoolHandler godoc
+// @Summary update school
+// @Description update an existing school
+// @Tags school
+// @Accept application/json
+// @Produce json
+// @Param id path int true "School ID"
+// @Param school body model.School true "Updated school object"
+// @Success 200 {object} model.School
+// @Failure 400 {object} ErrorResponse "Ungültige Anfrage"
+// @Failure 404 {object} ErrorResponse "School nicht gefunden"
+// @Router /schools/:id [put]
 func UpdateSchoolHandler(c echo.Context) error {
 	db := DB.GetDBInstance()
 
@@ -93,10 +120,17 @@ func UpdateSchoolHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, existingSchool)
 }
 
-// DeleteSchoolHandler is a function that handles the deletion of a school.
-//
-// It takes a parameter of type echo.Context, which represents the HTTP request and response context.
-// It returns an error type.
+// DeleteSchoolHandler godoc
+// @Summary delete school
+// @Description delete an existing school
+// @Tags school
+// @Accept application/json
+// @Produce json
+// @Param id path int true "School ID"
+// @Success 204
+// @Failure 400 {object} ErrorResponse "Ungültige School-ID"
+// @Failure 500 {object} ErrorResponse "Fehler beim Löschen des Schools"
+// @Router /schools/:id [delete]
 func DeleteSchoolHandler(c echo.Context) error {
 	db := DB.GetDBInstance()
 

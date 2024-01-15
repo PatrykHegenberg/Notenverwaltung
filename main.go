@@ -7,8 +7,25 @@ import (
 	"github.com/labstack/echo-contrib/session"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	echoSwagger "github.com/swaggo/echo-swagger"
+
+	_ "github.com/PatrykHegenberg/Notenverwaltung/docs"
 )
 
+// @title Notenverwaltung API
+// @version 1.0
+// @descritption This is a simple API server for Notenverwaltung
+// @termsOfService http://swagger.io/terms
+
+// @contact.name API support
+// @contact.url http://swagger.io/support
+// @contact.email patrykhegenberg@gmail.com
+
+// @license.name Apache 2.0
+// @license.url http://apache.com/licenses/LICENSE-2.0.html
+
+// @host localhost
+// @BasePath /api/v1
 func main() {
 	DB.AutoMigrate()
 	e := echo.New()
@@ -16,13 +33,17 @@ func main() {
 	// HTMX Frontend Routes
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
+	e.Use(middleware.CORS())
 	e.Use(session.Middleware(sessions.NewCookieStore([]byte("my-secret"))))
+	e.GET("/swagger/*", echoSwagger.WrapHandler)
 	e.GET("/", routes.GetIndexHandler)
 	e.GET("/register", routes.GetRegisterHandler)
 	e.GET("/login", routes.GetLoginHandler)
 	e.GET("/dashboard", routes.GetDashboardHandler)
 	e.GET("/logout", routes.LogoutHXUserHandler)
 	e.POST("/authenticate", routes.AuthenticateHXUserHandler)
+	e.POST("/auth", routes.AuthenticateUserHandler)
+	e.POST("/signup", routes.CreateUserHandler)
 
 	// API Routes
 	apiGroup := e.Group("/api/v1")

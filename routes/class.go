@@ -9,10 +9,15 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-// GetClasssHandler is a function that handles the retrieval of class data.
-//
-// It takes an echo.Context as a parameter.
-// It returns an error.
+// GetClassesHandler godoc
+// @Summary get all classes
+// @Description get all classes from db.
+// @Tags class
+// @Accept application/json
+// @Produce json
+// @Success 200 {object} []model.Class
+// @Failure 500 {object} ErrorResponse "Fehler beim Abrufen der Classes"
+// @Router /classes [get]
 func GetClasssHandler(c echo.Context) error {
 	db := DB.GetDBInstance() // Funktion zum Abrufen der Datenbankinstanz
 
@@ -24,11 +29,17 @@ func GetClasssHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, class)
 }
 
-// GetClassHandler is a function that handles the retrieval of a class.
-//
-// It takes a parameter `c` of type `echo.Context` which represents the context
-// of the HTTP request.
-// It returns an error.
+// GetClassHandler godoc
+// @Summary get one class by id
+// @Description get one class from db by ID.
+// @Tags class
+// @Accept application/json
+// @Produce json
+// @Param id path int true "Class ID"
+// @Success 200 {object} model.Class
+// @Failure 400 {object} ErrorResponse "Ungültige Class-ID"
+// @Failure 404 {object} ErrorResponse "Class nicht gefunden"
+// @Router /classes/:id [get]
 func GetClassHandler(c echo.Context) error {
 	db := DB.GetDBInstance()
 
@@ -45,10 +56,17 @@ func GetClassHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, class)
 }
 
-// CreateClassHandler handles the creation of a class.
-//
-// It takes a `c` parameter of type `echo.Context` which represents the Echo context.
-// It returns an error.
+// CreateClassHandler godoc
+// @Summary create class
+// @Description create a new class
+// @Tags class
+// @Accept application/json
+// @Produce json
+// @Param class body model.Class true "Class object that needs to be added"
+// @Success 201 {object} model.Class
+// @Failure 500 {object} ErrorResponse "Fehler beim Erstellen des Classes"
+// @Failure 400 {object} ErrorResponse "Ungültige Anfrage"
+// @Router /classes [post]
 func CreateClassHandler(c echo.Context) error {
 	db := DB.GetDBInstance()
 
@@ -64,10 +82,18 @@ func CreateClassHandler(c echo.Context) error {
 	return c.JSON(http.StatusCreated, class)
 }
 
-// UpdateClassHandler updates a class in the database.
-//
-// c: The echo context.
-// Returns an error if any.
+// UpdateClassHandler godoc
+// @Summary update class
+// @Description update an existing class
+// @Tags class
+// @Accept application/json
+// @Produce json
+// @Param id path int true "Class ID"
+// @Param class body model.Class true "Updated class object"
+// @Success 200 {object} model.Class
+// @Failure 400 {object} ErrorResponse "Ungültige Anfrage"
+// @Failure 404 {object} ErrorResponse "Class nicht gefunden"
+// @Router /classes/:id [put]
 func UpdateClassHandler(c echo.Context) error {
 	db := DB.GetDBInstance()
 
@@ -92,10 +118,17 @@ func UpdateClassHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, existingClass)
 }
 
-// DeleteClassHandler is a function that handles the deletion of a class.
-//
-// It takes a `c` parameter of type `echo.Context` that represents the current HTTP request context.
-// The function returns an error type.
+// DeleteClassHandler godoc
+// @Summary delete class
+// @Description delete an existing class
+// @Tags class
+// @Accept application/json
+// @Produce json
+// @Param id path int true "Class ID"
+// @Success 204
+// @Failure 400 {object} ErrorResponse "Ungültige Class-ID"
+// @Failure 500 {object} ErrorResponse "Fehler beim Löschen des Class"
+// @Router /classes/:id [delete]
 func DeleteClassHandler(c echo.Context) error {
 	db := DB.GetDBInstance()
 

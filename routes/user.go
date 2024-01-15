@@ -1,8 +1,10 @@
 package routes
 
 import (
+	"encoding/base64"
 	"net/http"
 	"strconv"
+	"strings"
 
 	DB "github.com/PatrykHegenberg/Notenverwaltung/database"
 	"github.com/PatrykHegenberg/Notenverwaltung/model"
@@ -11,7 +13,15 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-// GetUsersHandler gibt alle User zurück
+// GetUsersHandler godoc
+// @Summary get all users
+// @Description get all users from db.
+// @Tags user
+// @Accept application/json
+// @Produce json
+// @Success 200 {object} []model.User
+// @Failure 500 {object} ErrorResponse "Fehler beim Abrufen der Users"
+// @Router /users [get]
 func GetUsersHandler(c echo.Context) error {
 	db := DB.GetDBInstance() // Funktion zum Abrufen der Datenbankinstanz
 
@@ -23,7 +33,17 @@ func GetUsersHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, users)
 }
 
-// GetUserHandler gibt einen bestimmten User anhand der ID zurück
+// GetUserHandler godoc
+// @Summary get one user by id
+// @Description get one user from db by ID.
+// @Tags user
+// @Accept application/json
+// @Produce json
+// @Param id path int true "User ID"
+// @Success 200 {object} model.User
+// @Failure 400 {object} ErrorResponse "Ungültige User-ID"
+// @Failure 404 {object} ErrorResponse "User nicht gefunden"
+// @Router /users/:id [get]
 func GetUserHandler(c echo.Context) error {
 	db := DB.GetDBInstance()
 
@@ -40,7 +60,17 @@ func GetUserHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, user)
 }
 
-// CreateUserHandler erstellt einen neuen Users
+// CreateUserHandler godoc
+// @Summary create user
+// @Description create a new user
+// @Tags user
+// @Accept application/json
+// @Produce json
+// @Param user body model.User true "User object that needs to be added"
+// @Success 201 {object} model.User
+// @Failure 500 {object} ErrorResponse "Fehler beim Erstellen des Users"
+// @Failure 400 {object} ErrorResponse "Ungültige Anfrage"
+// @Router /users [post]
 func CreateUserHandler(c echo.Context) error {
 	db := DB.GetDBInstance()
 
@@ -56,7 +86,20 @@ func CreateUserHandler(c echo.Context) error {
 	return c.JSON(http.StatusCreated, user)
 }
 
-// CreateUserHandler erstellt einen neuen Users mit HX
+// CreateHXUserHandler godoc
+// @Summary create user with HX
+// @Description create a new user with HX
+// @Tags user
+// @Accept application/json
+// @Produce json
+// @Param username formData string true "Username"
+// @Param email formData string true "Email"
+// @Param password formData string true "Password"
+// @Param school formData string true "School"
+// @Success 302
+// @Failure 400 {object} ErrorResponse "Bad Request"
+// @Failure 500 {object} ErrorResponse "Fehler beim Erstellen des Users"
+// @Router /users/hx [post]
 func CreateHXUserHandler(c echo.Context) error {
 	username := c.FormValue("username")
 	email := c.FormValue("email")
@@ -87,7 +130,18 @@ func CreateHXUserHandler(c echo.Context) error {
 	return c.Redirect(http.StatusCreated, "/")
 }
 
-// UpdateUserHandler aktualisiert einen vorhandenen User
+// UpdateUserHandler godoc
+// @Summary update user
+// @Description update an existing user
+// @Tags user
+// @Accept application/json
+// @Produce json
+// @Param id path int true "User ID"
+// @Param user body model.User true "Updated user object"
+// @Success 200 {object} model.User
+// @Failure 400 {object} ErrorResponse "Ungültige Anfrage"
+// @Failure 404 {object} ErrorResponse "User nicht gefunden"
+// @Router /users/:id [put]
 func UpdateUserHandler(c echo.Context) error {
 	db := DB.GetDBInstance()
 
@@ -112,7 +166,17 @@ func UpdateUserHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, existingUser)
 }
 
-// DeleteUserHandler löscht einen User anhand der ID
+// DeleteUserHandler godoc
+// @Summary delete user
+// @Description delete an existing user
+// @Tags user
+// @Accept application/json
+// @Produce json
+// @Param id path int true "User ID"
+// @Success 204
+// @Failure 400 {object} ErrorResponse "Ungültige User-ID"
+// @Failure 500 {object} ErrorResponse "Fehler beim Löschen des Users"
+// @Router /users/:id [delete]
 func DeleteUserHandler(c echo.Context) error {
 	db := DB.GetDBInstance()
 
@@ -128,6 +192,18 @@ func DeleteUserHandler(c echo.Context) error {
 	return c.NoContent(http.StatusNoContent)
 }
 
+// AuthenticateHXUserHandler godoc
+// @Summary authenticate HX user
+// @Description authenticate a user with HX credentials
+// @Tags user
+// @Accept application/x-www-form-urlencoded
+// @Produce json
+// @Param email formData string true "Email"
+// @Param password formData string true "Password"
+// @Success 303
+// @Failure 400 {object} ErrorResponse "Bad Request"
+// @Failure 401 {object} ErrorResponse "Ungültige Anmeldeinformationen"
+// @Router /users/authenticate/hx [post]
 func AuthenticateHXUserHandler(c echo.Context) error {
 	db := DB.GetDBInstance()
 
@@ -154,6 +230,71 @@ func AuthenticateHXUserHandler(c echo.Context) error {
 	return c.Redirect(http.StatusSeeOther, "/")
 }
 
+// AuthenticateUserHandler godoc
+// @Summary authenticate user
+// @Description authenticate a user with basic authentication
+// @Tags user
+// @Accept application/json
+// @Produce plain
+// @Param Authorization header string true "Basic Authentication"
+// @Success 200 {string} string "Erfolgreich authentifiziert"
+// @Failure 400 {object} ErrorResponse "Ungültige Anmeldeinformationen"
+// @Failure 401 {object} ErrorResponse "Ungültiges Authentifizierungsschema"
+// @Router /users/authenticate [get]
+func AuthenticateUserHandler(c echo.Context) error {
+	authHeader := c.Request().Header.Get("Authorization")
+	if authHeader == "" {
+		return c.JSON(http.StatusUnauthorized, map[string]string{"error": "Authentifizierung erforderlich"})
+	}
+
+	parts := strings.SplitN(authHeader, " ", 2)
+	if len(parts) != 2 || parts[0] != "Basic" {
+		return c.JSON(http.StatusUnauthorized, map[string]string{"error": "Ungültiges Authentifizierungsschema"})
+	}
+
+	credentials, err := base64.StdEncoding.DecodeString(parts[1])
+	if err != nil {
+		return c.JSON(http.StatusUnauthorized, map[string]string{"error": "Ungültige Base64-Codierung"})
+	}
+
+	userPass := strings.SplitN(string(credentials), ":", 2)
+	if len(userPass) != 2 {
+		return c.JSON(http.StatusUnauthorized, map[string]string{"error": "Ungültige Benutzerinformationen"})
+	}
+
+	username := userPass[0]
+	password := userPass[1]
+
+	db := DB.GetDBInstance()
+	var user model.User
+	if err := db.Where("username = ?", username).First(&user).Error; err != nil {
+		return c.JSON(http.StatusUnauthorized, map[string]string{"error": "Ungültige Anmeldeinformationen"})
+	}
+
+	if validCredentials(username, password) {
+		return c.String(http.StatusOK, "Erfolgreich authentifiziert")
+	}
+
+	return c.JSON(http.StatusUnauthorized, map[string]string{"error": "Ungültige Anmeldeinformationen"})
+}
+
+func validCredentials(username, password string) bool {
+	db := DB.GetDBInstance()
+	var user model.User
+	if err := db.Where("username = ?", username).First(&user).Error; err != nil {
+		return false
+	}
+	return username == user.Username && password == user.Password
+}
+
+// LogoutHXUserHandler godoc
+// @Summary logout HX user
+// @Description logout an HX authenticated user
+// @Tags user
+// @Accept application/json
+// @Produce json
+// @Success 303
+// @Router /users/logout/hx [get]
 func LogoutHXUserHandler(c echo.Context) error {
 	sess, _ := session.Get("authenticate-session", c)
 	sess.Options = &sessions.Options{

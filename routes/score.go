@@ -9,7 +9,15 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-// GetScoresHandler gibt alle Score zurück
+// GetScoresHandler godoc
+// @Summary get all scores
+// @Description get all scores from db.
+// @Tags score
+// @Accept application/json
+// @Produce json
+// @Success 200 {object} []model.Score
+// @Failure 500 {object} ErrorResponse "Fehler beim Abrufen der Scores"
+// @Router /scores [get]
 func GetScoresHandler(c echo.Context) error {
 	db := DB.GetDBInstance() // Funktion zum Abrufen der Datenbankinstanz
 
@@ -21,7 +29,17 @@ func GetScoresHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, score)
 }
 
-// GetScoreHandler gibt einen bestimmten Score anhand der ID zurück
+// GetScoreHandler godoc
+// @Summary get one score by id
+// @Description get one score from db by ID.
+// @Tags score
+// @Accept application/json
+// @Produce json
+// @Param id path int true "Score ID"
+// @Success 200 {object} model.Score
+// @Failure 400 {object} ErrorResponse "Ungültige Score-ID"
+// @Failure 404 {object} ErrorResponse "Score nicht gefunden"
+// @Router /scores/:id [get]
 func GetScoreHandler(c echo.Context) error {
 	db := DB.GetDBInstance()
 
@@ -38,7 +56,17 @@ func GetScoreHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, score)
 }
 
-// CreateScoreHandler erstellt einen neuen Scores
+// CreateScoreHandler godoc
+// @Summary create score
+// @Description create a new score
+// @Tags score
+// @Accept application/json
+// @Produce json
+// @Param score body model.Score true "Score object that needs to be added"
+// @Success 201 {object} model.Score
+// @Failure 500 {object} ErrorResponse "Fehler beim Erstellen des Scores"
+// @Failure 400 {object} ErrorResponse "Ungültige Anfrage"
+// @Router /scores [post]
 func CreateScoreHandler(c echo.Context) error {
 	db := DB.GetDBInstance()
 
@@ -54,7 +82,18 @@ func CreateScoreHandler(c echo.Context) error {
 	return c.JSON(http.StatusCreated, score)
 }
 
-// UpdateScoreHandler aktualisiert einen vorhandenen Score
+// UpdateScoreHandler godoc
+// @Summary update score
+// @Description update an existing score
+// @Tags score
+// @Accept application/json
+// @Produce json
+// @Param id path int true "Score ID"
+// @Param score body model.Score true "Updated score object"
+// @Success 200 {object} model.Score
+// @Failure 400 {object} ErrorResponse "Ungültige Anfrage"
+// @Failure 404 {object} ErrorResponse "Score nicht gefunden"
+// @Router /scores/:id [put]
 func UpdateScoreHandler(c echo.Context) error {
 	db := DB.GetDBInstance()
 
@@ -79,7 +118,17 @@ func UpdateScoreHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, existingScore)
 }
 
-// DeleteScoreHandler löscht einen Score anhand der ID
+// DeleteScoreHandler godoc
+// @Summary delete score
+// @Description delete an existing score
+// @Tags score
+// @Accept application/json
+// @Produce json
+// @Param id path int true "Score ID"
+// @Success 204
+// @Failure 400 {object} ErrorResponse "Ungültige Score-ID"
+// @Failure 500 {object} ErrorResponse "Fehler beim Löschen des Scores"
+// @Router /scores/:id [delete]
 func DeleteScoreHandler(c echo.Context) error {
 	db := DB.GetDBInstance()
 

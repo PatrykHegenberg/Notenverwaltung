@@ -9,10 +9,15 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-// GetGradesHandler is a function that handles the request to get grades.
-//
-// It takes an echo.Context parameter.
-// It returns an error.
+// GetGradesHandler godoc
+// @Summary get all grades
+// @Description get all grades from db.
+// @Tags grade
+// @Accept application/json
+// @Produce json
+// @Success 200 {object} []model.Grade
+// @Failure 500 {object} ErrorResponse "Fehler beim Abrufen der Gradeen"
+// @Router /grades [get]
 func GetGradesHandler(c echo.Context) error {
 	db := DB.GetDBInstance() // Funktion zum Abrufen der Datenbankinstanz
 
@@ -24,10 +29,17 @@ func GetGradesHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, grades)
 }
 
-// GetGradeHandler is a function that handles the request to get a grade.
-//
-// It takes in a `c` parameter of type `echo.Context` which represents the request context.
-// It returns an error.
+// GetGradeHandler godoc
+// @Summary get one grade by id
+// @Description get one grade from db by ID.
+// @Tags grade
+// @Accept application/json
+// @Produce json
+// @Param id path int true "Grade ID"
+// @Success 200 {object} model.Grade
+// @Failure 400 {object} ErrorResponse "Ungültige Gradeen-ID"
+// @Failure 404 {object} ErrorResponse "Grade nicht gefunden"
+// @Router /grades/:id [get]
 func GetGradeHandler(c echo.Context) error {
 	db := DB.GetDBInstance()
 
@@ -44,9 +56,17 @@ func GetGradeHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, grade)
 }
 
-// CreateGradeHandler handles the creation of a grade.
-//
-// It takes a parameter of type `echo.Context` and returns an error.
+// CreateGradeHandler godoc
+// @Summary create grade
+// @Description create a new grade
+// @Tags grade
+// @Accept application/json
+// @Produce json
+// @Param grade body model.Grade true "Grade object that needs to be added"
+// @Success 201 {object} model.Grade
+// @Failure 500 {object} ErrorResponse "Fehler beim Erstellen des Gradeen"
+// @Failure 400 {object} ErrorResponse "Ungültige Anfrage"
+// @Router /grades [post]
 func CreateGradeHandler(c echo.Context) error {
 	db := DB.GetDBInstance()
 
@@ -62,10 +82,18 @@ func CreateGradeHandler(c echo.Context) error {
 	return c.JSON(http.StatusCreated, grade)
 }
 
-// UpdateGradeHandler updates a grade in the database.
-//
-// It takes a `c` parameter of type `echo.Context`.
-// It returns an error.
+// UpdateGradeHandler godoc
+// @Summary update grade
+// @Description update an existing grade
+// @Tags grade
+// @Accept application/json
+// @Produce json
+// @Param id path int true "Grade ID"
+// @Param grade body model.Grade true "Updated grade object"
+// @Success 200 {object} model.Grade
+// @Failure 400 {object} ErrorResponse "Ungültige Anfrage"
+// @Failure 404 {object} ErrorResponse "Grade nicht gefunden"
+// @Router /grades/:id [put]
 func UpdateGradeHandler(c echo.Context) error {
 	db := DB.GetDBInstance()
 
@@ -90,9 +118,17 @@ func UpdateGradeHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, existingGrade)
 }
 
-// DeleteGradeHandler is a function that handles the deletion of a grade.
-//
-// It takes a parameter of type echo.Context and returns an error.
+// DeleteGradeHandler godoc
+// @Summary delete grade
+// @Description delete an existing grade
+// @Tags grade
+// @Accept application/json
+// @Produce json
+// @Param id path int true "Grade ID"
+// @Success 204
+// @Failure 400 {object} ErrorResponse "Ungültige Gradeen-ID"
+// @Failure 500 {object} ErrorResponse "Fehler beim Löschen des Gradeen"
+// @Router /grades/:id [delete]
 func DeleteGradeHandler(c echo.Context) error {
 	db := DB.GetDBInstance()
 

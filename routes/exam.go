@@ -9,10 +9,19 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-// GetExamsHandler is a Go function that handles the retrieval of exams.
-//
-// It takes a parameter of type `echo.Context`.
-// It returns an error.
+type ErrorResponse struct {
+	Error string `json:"error"`
+}
+
+// GetExamsHandler godoc
+// @Summary get all exams
+// @Description get all exams from db.
+// @Tags exam
+// @Accept application/json
+// @Produce json
+// @Success 200 {object} []model.Exam
+// @Failure 500 {object} ErrorResponse "Fehler beim Abraufen der Exams"
+// @Router /exams [get]
 func GetExamsHandler(c echo.Context) error {
 	db := DB.GetDBInstance() // Funktion zum Abrufen der Datenbankinstanz
 
@@ -24,10 +33,16 @@ func GetExamsHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, exam)
 }
 
-// GetExamHandler is a function that handles the GET request for retrieving an exam.
-//
-// It takes a parameter of type echo.Context, which represents the HTTP request and response context.
-// The function returns an error.
+// GetExamHandler godoc
+// @Summary get one exams by id
+// @Description get all exams from db.
+// @Tags exam
+// @Accept application/json
+// @Produce json
+// @Success 200 {object} model.Exam
+// @Failure 500 {object} ErrorResponse "ungueltige Exam-ID"
+// @Failure 404 {object} ErrorResponse "Exam nicht gefunden"
+// @Router /exams/:id [get]
 func GetExamHandler(c echo.Context) error {
 	db := DB.GetDBInstance()
 
@@ -44,9 +59,17 @@ func GetExamHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, exam)
 }
 
-// CreateExamHandler handles the creation of an exam.
-//
-// It takes a context object as a parameter and returns an error.
+// CreateExamHandler godoc
+// @Summary create exam
+// @Description create a new exam
+// @Tags exam
+// @Accept application/json
+// @Produce json
+// @Success 203 {object} model.Exam
+// @Failure 500 {object} ErrorResponse "Fehler beim Erstellen des Exams"
+// @Failure 400 {object} ErrorResponse "ungueltige anfrage"
+// @Router /exams [post]
+// @securityDefinitions.basic BasicAuth
 func CreateExamHandler(c echo.Context) error {
 	db := DB.GetDBInstance()
 
@@ -62,10 +85,19 @@ func CreateExamHandler(c echo.Context) error {
 	return c.JSON(http.StatusCreated, exam)
 }
 
-// UpdateExamHandler handles the update of an exam.
-//
-// The function takes a `c` parameter of type `echo.Context` which represents the HTTP request and response context.
-// The function returns an error.
+// UpdateExamHandler godoc
+// @Summary update exam
+// @Description update an existing exam
+// @Tags exam
+// @Accept application/json
+// @Produce json
+// @Success 200 {object} model.Exam
+// @Failure 500 {object} ErrorResponse "Fehler beim aktualisieren des Exams"
+// @Failure 400 {object} ErrorResponse "ungueltige anfrage"
+// @Failure 404 {object} ErrorResponse "Exam nicht gefunden"
+// @Failure 400 {object} ErrorResponse "ungueltige exam-id"
+// @Router /exams/:id [put]
+// @securityDefinitions.basic BasicAuth
 func UpdateExamHandler(c echo.Context) error {
 	db := DB.GetDBInstance()
 
@@ -90,10 +122,17 @@ func UpdateExamHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, existingExam)
 }
 
-// DeleteExamHandler is a function that handles the deletion of an exam.
-//
-// It takes in a parameter of type echo.Context, which represents the context of the HTTP request.
-// The function returns an error.
+// DeleteExamHandler godoc
+// @Summary delete exam
+// @Description delete an existing exam
+// @Tags exam
+// @Accept application/json
+// @Produce json
+// @Success 204
+// @Failure 500 {object} ErrorResponse "Fehler beim loeschen des Exams"
+// @Failure 400 {object} ErrorResponse "ungueltige exam-id"
+// @Router /exams/:id [delete]
+// @securityDefinitions.basic BasicAuth
 func DeleteExamHandler(c echo.Context) error {
 	db := DB.GetDBInstance()
 

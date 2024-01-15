@@ -9,7 +9,15 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-// GetSubjectsHandler gibt alle Subjecten zurück
+// GetSubjectsHandler godoc
+// @Summary get all subjects
+// @Description get all subjects from db.
+// @Tags subject
+// @Accept application/json
+// @Produce json
+// @Success 200 {object} []model.Subject
+// @Failure 500 {object} ErrorResponse "Fehler beim Abrufen der Subjecten"
+// @Router /subjects [get]
 func GetSubjectsHandler(c echo.Context) error {
 	db := DB.GetDBInstance() // Funktion zum Abrufen der Datenbankinstanz
 
@@ -21,7 +29,17 @@ func GetSubjectsHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, subjects)
 }
 
-// GetSubjectHandler gibt einen bestimmten Subjecten anhand der ID zurück
+// GetSubjectHandler godoc
+// @Summary get one subject by id
+// @Description get one subject from db by ID.
+// @Tags subject
+// @Accept application/json
+// @Produce json
+// @Param id path int true "Subject ID"
+// @Success 200 {object} model.Subject
+// @Failure 400 {object} ErrorResponse "Ungültige Subjecten-ID"
+// @Failure 404 {object} ErrorResponse "Subject nicht gefunden"
+// @Router /subjects/:id [get]
 func GetSubjectHandler(c echo.Context) error {
 	db := DB.GetDBInstance()
 
@@ -38,7 +56,17 @@ func GetSubjectHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, subject)
 }
 
-// CreateSubjectHandler erstellt einen neuen Subjecten
+// CreateSubjectHandler godoc
+// @Summary create subject
+// @Description create a new subject
+// @Tags subject
+// @Accept application/json
+// @Produce json
+// @Param subject body model.Subject true "Subject object that needs to be added"
+// @Success 201 {object} model.Subject
+// @Failure 500 {object} ErrorResponse "Fehler beim Erstellen des Subjecten"
+// @Failure 400 {object} ErrorResponse "Ungültige Anfrage"
+// @Router /subjects [post]
 func CreateSubjectHandler(c echo.Context) error {
 	db := DB.GetDBInstance()
 
@@ -54,7 +82,18 @@ func CreateSubjectHandler(c echo.Context) error {
 	return c.JSON(http.StatusCreated, subject)
 }
 
-// UpdateSubjectHandler aktualisiert einen vorhandenen Subjecten
+// UpdateSubjectHandler godoc
+// @Summary update subject
+// @Description update an existing subject
+// @Tags subject
+// @Accept application/json
+// @Produce json
+// @Param id path int true "Subject ID"
+// @Param subject body model.Subject true "Updated subject object"
+// @Success 200 {object} model.Subject
+// @Failure 400 {object} ErrorResponse "Ungültige Anfrage"
+// @Failure 404 {object} ErrorResponse "Subject nicht gefunden"
+// @Router /subjects/:id [put]
 func UpdateSubjectHandler(c echo.Context) error {
 	db := DB.GetDBInstance()
 
@@ -79,7 +118,17 @@ func UpdateSubjectHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, existingSubject)
 }
 
-// DeleteSubjectHandler löscht einen Subjecten anhand der ID
+// DeleteSubjectHandler godoc
+// @Summary delete subject
+// @Description delete an existing subject
+// @Tags subject
+// @Accept application/json
+// @Produce json
+// @Param id path int true "Subject ID"
+// @Success 204
+// @Failure 400 {object} ErrorResponse "Ungültige Subjecten-ID"
+// @Failure 500 {object} ErrorResponse "Fehler beim Löschen des Subjecten"
+// @Router /subjects/:id [delete]
 func DeleteSubjectHandler(c echo.Context) error {
 	db := DB.GetDBInstance()
 

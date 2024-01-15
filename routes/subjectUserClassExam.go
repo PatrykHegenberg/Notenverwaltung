@@ -10,7 +10,15 @@ import (
 	"gorm.io/gorm/clause"
 )
 
-// GetSubjectUserClassExamsHandler gibt alle SubjectUserClassExamen zurück
+// GetSubjectUserClassExamsHandler godoc
+// @Summary get all subject user class exams
+// @Description get all subject user class exams from db.
+// @Tags subjectuserclassexam
+// @Accept application/json
+// @Produce json
+// @Success 200 {object} []model.SubjectUserClassExam
+// @Failure 500 {object} ErrorResponse "Fehler beim Abrufen der SubjectUserClassExamen"
+// @Router /sucs [get]
 func GetSubjectUserClassExamsHandler(c echo.Context) error {
 	db := DB.GetDBInstance() // Funktion zum Abrufen der Datenbankinstanz
 
@@ -22,7 +30,17 @@ func GetSubjectUserClassExamsHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, subjectUserClassExams)
 }
 
-// GetSubjectUserClassExamHandler gibt einen bestimmten SubjectUserClassExamen anhand der ID zurück
+// GetSubjectUserClassExamHandler godoc
+// @Summary get one subject user class exam by id
+// @Description get one subject user class exam from db by ID.
+// @Tags subjectuserclassexam
+// @Accept application/json
+// @Produce json
+// @Param id path int true "SubjectUserClassExam ID"
+// @Success 200 {object} model.SubjectUserClassExam
+// @Failure 400 {object} ErrorResponse "Ungültige SubjectUserClassExamen-ID"
+// @Failure 404 {object} ErrorResponse "SubjectUserClassExam nicht gefunden"
+// @Router /sucs/:id [get]
 func GetSubjectUserClassExamHandler(c echo.Context) error {
 	db := DB.GetDBInstance()
 
@@ -39,7 +57,17 @@ func GetSubjectUserClassExamHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, subjectUserClassExam)
 }
 
-// CreateSubjectUserClassExamHandler erstellt einen neuen SubjectUserClassExamen
+// CreateSubjectUserClassExamHandler godoc
+// @Summary create subject user class exam
+// @Description create a new subject user class exam
+// @Tags subjectuserclassexam
+// @Accept application/json
+// @Produce json
+// @Param subjectUserClassExam body model.SubjectUserClassExam true "SubjectUserClassExam object that needs to be added"
+// @Success 201 {object} model.SubjectUserClassExam
+// @Failure 500 {object} ErrorResponse "Fehler beim Erstellen des SubjectUserClassExamen"
+// @Failure 400 {object} ErrorResponse "Ungültige Anfrage"
+// @Router /sucs [post]
 func CreateSubjectUserClassExamHandler(c echo.Context) error {
 	db := DB.GetDBInstance()
 
@@ -55,7 +83,18 @@ func CreateSubjectUserClassExamHandler(c echo.Context) error {
 	return c.JSON(http.StatusCreated, subjectUserClassExam)
 }
 
-// UpdateSubjectUserClassExamHandler aktualisiert einen vorhandenen SubjectUserClassExamen
+// UpdateSubjectUserClassExamHandler godoc
+// @Summary update subject user class exam
+// @Description update an existing subject user class exam
+// @Tags subjectuserclassexam
+// @Accept application/json
+// @Produce json
+// @Param id path int true "SubjectUserClassExam ID"
+// @Param subjectUserClassExam body model.SubjectUserClassExam true "Updated subject user class exam object"
+// @Success 200 {object} model.SubjectUserClassExam
+// @Failure 400 {object} ErrorResponse "Ungültige Anfrage"
+// @Failure 404 {object} ErrorResponse "SubjectUserClassExam nicht gefunden"
+// @Router /sucs/:id [put]
 func UpdateSubjectUserClassExamHandler(c echo.Context) error {
 	db := DB.GetDBInstance()
 
@@ -80,7 +119,17 @@ func UpdateSubjectUserClassExamHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, existingSubjectUserClassExam)
 }
 
-// DeleteSubjectUserClassExamHandler löscht einen SubjectUserClassExamen anhand der ID
+// DeleteSubjectUserClassExamHandler godoc
+// @Summary delete subject user class exam
+// @Description delete an existing subject user class exam
+// @Tags subjectuserclassexam
+// @Accept application/json
+// @Produce json
+// @Param id path int true "SubjectUserClassExam ID"
+// @Success 204
+// @Failure 400 {object} ErrorResponse "Ungültige SubjectUserClassExamen-ID"
+// @Failure 500 {object} ErrorResponse "Fehler beim Löschen des SubjectUserClassExamen"
+// @Router /sucs/:id [delete]
 func DeleteSubjectUserClassExamHandler(c echo.Context) error {
 	db := DB.GetDBInstance()
 
