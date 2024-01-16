@@ -446,7 +446,7 @@ const docTemplate = `{
         },
         "/classes/schools/:id": {
             "get": {
-                "description": "get one class from db by school ID.",
+                "description": "get all classes from db by school ID.",
                 "consumes": [
                     "application/json"
                 ],
@@ -456,7 +456,7 @@ const docTemplate = `{
                 "tags": [
                     "class"
                 ],
-                "summary": "get one class by school_id",
+                "summary": "get classes by school_id",
                 "parameters": [
                     {
                         "type": "integer",
@@ -470,17 +470,20 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/model.Class"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.Class"
+                            }
                         }
                     },
                     "400": {
-                        "description": "Ungültige Class-ID",
+                        "description": "Ungültige School-ID",
                         "schema": {
                             "$ref": "#/definitions/routes.ErrorResponse"
                         }
                     },
                     "404": {
-                        "description": "Class nicht gefunden",
+                        "description": "Klassen nicht gefunden",
                         "schema": {
                             "$ref": "#/definitions/routes.ErrorResponse"
                         }
