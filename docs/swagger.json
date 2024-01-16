@@ -437,6 +437,50 @@
                 }
             }
         },
+        "/classes/schools/:id": {
+            "get": {
+                "description": "get one class from db by school ID.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "class"
+                ],
+                "summary": "get one class by school_id",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "School ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.Class"
+                        }
+                    },
+                    "400": {
+                        "description": "Ungültige Class-ID",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Class nicht gefunden",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/exams": {
             "get": {
                 "description": "get all exams from db.",

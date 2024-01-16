@@ -1,12 +1,14 @@
 package routes
 
 import (
+	"errors"
 	"net/http"
 	"strconv"
 
 	DB "github.com/PatrykHegenberg/Notenverwaltung/database"
 	"github.com/PatrykHegenberg/Notenverwaltung/model"
 	"github.com/labstack/echo/v4"
+	"gorm.io/gorm"
 )
 
 // GetClassesHandler godoc
@@ -51,6 +53,36 @@ func GetClassHandler(c echo.Context) error {
 	var class model.Class
 	if err := db.Model(&model.Class{}).Preload("Students").First(&class, id).Error; err != nil {
 		return c.JSON(http.StatusNotFound, map[string]string{"error": "Class nicht gefunden"})
+	}
+
+	return c.JSON(http.StatusOK, class)
+}
+
+// GetClassBySchoolHandler godoc
+// @Summary get one class by school_id
+// @Description get one class from db by school ID.
+// @Tags class
+// @Accept application/json
+// @Produce json
+// @Param id path int true "School ID"
+// @Success 200 {object} model.Class
+// @Failure 400 {object} ErrorResponse "Ungültige Class-ID"
+// @Failure 404 {object} ErrorResponse "Class nicht gefunden"
+// @Router /classes/schools/:id [get]
+func GetClassBySchoolHandler(c echo.Context) error {
+	db := DB.GetDBInstance()
+
+	schoolID, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Ungültige Class-ID"})
+	}
+
+	var class model.Class
+	if err := db.Model(&model.Class{}).Preload("Students").Where("school_id = ?", schoolID).First(&class).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return c.JSON(http.StatusNotFound, map[string]string{"error": "Class nicht gefunden"})
+		}
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Internal Server Error"})
 	}
 
 	return c.JSON(http.StatusOK, class)

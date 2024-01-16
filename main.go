@@ -36,12 +36,12 @@ func main() {
 	e.Use(middleware.CORS())
 	e.Use(session.Middleware(sessions.NewCookieStore([]byte("my-secret"))))
 	e.GET("/swagger/*", echoSwagger.WrapHandler)
-	e.GET("/", routes.GetIndexHandler)
-	e.GET("/register", routes.GetRegisterHandler)
-	e.GET("/login", routes.GetLoginHandler)
-	e.GET("/dashboard", routes.GetDashboardHandler)
-	e.GET("/logout", routes.LogoutHXUserHandler)
-	e.POST("/authenticate", routes.AuthenticateHXUserHandler)
+	//e.GET("/", routes.GetIndexHandler)
+	//e.GET("/register", routes.GetRegisterHandler)
+	//e.GET("/login", routes.GetLoginHandler)
+	//e.GET("/dashboard", routes.GetDashboardHandler)
+	//e.GET("/logout", routes.LogoutHXUserHandler)
+	//e.POST("/authenticate", routes.AuthenticateHXUserHandler)
 	e.POST("/auth", routes.AuthenticateUserHandler)
 	e.POST("/signup", routes.CreateUserHandler)
 
@@ -116,6 +116,7 @@ func configureClassRoutes(g *echo.Group) {
 	g.POST("", routes.CreateClassHandler)
 	g.PUT("/:id", routes.UpdateClassHandler)
 	g.DELETE("/:id", routes.DeleteClassHandler)
+	g.GET("/schools/:id", routes.GetClassBySchoolHandler)
 }
 
 func configureScoreRoutes(g *echo.Group) {

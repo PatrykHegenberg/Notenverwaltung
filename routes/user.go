@@ -272,7 +272,7 @@ func AuthenticateUserHandler(c echo.Context) error {
 	}
 
 	if validCredentials(username, password) {
-		return c.String(http.StatusOK, "Erfolgreich authentifiziert")
+		return c.JSON(http.StatusOK, user)
 	}
 
 	return c.JSON(http.StatusUnauthorized, map[string]string{"error": "Ungültige Anmeldeinformationen"})

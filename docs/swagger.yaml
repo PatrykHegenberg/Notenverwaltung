@@ -620,6 +620,35 @@ paths:
       summary: update class
       tags:
       - class
+  /classes/schools/:id:
+    get:
+      consumes:
+      - application/json
+      description: get one class from db by school ID.
+      parameters:
+      - description: School ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Class'
+        "400":
+          description: Ungültige Class-ID
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+        "404":
+          description: Class nicht gefunden
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+      summary: get one class by school_id
+      tags:
+      - class
   /exams:
     get:
       consumes:
