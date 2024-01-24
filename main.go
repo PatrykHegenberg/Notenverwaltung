@@ -1,10 +1,15 @@
 package main
 
 import (
+	"fmt"
+	"net/http"
+
 	DB "github.com/PatrykHegenberg/Notenverwaltung/database"
 	"github.com/PatrykHegenberg/Notenverwaltung/routes"
+	"github.com/golang-jwt/jwt/v5"
 	"github.com/gorilla/sessions"
 	"github.com/labstack/echo-contrib/session"
+	echojwt "github.com/labstack/echo-jwt/v4"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	echoSwagger "github.com/swaggo/echo-swagger"
@@ -29,6 +34,7 @@ import (
 func main() {
 	DB.AutoMigrate()
 	e := echo.New()
+	e.Debug = true
 
 	// HTMX Frontend Routes
 	e.Use(middleware.Logger())
@@ -36,10 +42,38 @@ func main() {
 	e.Use(middleware.CORS())
 	e.Use(session.Middleware(sessions.NewCookieStore([]byte("my-secret"))))
 	e.GET("/swagger/*", echoSwagger.WrapHandler)
-	//e.GET("/", routes.GetIndexHandler)
+	// e.GET("/", routes.HomeHandler)
+	e.POST("/login", routes.Login)
+	e.Static("/", "./frontend")
+	r := e.Group("/restricted")
+	// Configure middleware with the custom claims type
+	config := echojwt.Config{
+		NewClaimsFunc: func(c echo.Context) jwt.Claims {
+			return new(routes.JwtCustomClaims)
+		},
+		SigningKey: []byte("secret"),
+	}
+	r.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
+		return func(c echo.Context) error {
+			// Hier wird das Token aus dem Cookie "jwt" extrahiert
+			cookie, err := c.Cookie("jwt")
+			if err != nil {
+				return echo.NewHTTPError(http.StatusUnauthorized, "Token nicht gefunden")
+			}
+
+			token := cookie.Value
+			fmt.Println(token)
+			c.Set("jwt", token) // Setze das Token im Context für den Restricted-Handler
+
+			return next(c)
+		}
+	})
+	r.Use(echojwt.WithConfig(config))
+	r.GET("/dashboard", routes.Restricted)
+	// r.GET("", routes.Restricted)
 	//e.GET("/register", routes.GetRegisterHandler)
 	//e.GET("/login", routes.GetLoginHandler)
-	//e.GET("/dashboard", routes.GetDashboardHandler)
+	// e.GET("/dashboard", routes.GetDashboardHandler)
 	//e.GET("/logout", routes.LogoutHXUserHandler)
 	//e.POST("/authenticate", routes.AuthenticateHXUserHandler)
 	e.POST("/auth", routes.AuthenticateUserHandler)

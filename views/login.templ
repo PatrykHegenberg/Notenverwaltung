@@ -1,0 +1,45 @@
+package views
+
+templ Login() {
+  <section class="hero is-primary is-fullheight">
+  <div class="hero-body">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-5-tablet is-4-desktop is-3-widescreen">
+          <form action="/login" class="box" method="POST" hx-post="/login" hx-target="#content" hx-swap="outerHTML">
+            <div class="field">
+              <label for="" class="label">Email</label>
+              <div class="control has-icons-left">
+                <input id="username" name="username" type="text" placeholder="Benutzername" class="input" required />
+                <span class="icon is-small is-left">
+                  <i class="fa fa-user"></i>
+                </span>
+              </div>
+            </div>
+            <div class="field">
+              <label for="" class="label">Password</label>
+              <div class="control has-icons-left">
+                <input id="password" name="password" type="password" placeholder="*******" class="input" required />
+                <span class="icon is-small is-left">
+                  <i class="fa fa-lock"></i>
+                </span>
+              </div>
+            </div>
+            <div class="field">
+              <label for="" class="checkbox">
+                <input type="checkbox" />
+               Remember me
+              </label>
+            </div>
+            <div class="field">
+              <button class="button is-success" type="submit">
+                Login
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+}

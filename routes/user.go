@@ -2,12 +2,18 @@ package routes
 
 import (
 	"encoding/base64"
+	"fmt"
+	"log"
 	"net/http"
 	"strconv"
 	"strings"
+	"time"
 
 	DB "github.com/PatrykHegenberg/Notenverwaltung/database"
 	"github.com/PatrykHegenberg/Notenverwaltung/model"
+	"github.com/PatrykHegenberg/Notenverwaltung/utils"
+	"github.com/PatrykHegenberg/Notenverwaltung/views"
+	"github.com/golang-jwt/jwt/v5"
 	"github.com/gorilla/sessions"
 	"github.com/labstack/echo-contrib/session"
 	"github.com/labstack/echo/v4"
@@ -155,13 +161,16 @@ func UpdateUserHandler(c echo.Context) error {
 		return c.JSON(http.StatusNotFound, map[string]string{"error": "User nicht gefunden"})
 	}
 
+	log.Printf("%v\n", existingUser)
 	if err := c.Bind(&existingUser); err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Ungültige Anfrage"})
 	}
+	log.Printf("%v\n", existingUser)
 
 	if err := db.Save(&existingUser).Error; err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Fehler beim Aktualisieren des Users"})
 	}
+	log.Printf("%v\n", existingUser)
 
 	return c.JSON(http.StatusOK, existingUser)
 }
@@ -305,4 +314,69 @@ func LogoutHXUserHandler(c echo.Context) error {
 	sess.Values["username"] = ""
 	sess.Save(c.Request(), c.Response())
 	return c.Redirect(http.StatusSeeOther, "/")
+}
+
+type JwtCustomClaims struct {
+	Name   string `json:"name"`
+	Admin  bool   `json:"admin"`
+	School uint   `json:"school"`
+	jwt.RegisteredClaims
+}
+
+func Login(c echo.Context) error {
+	username := c.FormValue("username")
+	password := c.FormValue("password")
+
+	fmt.Println(username)
+	fmt.Println(password)
+	user, err := checkCredentials(username, password)
+	if err != nil {
+		return echo.ErrUnauthorized
+	}
+
+	claims := &JwtCustomClaims{
+		user.Username,
+		user.IsAdmin,
+		user.SchoolID,
+		jwt.RegisteredClaims{
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour * 72)),
+		},
+	}
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+
+	t, err := token.SignedString([]byte("secret"))
+	if err != nil {
+		return err
+	}
+	cookie := new(http.Cookie)
+	cookie.Name = "jwt"
+	cookie.Value = t
+	cookie.Expires = time.Now().Add(72 * time.Hour)
+
+	c.SetCookie(cookie)
+
+	// return utils.Render(c, http.StatusOK, views.Dashboard())
+	return c.Redirect(http.StatusSeeOther, "/restricted/dashboard")
+}
+
+func Restricted(c echo.Context) error {
+	user := c.Get("user").(*jwt.Token)
+	claims := user.Claims.(*JwtCustomClaims)
+	name := claims.Name
+	return c.String(http.StatusOK, "Welcome "+name+"!")
+}
+
+func HomeHandler(c echo.Context) error {
+	return utils.Render(c, http.StatusOK, views.Root())
+}
+
+func checkCredentials(username, password string) (*model.User, error) {
+	user, err := DB.GetUserByName(username)
+	if err != nil {
+		return nil, err
+	}
+	if user != nil && user.Password == password {
+		return user, nil
+	}
+	return nil, fmt.Errorf("error: wrong credentials")
 }

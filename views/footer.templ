@@ -1,0 +1,11 @@
+package views
+
+import "time"
+
+templ Footer() {
+  <footer class="footer">
+    <div class="content has-text-centered">
+      <p>&copy; { time.Now().Format("2006") } Alle Rechte vorbehalten</p>
+    </div>
+  </footer>
+}
