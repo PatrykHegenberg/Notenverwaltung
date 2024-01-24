@@ -1578,7 +1578,7 @@ const docTemplate = `{
         },
         "/students/:id": {
             "get": {
-                "description": "get one student from db by ID.",
+                "description": "get all students from db by class ID.",
                 "consumes": [
                     "application/json"
                 ],
@@ -1588,11 +1588,11 @@ const docTemplate = `{
                 "tags": [
                     "student"
                 ],
-                "summary": "get one student by id",
+                "summary": "get all students by a specific class id",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "Student ID",
+                        "description": "Class ID",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -1602,17 +1602,20 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/model.Student"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.Student"
+                            }
                         }
                     },
                     "400": {
-                        "description": "Ungültige Studenten-ID",
+                        "description": "Ungültige Class-ID",
                         "schema": {
                             "$ref": "#/definitions/routes.ErrorResponse"
                         }
                     },
                     "404": {
-                        "description": "Student nicht gefunden",
+                        "description": "Keine Students gefunden",
                         "schema": {
                             "$ref": "#/definitions/routes.ErrorResponse"
                         }

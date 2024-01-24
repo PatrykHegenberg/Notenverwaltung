@@ -89,6 +89,7 @@ func main() {
 func configureStudentRoutes(g *echo.Group) {
 	g.GET("", routes.GetStudentsHandler)
 	g.GET("/:id", routes.GetStudentHandler)
+	g.GET("/class/:id", routes.GetStudentsByClassHandler)
 	g.POST("", routes.CreateStudentHandler)
 	g.PUT("/:id", routes.UpdateStudentHandler)
 	g.DELETE("/:id", routes.DeleteStudentHandler)

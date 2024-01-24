@@ -56,6 +56,32 @@ func GetStudentHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, student)
 }
 
+// GetStudentByClassHandler godoc
+// @Summary get all students by a specific class id
+// @Description get all students from db by class ID.
+// @Tags student
+// @Accept application/json
+// @Produce json
+// @Param id path int true "Class ID"
+// @Success 200 {object} []model.Student
+// @Failure 400 {object} ErrorResponse "Ungültige Class-ID"
+// @Failure 404 {object} ErrorResponse "Keine Students gefunden"
+// @Router /students/:id [get]
+func GetStudentsByClassHandler(c echo.Context) error {
+	db := DB.GetDBInstance()
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Ungültige Class-ID"})
+	}
+
+	var class model.Class
+	if err := db.Model(&model.Class{}).Preload("Students").First(&class, id).Error; err != nil {
+		return c.JSON(http.StatusNotFound, map[string]string{"error": "Class nicht gefunden"})
+	}
+
+	return c.JSON(http.StatusOK, class.Students)
+}
+
 // CreateStudentHandler godoc
 // @Summary create student
 // @Description create a new student

@@ -1399,9 +1399,9 @@ paths:
     get:
       consumes:
       - application/json
-      description: get one student from db by ID.
+      description: get all students from db by class ID.
       parameters:
-      - description: Student ID
+      - description: Class ID
         in: path
         name: id
         required: true
@@ -1412,16 +1412,18 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.Student'
+            items:
+              $ref: '#/definitions/model.Student'
+            type: array
         "400":
-          description: Ungültige Studenten-ID
+          description: Ungültige Class-ID
           schema:
             $ref: '#/definitions/routes.ErrorResponse'
         "404":
-          description: Student nicht gefunden
+          description: Keine Students gefunden
           schema:
             $ref: '#/definitions/routes.ErrorResponse'
-      summary: get one student by id
+      summary: get all students by a specific class id
       tags:
       - student
     put:
