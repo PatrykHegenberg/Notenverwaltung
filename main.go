@@ -1,6 +1,8 @@
 package main
 
 import (
+	"net/http"
+
 	DB "github.com/PatrykHegenberg/Notenverwaltung/database"
 	"github.com/PatrykHegenberg/Notenverwaltung/routes"
 	"github.com/gorilla/sessions"
@@ -9,7 +11,14 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 	echoSwagger "github.com/swaggo/echo-swagger"
 
+	"embed"
+
 	_ "github.com/PatrykHegenberg/Notenverwaltung/docs"
+)
+
+var (
+	//go:embed frontend
+	fs embed.FS
 )
 
 // @title Notenverwaltung API
@@ -42,7 +51,13 @@ func main() {
 	//e.GET("/dashboard", routes.GetDashboardHandler)
 	//e.GET("/logout", routes.LogoutHXUserHandler)
 	//e.POST("/authenticate", routes.AuthenticateHXUserHandler)
-	e.POST("/auth", routes.AuthenticateUserHandler)
+	e.Use(middleware.StaticWithConfig(middleware.StaticConfig{
+		HTML5:      true,
+		Root:       "frontend", // because files are located in `web` directory in `webAssets` fs
+		Filesystem: http.FS(fs),
+	}))
+	testGroup := e.Group("/api")
+	testGroup.POST("/auth", routes.AuthenticateUserHandler)
 	e.POST("/signup", routes.CreateUserHandler)
 
 	// API Routes
