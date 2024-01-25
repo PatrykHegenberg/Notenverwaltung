@@ -324,9 +324,22 @@ type JwtCustomClaims struct {
 }
 
 func Login(c echo.Context) error {
-	username := c.FormValue("username")
-	password := c.FormValue("password")
+	// username := c.FormValue("username")
+	// password := c.FormValue("password")
 
+	var requestData map[string]string
+	if err := c.Bind(&requestData); err != nil {
+		return echo.ErrBadRequest
+	}
+	username, ok := requestData["username"]
+	if !ok {
+		return echo.ErrBadRequest
+	}
+
+	password, ok := requestData["password"]
+	if !ok {
+		return echo.ErrBadRequest
+	}
 	fmt.Println(username)
 	fmt.Println(password)
 	user, err := checkCredentials(username, password)

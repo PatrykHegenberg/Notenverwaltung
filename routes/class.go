@@ -58,6 +58,33 @@ func GetClassHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, class)
 }
 
+// GetClassByTeacherHandler godoc
+// @Summary get one class by teacher id
+// @Description get one class from db by ID.
+// @Tags class
+// @Accept application/json
+// @Produce json
+// @Param id path int true "Teacher ID"
+// @Success 200 {object} model.Class
+// @Failure 400 {object} ErrorResponse "Ungültige Teacher-ID"
+// @Failure 404 {object} ErrorResponse "Class nicht gefunden"
+// @Router /classes/teacher/:id [get]
+func GetClassByTeacherHandler(c echo.Context) error {
+	db := DB.GetDBInstance()
+
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Ungültige Class-ID"})
+	}
+
+	var class model.Class
+	if err := db.Model(&model.Class{}).Preload("Students").Preload("Students.Address").Where("teacher_id = ?", id).Find(&class).Error; err != nil {
+		return c.JSON(http.StatusNotFound, map[string]string{"error": "Class nicht gefunden"})
+	}
+
+	return c.JSON(http.StatusOK, class)
+}
+
 // GetClassBySchoolHandler godoc
 // @Summary get classes by school_id
 // @Description get all classes from db by school ID.

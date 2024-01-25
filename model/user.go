@@ -9,8 +9,8 @@ type User struct {
 	gorm.Model         // Model is a struct that provides basic fields for a GORM model.
 	Email      string  `gorm:"not null;unique" json:"email"`                                                             // Email is the user's email address.
 	Username   string  `gorm:"not null;unique" json:"username"`                                                          // Username is the user's username.
-	Vorname    string  `gorm:"not null;unique" json:"vorname"`                                                           // Vorname is the user's first name.
-	Nachname   string  `gorm:"not null;unique" json:"nachname"`                                                          // Nachname is the user's last name.
+	Vorname    string  `gorm:"not null;" json:"vorname"`                                                                 // Vorname is the user's first name.
+	Nachname   string  `gorm:"not null;" json:"nachname"`                                                                // Nachname is the user's last name.
 	Password   string  `gorm:"not null" json:"password"`                                                                 // Password is the user's password.
 	IsAdmin    bool    `json:"is_admin"`                                                                                 // IsAdmin indicates whether the user is an administrator.
 	SchoolID   uint    `json:"school_id"`                                                                                // SchoolID is the ID of the user's school.

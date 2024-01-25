@@ -70,12 +70,6 @@ func main() {
 	})
 	r.Use(echojwt.WithConfig(config))
 	r.GET("/dashboard", routes.Restricted)
-	// r.GET("", routes.Restricted)
-	//e.GET("/register", routes.GetRegisterHandler)
-	//e.GET("/login", routes.GetLoginHandler)
-	// e.GET("/dashboard", routes.GetDashboardHandler)
-	//e.GET("/logout", routes.LogoutHXUserHandler)
-	//e.POST("/authenticate", routes.AuthenticateHXUserHandler)
 	e.POST("/auth", routes.AuthenticateUserHandler)
 	e.POST("/signup", routes.CreateUserHandler)
 
@@ -147,6 +141,7 @@ func configureExamRoutes(g *echo.Group) {
 func configureClassRoutes(g *echo.Group) {
 	g.GET("", routes.GetClasssHandler)
 	g.GET("/:id", routes.GetClassHandler)
+	g.GET("/teacher/:id", routes.GetClassByTeacherHandler)
 	g.POST("", routes.CreateClassHandler)
 	g.PUT("/:id", routes.UpdateClassHandler)
 	g.DELETE("/:id", routes.DeleteClassHandler)
