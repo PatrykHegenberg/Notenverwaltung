@@ -22,7 +22,7 @@ var (
 )
 
 // @title Notenverwaltung API
-// @version 1.0
+// @version 0.0.8
 // @descritption This is a simple API server for Notenverwaltung
 // @termsOfService http://swagger.io/terms
 
@@ -39,25 +39,17 @@ func main() {
 	DB.AutoMigrate()
 	e := echo.New()
 
-	// HTMX Frontend Routes
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 	e.Use(middleware.CORS())
 	e.Use(session.Middleware(sessions.NewCookieStore([]byte("my-secret"))))
 	e.GET("/swagger/*", echoSwagger.WrapHandler)
-	//e.GET("/", routes.GetIndexHandler)
-	//e.GET("/register", routes.GetRegisterHandler)
-	//e.GET("/login", routes.GetLoginHandler)
-	//e.GET("/dashboard", routes.GetDashboardHandler)
-	//e.GET("/logout", routes.LogoutHXUserHandler)
-	//e.POST("/authenticate", routes.AuthenticateHXUserHandler)
 	e.Use(middleware.StaticWithConfig(middleware.StaticConfig{
 		HTML5:      true,
-		Root:       "frontend", // because files are located in `web` directory in `webAssets` fs
+		Root:       "frontend",
 		Filesystem: http.FS(fs),
 	}))
-	testGroup := e.Group("/api")
-	testGroup.POST("/auth", routes.AuthenticateUserHandler)
+	e.POST("/auth", routes.AuthenticateUserHandler)
 	e.POST("/signup", routes.CreateUserHandler)
 
 	// API Routes
