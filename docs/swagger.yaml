@@ -340,7 +340,7 @@ info:
     url: http://apache.com/licenses/LICENSE-2.0.html
   termsOfService: http://swagger.io/terms
   title: Notenverwaltung API
-  version: "1.0"
+  version: 0.0.8
 paths:
   /addresses:
     get:
