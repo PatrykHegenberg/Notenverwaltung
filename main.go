@@ -1,7 +1,7 @@
 package main
 
 import (
-	"net/http"
+	// "net/http"
 
 	DB "github.com/PatrykHegenberg/Notenverwaltung/database"
 	"github.com/PatrykHegenberg/Notenverwaltung/routes"
@@ -44,11 +44,11 @@ func main() {
 	e.Use(middleware.CORS())
 	e.Use(session.Middleware(sessions.NewCookieStore([]byte("my-secret"))))
 	e.GET("/swagger/*", echoSwagger.WrapHandler)
-	e.Use(middleware.StaticWithConfig(middleware.StaticConfig{
-		HTML5:      true,
-		Root:       "frontend",
-		Filesystem: http.FS(fs),
-	}))
+	// e.Use(middleware.StaticWithConfig(middleware.StaticConfig{
+	// 	HTML5:      true,
+	// 	Root:       "frontend",
+	// 	Filesystem: http.FS(fs),
+	// }))
 	e.POST("/auth", routes.AuthenticateUserHandler)
 	e.POST("/signup", routes.CreateUserHandler)
 
