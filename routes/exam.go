@@ -17,6 +17,7 @@ type ErrorResponse struct {
 // @Summary get all exams
 // @Description get all exams from db.
 // @Tags exam
+// @securityDefinitions.basic BasicAuth
 // @Accept application/json
 // @Produce json
 // @Success 200 {object} []model.Exam
@@ -37,6 +38,7 @@ func GetExamsHandler(c echo.Context) error {
 // @Summary get one exams by id
 // @Description get all exams from db.
 // @Tags exam
+// @securityDefinitions.basic BasicAuth
 // @Accept application/json
 // @Produce json
 // @Success 200 {object} model.Exam
@@ -63,6 +65,7 @@ func GetExamHandler(c echo.Context) error {
 // @Summary create exam
 // @Description create a new exam
 // @Tags exam
+// @securityDefinitions.basic BasicAuth
 // @Accept application/json
 // @Produce json
 // @Success 203 {object} model.Exam
@@ -89,6 +92,7 @@ func CreateExamHandler(c echo.Context) error {
 // @Summary update exam
 // @Description update an existing exam
 // @Tags exam
+// @securityDefinitions.basic BasicAuth
 // @Accept application/json
 // @Produce json
 // @Success 200 {object} model.Exam
@@ -126,6 +130,7 @@ func UpdateExamHandler(c echo.Context) error {
 // @Summary delete exam
 // @Description delete an existing exam
 // @Tags exam
+// @securityDefinitions.basic BasicAuth
 // @Accept application/json
 // @Produce json
 // @Success 204

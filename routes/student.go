@@ -66,7 +66,7 @@ func GetStudentHandler(c echo.Context) error {
 // @Success 200 {object} []model.Student
 // @Failure 400 {object} ErrorResponse "Ungültige Class-ID"
 // @Failure 404 {object} ErrorResponse "Keine Students gefunden"
-// @Router /students/:id [get]
+// @Router /students/class/:id [get]
 func GetStudentsByClassHandler(c echo.Context) error {
 	db := DB.GetDBInstance()
 	id, err := strconv.Atoi(c.Param("id"))

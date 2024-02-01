@@ -13,6 +13,7 @@ import (
 // @Summary get all exam types
 // @Description get all exam types from db.
 // @Tags examtype
+// @securityDefinitions.basic BasicAuth
 // @Accept application/json
 // @Produce json
 // @Success 200 {object} []model.ExamType
@@ -33,6 +34,7 @@ func GetExamTypesHandler(c echo.Context) error {
 // @Summary get one exam type by id
 // @Description get one exam type from db by ID.
 // @Tags examtype
+// @securityDefinitions.basic BasicAuth
 // @Accept application/json
 // @Produce json
 // @Param id path int true "ExamType ID"
@@ -60,6 +62,7 @@ func GetExamTypeHandler(c echo.Context) error {
 // @Summary create exam type
 // @Description create a new exam type
 // @Tags examtype
+// @securityDefinitions.basic BasicAuth
 // @Accept application/json
 // @Produce json
 // @Param examType body model.ExamType true "ExamType object that needs to be added"
@@ -86,6 +89,7 @@ func CreateExamTypeHandler(c echo.Context) error {
 // @Summary update exam type
 // @Description update an existing exam type
 // @Tags examtype
+// @securityDefinitions.basic BasicAuth
 // @Accept application/json
 // @Produce json
 // @Param id path int true "ExamType ID"
@@ -122,6 +126,7 @@ func UpdateExamTypeHandler(c echo.Context) error {
 // @Summary delete exam type
 // @Description delete an existing exam type
 // @Tags examtype
+// @securityDefinitions.basic BasicAuth
 // @Accept application/json
 // @Produce json
 // @Param id path int true "ExamType ID"

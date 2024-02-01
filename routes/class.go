@@ -15,6 +15,7 @@ import (
 // @Summary get all classes
 // @Description get all classes from db.
 // @Tags class
+// @securityDefinitions.basic BasicAuth
 // @Accept application/json
 // @Produce json
 // @Success 200 {object} []model.Class
@@ -35,6 +36,7 @@ func GetClasssHandler(c echo.Context) error {
 // @Summary get one class by id
 // @Description get one class from db by ID.
 // @Tags class
+// @securityDefinitions.basic BasicAuth
 // @Accept application/json
 // @Produce json
 // @Param id path int true "Class ID"
@@ -62,6 +64,7 @@ func GetClassHandler(c echo.Context) error {
 // @Summary get classes by school_id
 // @Description get all classes from db by school ID.
 // @Tags class
+// @securityDefinitions.basic BasicAuth
 // @Accept application/json
 // @Produce json
 // @Param id path int true "School ID"
@@ -92,6 +95,7 @@ func GetClassBySchoolHandler(c echo.Context) error {
 // @Summary create class
 // @Description create a new class
 // @Tags class
+// @securityDefinitions.basic BasicAuth
 // @Accept application/json
 // @Produce json
 // @Param class body model.Class true "Class object that needs to be added"
@@ -118,6 +122,7 @@ func CreateClassHandler(c echo.Context) error {
 // @Summary update class
 // @Description update an existing class
 // @Tags class
+// @securityDefinitions.basic BasicAuth
 // @Accept application/json
 // @Produce json
 // @Param id path int true "Class ID"
@@ -154,6 +159,7 @@ func UpdateClassHandler(c echo.Context) error {
 // @Summary delete class
 // @Description delete an existing class
 // @Tags class
+// @securityDefinitions.basic BasicAuth
 // @Accept application/json
 // @Produce json
 // @Param id path int true "Class ID"

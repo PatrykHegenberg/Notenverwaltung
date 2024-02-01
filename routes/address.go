@@ -13,6 +13,7 @@ import (
 // @Summary get all addresses
 // @Description get all addresses from db.
 // @Tags address
+// @securityDefinitions.basic BasicAuth
 // @Accept application/json
 // @Produce json
 // @Success 200 {object} []model.Address
@@ -32,6 +33,7 @@ func GetAddressesHandler(c echo.Context) error {
 // @Summary get one address by id
 // @Description get one address from db by ID.
 // @Tags address
+// @securityDefinitions.basic BasicAuth
 // @Accept application/json
 // @Produce json
 // @Param id path int true "Address ID"
@@ -59,6 +61,7 @@ func GetAddressHandler(c echo.Context) error {
 // @Summary create address
 // @Description create a new address
 // @Tags address
+// @securityDefinitions.basic BasicAuth
 // @Accept application/json
 // @Produce json
 // @Param address body model.Address true "Address object that needs to be added"
@@ -85,6 +88,7 @@ func CreateAddressHandler(c echo.Context) error {
 // @Summary update address
 // @Description update an existing address
 // @Tags address
+// @securityDefinitions.basic BasicAuth
 // @Accept application/json
 // @Produce json
 // @Param id path int true "Address ID"
@@ -121,6 +125,7 @@ func UpdateAddressHandler(c echo.Context) error {
 // @Summary delete address
 // @Description delete an existing address
 // @Tags address
+// @securityDefinitions.basic BasicAuth
 // @Accept application/json
 // @Produce json
 // @Param id path int true "Address ID"

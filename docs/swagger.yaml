@@ -175,6 +175,8 @@ definitions:
       id:
         type: integer
       school_form:
+        description: Name is the name of the school form and is tagged for JSON serialization
+          with the key "school_form"
         type: string
       updatedAt:
         type: string
@@ -245,6 +247,8 @@ definitions:
       id:
         type: integer
       name:
+        description: Name field for the subject, marked as not null in the database
+          and exposed as "name" in JSON
         type: string
       updatedAt:
         type: string
@@ -329,7 +333,7 @@ definitions:
       error:
         type: string
     type: object
-host: localhost
+host: localhost:1323
 info:
   contact:
     email: patrykhegenberg@gmail.com
@@ -1399,9 +1403,9 @@ paths:
     get:
       consumes:
       - application/json
-      description: get all students from db by class ID.
+      description: get one student from db by ID.
       parameters:
-      - description: Class ID
+      - description: Student ID
         in: path
         name: id
         required: true
@@ -1412,18 +1416,16 @@ paths:
         "200":
           description: OK
           schema:
-            items:
-              $ref: '#/definitions/model.Student'
-            type: array
+            $ref: '#/definitions/model.Student'
         "400":
-          description: Ungültige Class-ID
+          description: Ungültige Studenten-ID
           schema:
             $ref: '#/definitions/routes.ErrorResponse'
         "404":
-          description: Keine Students gefunden
+          description: Student nicht gefunden
           schema:
             $ref: '#/definitions/routes.ErrorResponse'
-      summary: get all students by a specific class id
+      summary: get one student by id
       tags:
       - student
     put:
@@ -1458,6 +1460,37 @@ paths:
           schema:
             $ref: '#/definitions/routes.ErrorResponse'
       summary: update student
+      tags:
+      - student
+  /students/class/:id:
+    get:
+      consumes:
+      - application/json
+      description: get all students from db by class ID.
+      parameters:
+      - description: Class ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.Student'
+            type: array
+        "400":
+          description: Ungültige Class-ID
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+        "404":
+          description: Keine Students gefunden
+          schema:
+            $ref: '#/definitions/routes.ErrorResponse'
+      summary: get all students by a specific class id
       tags:
       - student
   /subjects:
@@ -1993,4 +2026,7 @@ paths:
       summary: logout HX user
       tags:
       - user
+securityDefinitions:
+  BasicAuth:
+    type: basic
 swagger: "2.0"

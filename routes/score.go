@@ -13,6 +13,7 @@ import (
 // @Summary get all scores
 // @Description get all scores from db.
 // @Tags score
+// @securityDefinitions.basic BasicAuth
 // @Accept application/json
 // @Produce json
 // @Success 200 {object} []model.Score
@@ -33,6 +34,7 @@ func GetScoresHandler(c echo.Context) error {
 // @Summary get one score by id
 // @Description get one score from db by ID.
 // @Tags score
+// @securityDefinitions.basic BasicAuth
 // @Accept application/json
 // @Produce json
 // @Param id path int true "Score ID"
@@ -60,6 +62,7 @@ func GetScoreHandler(c echo.Context) error {
 // @Summary create score
 // @Description create a new score
 // @Tags score
+// @securityDefinitions.basic BasicAuth
 // @Accept application/json
 // @Produce json
 // @Param score body model.Score true "Score object that needs to be added"
@@ -86,6 +89,7 @@ func CreateScoreHandler(c echo.Context) error {
 // @Summary update score
 // @Description update an existing score
 // @Tags score
+// @securityDefinitions.basic BasicAuth
 // @Accept application/json
 // @Produce json
 // @Param id path int true "Score ID"
@@ -122,6 +126,7 @@ func UpdateScoreHandler(c echo.Context) error {
 // @Summary delete score
 // @Description delete an existing score
 // @Tags score
+// @securityDefinitions.basic BasicAuth
 // @Accept application/json
 // @Produce json
 // @Param id path int true "Score ID"

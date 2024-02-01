@@ -13,6 +13,7 @@ import (
 // @Summary get all grades
 // @Description get all grades from db.
 // @Tags grade
+// @securityDefinitions.basic BasicAuth
 // @Accept application/json
 // @Produce json
 // @Success 200 {object} []model.Grade
@@ -33,6 +34,7 @@ func GetGradesHandler(c echo.Context) error {
 // @Summary get one grade by id
 // @Description get one grade from db by ID.
 // @Tags grade
+// @securityDefinitions.basic BasicAuth
 // @Accept application/json
 // @Produce json
 // @Param id path int true "Grade ID"
@@ -60,6 +62,7 @@ func GetGradeHandler(c echo.Context) error {
 // @Summary create grade
 // @Description create a new grade
 // @Tags grade
+// @securityDefinitions.basic BasicAuth
 // @Accept application/json
 // @Produce json
 // @Param grade body model.Grade true "Grade object that needs to be added"
@@ -86,6 +89,7 @@ func CreateGradeHandler(c echo.Context) error {
 // @Summary update grade
 // @Description update an existing grade
 // @Tags grade
+// @securityDefinitions.basic BasicAuth
 // @Accept application/json
 // @Produce json
 // @Param id path int true "Grade ID"
@@ -122,6 +126,7 @@ func UpdateGradeHandler(c echo.Context) error {
 // @Summary delete grade
 // @Description delete an existing grade
 // @Tags grade
+// @securityDefinitions.basic BasicAuth
 // @Accept application/json
 // @Produce json
 // @Param id path int true "Grade ID"

@@ -1578,7 +1578,7 @@ const docTemplate = `{
         },
         "/students/:id": {
             "get": {
-                "description": "get all students from db by class ID.",
+                "description": "get one student from db by ID.",
                 "consumes": [
                     "application/json"
                 ],
@@ -1588,11 +1588,11 @@ const docTemplate = `{
                 "tags": [
                     "student"
                 ],
-                "summary": "get all students by a specific class id",
+                "summary": "get one student by id",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "Class ID",
+                        "description": "Student ID",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -1602,20 +1602,17 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/model.Student"
-                            }
+                            "$ref": "#/definitions/model.Student"
                         }
                     },
                     "400": {
-                        "description": "Ungültige Class-ID",
+                        "description": "Ungültige Studenten-ID",
                         "schema": {
                             "$ref": "#/definitions/routes.ErrorResponse"
                         }
                     },
                     "404": {
-                        "description": "Keine Students gefunden",
+                        "description": "Student nicht gefunden",
                         "schema": {
                             "$ref": "#/definitions/routes.ErrorResponse"
                         }
@@ -1706,6 +1703,53 @@ const docTemplate = `{
                     },
                     "500": {
                         "description": "Fehler beim Löschen des Studenten",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/students/class/:id": {
+            "get": {
+                "description": "get all students from db by class ID.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "student"
+                ],
+                "summary": "get all students by a specific class id",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Class ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.Student"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Ungültige Class-ID",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Keine Students gefunden",
                         "schema": {
                             "$ref": "#/definitions/routes.ErrorResponse"
                         }
@@ -2779,6 +2823,7 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "school_form": {
+                    "description": "Name is the name of the school form and is tagged for JSON serialization with the key \"school_form\"",
                     "type": "string"
                 },
                 "updatedAt": {
@@ -2885,6 +2930,7 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "name": {
+                    "description": "Name field for the subject, marked as not null in the database and exposed as \"name\" in JSON",
                     "type": "string"
                 },
                 "updatedAt": {
@@ -3018,13 +3064,18 @@ const docTemplate = `{
                 }
             }
         }
+    },
+    "securityDefinitions": {
+        "BasicAuth": {
+            "type": "basic"
+        }
     }
 }`
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "0.0.8",
-	Host:             "localhost",
+	Host:             "localhost:1323",
 	BasePath:         "/api/v1",
 	Schemes:          []string{},
 	Title:            "Notenverwaltung API",

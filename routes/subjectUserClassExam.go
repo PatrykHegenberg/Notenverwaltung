@@ -14,6 +14,7 @@ import (
 // @Summary get all subject user class exams
 // @Description get all subject user class exams from db.
 // @Tags subjectuserclassexam
+// @securityDefinitions.basic BasicAuth
 // @Accept application/json
 // @Produce json
 // @Success 200 {object} []model.SubjectUserClassExam
@@ -34,6 +35,7 @@ func GetSubjectUserClassExamsHandler(c echo.Context) error {
 // @Summary get one subject user class exam by id
 // @Description get one subject user class exam from db by ID.
 // @Tags subjectuserclassexam
+// @securityDefinitions.basic BasicAuth
 // @Accept application/json
 // @Produce json
 // @Param id path int true "SubjectUserClassExam ID"
@@ -61,6 +63,7 @@ func GetSubjectUserClassExamHandler(c echo.Context) error {
 // @Summary create subject user class exam
 // @Description create a new subject user class exam
 // @Tags subjectuserclassexam
+// @securityDefinitions.basic BasicAuth
 // @Accept application/json
 // @Produce json
 // @Param subjectUserClassExam body model.SubjectUserClassExam true "SubjectUserClassExam object that needs to be added"
@@ -87,6 +90,7 @@ func CreateSubjectUserClassExamHandler(c echo.Context) error {
 // @Summary update subject user class exam
 // @Description update an existing subject user class exam
 // @Tags subjectuserclassexam
+// @securityDefinitions.basic BasicAuth
 // @Accept application/json
 // @Produce json
 // @Param id path int true "SubjectUserClassExam ID"
@@ -123,6 +127,7 @@ func UpdateSubjectUserClassExamHandler(c echo.Context) error {
 // @Summary delete subject user class exam
 // @Description delete an existing subject user class exam
 // @Tags subjectuserclassexam
+// @securityDefinitions.basic BasicAuth
 // @Accept application/json
 // @Produce json
 // @Param id path int true "SubjectUserClassExam ID"

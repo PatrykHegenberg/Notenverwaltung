@@ -14,6 +14,7 @@ import (
 // @Summary get all schools
 // @Description get all schools from db.
 // @Tags school
+// @securityDefinitions.basic BasicAuth
 // @Accept application/json
 // @Produce json
 // @Success 200 {object} []model.School
@@ -35,6 +36,7 @@ func GetSchoolsHandler(c echo.Context) error {
 // @Summary get one school by id
 // @Description get one school from db by ID.
 // @Tags school
+// @securityDefinitions.basic BasicAuth
 // @Accept application/json
 // @Produce json
 // @Param id path int true "School ID"
@@ -62,6 +64,7 @@ func GetSchoolHandler(c echo.Context) error {
 // @Summary create school
 // @Description create a new school
 // @Tags school
+// @securityDefinitions.basic BasicAuth
 // @Accept application/json
 // @Produce json
 // @Param school body model.School true "School object that needs to be added"
@@ -88,6 +91,7 @@ func CreateSchoolHandler(c echo.Context) error {
 // @Summary update school
 // @Description update an existing school
 // @Tags school
+// @securityDefinitions.basic BasicAuth
 // @Accept application/json
 // @Produce json
 // @Param id path int true "School ID"
@@ -124,6 +128,7 @@ func UpdateSchoolHandler(c echo.Context) error {
 // @Summary delete school
 // @Description delete an existing school
 // @Tags school
+// @securityDefinitions.basic BasicAuth
 // @Accept application/json
 // @Produce json
 // @Param id path int true "School ID"

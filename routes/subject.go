@@ -13,6 +13,7 @@ import (
 // @Summary get all subjects
 // @Description get all subjects from db.
 // @Tags subject
+// @securityDefinitions.basic BasicAuth
 // @Accept application/json
 // @Produce json
 // @Success 200 {object} []model.Subject
@@ -33,6 +34,7 @@ func GetSubjectsHandler(c echo.Context) error {
 // @Summary get one subject by id
 // @Description get one subject from db by ID.
 // @Tags subject
+// @securityDefinitions.basic BasicAuth
 // @Accept application/json
 // @Produce json
 // @Param id path int true "Subject ID"
@@ -60,6 +62,7 @@ func GetSubjectHandler(c echo.Context) error {
 // @Summary create subject
 // @Description create a new subject
 // @Tags subject
+// @securityDefinitions.basic BasicAuth
 // @Accept application/json
 // @Produce json
 // @Param subject body model.Subject true "Subject object that needs to be added"
@@ -86,6 +89,7 @@ func CreateSubjectHandler(c echo.Context) error {
 // @Summary update subject
 // @Description update an existing subject
 // @Tags subject
+// @securityDefinitions.basic BasicAuth
 // @Accept application/json
 // @Produce json
 // @Param id path int true "Subject ID"
@@ -122,6 +126,7 @@ func UpdateSubjectHandler(c echo.Context) error {
 // @Summary delete subject
 // @Description delete an existing subject
 // @Tags subject
+// @securityDefinitions.basic BasicAuth
 // @Accept application/json
 // @Produce json
 // @Param id path int true "Subject ID"

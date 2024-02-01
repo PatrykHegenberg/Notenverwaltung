@@ -33,7 +33,8 @@ var (
 // @license.name Apache 2.0
 // @license.url http://apache.com/licenses/LICENSE-2.0.html
 
-// @host localhost
+// @securityDefinitions.basic BasicAuth
+// @host localhost:1323
 // @BasePath /api/v1
 func main() {
 	DB.AutoMigrate()

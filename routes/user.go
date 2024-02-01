@@ -17,6 +17,7 @@ import (
 // @Summary get all users
 // @Description get all users from db.
 // @Tags user
+// @securityDefinitions.basic BasicAuth
 // @Accept application/json
 // @Produce json
 // @Success 200 {object} []model.User
@@ -37,6 +38,7 @@ func GetUsersHandler(c echo.Context) error {
 // @Summary get one user by id
 // @Description get one user from db by ID.
 // @Tags user
+// @securityDefinitions.basic BasicAuth
 // @Accept application/json
 // @Produce json
 // @Param id path int true "User ID"
@@ -64,6 +66,7 @@ func GetUserHandler(c echo.Context) error {
 // @Summary create user
 // @Description create a new user
 // @Tags user
+// @securityDefinitions.basic BasicAuth
 // @Accept application/json
 // @Produce json
 // @Param user body model.User true "User object that needs to be added"
@@ -90,6 +93,7 @@ func CreateUserHandler(c echo.Context) error {
 // @Summary create user with HX
 // @Description create a new user with HX
 // @Tags user
+// @securityDefinitions.basic BasicAuth
 // @Accept application/json
 // @Produce json
 // @Param username formData string true "Username"
@@ -134,6 +138,7 @@ func CreateHXUserHandler(c echo.Context) error {
 // @Summary update user
 // @Description update an existing user
 // @Tags user
+// @securityDefinitions.basic BasicAuth
 // @Accept application/json
 // @Produce json
 // @Param id path int true "User ID"
@@ -170,6 +175,7 @@ func UpdateUserHandler(c echo.Context) error {
 // @Summary delete user
 // @Description delete an existing user
 // @Tags user
+// @securityDefinitions.basic BasicAuth
 // @Accept application/json
 // @Produce json
 // @Param id path int true "User ID"
@@ -291,6 +297,7 @@ func validCredentials(username, password string) bool {
 // @Summary logout HX user
 // @Description logout an HX authenticated user
 // @Tags user
+// @securityDefinitions.basic BasicAuth
 // @Accept application/json
 // @Produce json
 // @Success 303
