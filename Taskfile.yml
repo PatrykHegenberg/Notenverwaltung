@@ -11,17 +11,55 @@ tasks:
 
   build:
     cmds:
-      - go build -v main.go
+      - rm -rf build 2>/dev/null || true
+      - mkdir build
+      - go build -v -o build/notenverwaltung main.go
 
   release-version:
     cmds:
-      - rm -rf /pfad/zum/ordner 2>/dev/null || true
+      - rm -rf build 2>/dev/null || true
+      - rm -rf dist 2>/dev/null || true
       - goreleaser release
 
   release-snapshot:
     cmds:
-      - rm -rf /pfad/zum/ordner 2>/dev/null || true
+      - rm -rf build 2>/dev/null || true
+      - rm -rf dist 2>/dev/null || true
       - goreleaser release --snapshot --clean
   run:
     cmds:
       - air main.go
+
+  test:
+    cmds:
+      - go test ./... -v
+
+  lint:
+    cmds:
+      - golangci-lint run
+
+  fmt:
+    cmds:
+      - go fmt ./...
+
+  vet:
+    cmds:
+      - go vet ./...
+
+  deps:
+    cmds:
+      - go mod tidy
+      - go mod verify
+
+  coverage:
+    cmds:
+      - go test ./... -coverprofile=coverage.out
+      - go tool cover -html=coverage.out
+
+  clean:
+    cmds:
+      - rm -rf build/
+      - rm -f coverage.out
+
+  all:
+    deps: [fmt, vet, lint, test, build]
