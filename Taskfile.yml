@@ -1,0 +1,23 @@
+version: "3"
+
+tasks:
+  create-db-schema:
+    cmds:
+      - atlas schema inspect -u sqlite://test.db -w
+
+  create-swagger-doc:
+    cmds:
+      - ~/go/bin/swag init --parseDependency --parseInternal
+
+  build:
+    cmds:
+      - go build -v main.go
+
+  release:
+    cmds:
+      - rm -rf /pfad/zum/ordner 2>/dev/null || true
+      - goreleaser release
+
+  run:
+    cmds:
+      - air main.go

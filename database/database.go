@@ -109,7 +109,7 @@ func AutoMigrate() {
 	}
 	var grade model.Grade
 	if err := db.Where("name = ?", "1").First(&grade).Error; err != nil {
-		var grades = []*model.Grade{
+		grades := []*model.Grade{
 			{
 				Name: 1,
 			},
@@ -166,10 +166,16 @@ func GetSchoolById(id uint) (*model.School, error) {
 	}
 	return &role, nil
 }
+
 func GetAllUsers() ([]model.User, error) {
 	var users []model.User
 	if err := GetDBInstance().Preload("Address").Find(&users).Error; err != nil {
 		return nil, err
 	}
+	return users, nil
+}
+
+func GetAllUsersBySchoolID(id int) ([]model.User, error) {
+	var users []model.User
 	return users, nil
 }
