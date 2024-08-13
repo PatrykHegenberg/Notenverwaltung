@@ -13,11 +13,15 @@ tasks:
     cmds:
       - go build -v main.go
 
-  release:
+  release-version:
     cmds:
       - rm -rf /pfad/zum/ordner 2>/dev/null || true
       - goreleaser release
 
+  release-snapshot:
+    cmds:
+      - rm -rf /pfad/zum/ordner 2>/dev/null || true
+      - goreleaser release --snapshot --clean
   run:
     cmds:
       - air main.go
